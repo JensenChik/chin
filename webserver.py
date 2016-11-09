@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 __author__ = 'jinxiu.qi'
 from flask.ext.script import Manager, Shell, Server
-from admin import create_app
+from webserver import create_app
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
