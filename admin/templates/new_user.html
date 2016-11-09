@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h2>新建用户</h2>
+    <div class="row" style="margin-right: 0;">
+        <div class="col-md-4">
+            <ul id="myTab" class="nav nav-tabs">
+                <li>
+                    <a href="/list_user">用户列表</a>
+                </li>
+                <li class="active"><a href="/new_user">新建用户</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="margin: 2% 10% 0 10%">
+        <div class="row">
+            <div class="col-md-2" align="right">
+                用户名
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="user_name" class="form-control">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                密码
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="user_name" class="form-control">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                邮箱
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="user_name" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" align="center" style="margin-top: 1%">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn btn-primary">保存并新建下一个</button>
+        </div>
+    </div>
+
+
+
+{% endblock %}

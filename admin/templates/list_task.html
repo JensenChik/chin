@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h2>任务列表</h2>
+    <div class="row" style="margin-right: 0;">
+        <div class="col-md-4">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="/">任务列表</a>
+                </li>
+                <li><a href="/new_task">新建任务</a></li>
+            </ul>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="input-group col-md-3">
+            <span class="input-group-btn"><button class="btn btn-default" type="button">搜索</button></span>
+            <input type="text" class="form-control">
+        </div><!-- /input-group -->
+    </div>
+
+    <div style="margin-top: 1%">
+        <table data-toggle="table">
+            <thead>
+            <tr>
+                <th>任务ID</th>
+                <th>任务名</th>
+                <th>调度格式</th>
+                <th>父任务</th>
+                <th>子任务</th>
+                <th>状态</th>
+                <th>工具</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div align="center">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

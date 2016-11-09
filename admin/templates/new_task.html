@@ -1,0 +1,249 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h2>新建任务</h2>
+    <div class="row" style="margin-right: 0;">
+        <div class="col-md-4">
+            <ul id="myTab" class="nav nav-tabs">
+                <li>
+                    <a href="/">任务列表</a>
+                </li>
+                <li class="active"><a href="/new_task">新建任务</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="margin: 2% 10% 0 10%">
+        <div class="row">
+            <div class="col-md-2" align="right">
+                继承
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="user_name" class="form-control">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                任务名
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                执行命令
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                启动参数
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                是否启用
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                优先级
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                失败后是否重跑
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                重跑次数
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                父任务
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                优先级
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                调度形式
+            </div>
+            <div class="col-md-10">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu">
+                            <li><a  onclick="set_scheduled_type('每日')">每日</a></li>
+                            <li><a  onclick="set_scheduled_type('每周')">每周</a></li>
+                            <li><a  onclick="set_scheduled_type('每月')">每月</a></li>
+                            <li><a  onclick="set_scheduled_type('每年')">每年</a></li>
+                            <li><a  onclick="set_scheduled_type('一次')">一次</a></li>
+                        </ul>
+                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span id="scheduled_type">每日</span><span class="caret"></span>
+                        </button>
+                    </div>
+                    <div id="scheduled_format">
+                        <div id="每日" class="input-group">
+                            {% include 'time/hour.html' ignore missing %}
+                            {% include 'time/minute.html' ignore missing %}
+                            {% include 'time/second.html' ignore missing %}
+                        </div>
+                        <div id="每周" style="display: none">
+                            {% include 'time/weekday.html' ignore missing %}
+                            {% include 'time/hour.html' ignore missing %}
+                            {% include 'time/minute.html' ignore missing %}
+                            {% include 'time/second.html' ignore missing %}
+                        </div>
+
+                        <div id="每月" style="display: none">
+                            {% include 'time/day.html' ignore missing %}
+                            {% include 'time/hour.html' ignore missing %}
+                            {% include 'time/minute.html' ignore missing %}
+                            {% include 'time/second.html' ignore missing %}
+                        </div>
+
+
+                        <div id="每年" style="display: none">
+                            {% include 'time/month.html' ignore missing %}
+                            {% include 'time/day.html' ignore missing %}
+                            {% include 'time/hour.html' ignore missing %}
+                            {% include 'time/minute.html' ignore missing %}
+                            {% include 'time/second.html' ignore missing %}
+                        </div>
+
+
+                        <div id="一次" style="display: none">
+                            {% include 'time/year.html' ignore missing %}
+                            {% include 'time/month.html' ignore missing %}
+                            {% include 'time/day.html' ignore missing %}
+                            {% include 'time/hour.html' ignore missing %}
+                            {% include 'time/minute.html' ignore missing %}
+                            {% include 'time/second.html' ignore missing %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-2" align="right">
+                机器池
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="password" class="form-control">
+            </div>
+        </div>
+
+        <div class="row" align="center" style="margin-top: 1%">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn btn-primary">保存并新建下一个</button>
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        function set_scheduled_type(scheduled_type) {
+            $('#scheduled_type').html(scheduled_type);
+            $('#scheduled_format').children().each(function () {
+                $(this).hide()
+            });
+            $('#' + scheduled_type).show();
+        }
+
+        function submit_new_task() {
+            var group = $('#group').val();
+            var task_name = $('#task_name').val();
+            var command = $('#command').val();
+            var args = $('#args').val();
+            var valid = $('#valid').val();
+            var priority = $('#priority').val();
+            var rerun = $('#rerun').val();
+            var rerun_times = $('#rerun_times').val();
+            var machine_pool = $('#machine_pool').val();
+            var father_task = $('#father_task').val();
+
+            var scheduled_type = $('#scheduled_type').html();
+            var scheduled = $('#' + scheduled_type);
+            scheduled_type = {
+                '每周': 'week', '每日': 'day', '每月': 'month',
+                '每年': 'year', '一次': 'once'
+            }[scheduled_type];
+            var year = scheduled.children('.scheduled_year').children().val();
+            var month = scheduled.children('.scheduled_month').children().val();
+            var weekday = scheduled.children('.scheduled_weekday').children().val();
+            var day = scheduled.children('.scheduled_day').children().val();
+            var hour = scheduled.children('.scheduled_hour').children().val();
+            var minute = scheduled.children('.scheduled_minute').children().val();
+            var second = scheduled.children('.scheduled_second').children().val();
+
+            var task_meta = {
+                'group': group,
+                'task_name': task_name,
+                'command': command,
+                'args': args,
+                'valid': valid,
+                'priority': priority,
+                'rerun': rerun,
+                'rerun_times': rerun_times,
+                'machine_pool': machine_pool,
+                'father_task': father_task,
+                'scheduled_type': scheduled_type,
+                'year': year,
+                'month': month,
+                'weekday': weekday,
+                'day': day,
+                'hour': hour,
+                'minute': minute,
+                'second': second
+            };
+            $.post('/new_task', task_meta, function (result) {
+                location.reload();
+            });
+        }
+    </script>
+
+
+
+{% endblock %}
