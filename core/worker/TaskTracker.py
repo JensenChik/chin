@@ -1,13 +1,10 @@
 # coding=utf-8
-
-from subprocess import Popen
-from datetime import datetime
 import os
 import signal
-from datetime import datetime
-from core import DBSession
-from core.model import Task, TaskInstance
 import time
+from datetime import datetime
+from subprocess import Popen
+from model import Task, TaskInstance, DBSession
 
 
 class Shell:
@@ -93,6 +90,3 @@ class TaskTracker:
             session.close()
             time.sleep(10)
 
-
-task_tracker = TaskTracker()
-task_tracker.serve()

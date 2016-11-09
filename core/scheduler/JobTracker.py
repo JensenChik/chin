@@ -1,8 +1,7 @@
 # coding=utf-8
-from datetime import datetime
-from core import DBSession
-from core.model import Task, TaskInstance
 import time
+from datetime import datetime
+from model import Task, TaskInstance, DBSession
 
 
 class JobTracker:
@@ -75,6 +74,3 @@ class JobTracker:
             session.close()
             print 'echo'
             time.sleep(1)
-
-job_tracker = JobTracker()
-job_tracker.serve()
