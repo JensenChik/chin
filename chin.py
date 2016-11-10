@@ -13,19 +13,18 @@ from flask.ext.script import Manager, Shell, Server
 from webserver import create_app
 import ConfigParser
 
+cf = ConfigParser.ConfigParser()
+cf.read('chin.ini')
+host = cf.get('webserver', 'host')
+port = cf.get('webserver', 'port')
+app = create_app()
+manager = Manager(app)
+server = Server(host=host, port=port)
+manager.add_command("runserver", server)
 
 if __name__ == "__main__":
     action = sys.argv[1]
     if action == "runserver":
-        cf = ConfigParser.ConfigParser()
-        cf.read('chin.ini')
-        host = cf.get('webserver', 'host')
-        port = cf.get('webserver', 'port')
-
-        app = create_app()
-        manager = Manager(app)
-        server = Server(host=host, port=port)
-        manager.add_command("runserver", server)
         manager.run()
 
     elif action == "worker":
