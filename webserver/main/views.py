@@ -1,6 +1,7 @@
 # coding=utf-8
 from . import admin
 from flask import render_template
+from model import DBSession, Task
 
 @admin.route('/login')
 def login():
@@ -8,7 +9,9 @@ def login():
 
 @admin.route('/')
 def home():
-    return render_template('list_task.html')
+    session = DBSession()
+    tasks = session.query(Task).order_by(Task.id.desc()).all()
+    return render_template('list_task.html', tasks=tasks)
 
 
 @admin.route('/list_task')
