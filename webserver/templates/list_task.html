@@ -3,32 +3,29 @@
 {% block body %}
 <h2>任务列表</h2>
 <div class="row" style="margin-right: 0;">
-    <div class="col-md-4">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active">
                 <a href="/">任务列表</a>
             </li>
             <li><a href="/new_task">新建任务</a></li>
         </ul>
-    </div>
-    <div class="col-md-5"></div>
-    <div class="input-group col-md-3">
-        <span class="input-group-btn"><button class="btn btn-default" type="button">搜索</button></span>
-        <input type="text" class="form-control">
-    </div><!-- /input-group -->
 </div>
 
 <div style="margin-top: 1%">
-    <table data-toggle="table">
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-show-toggle="true">
         <thead>
         <tr>
-            <th>任务ID</th>
-            <th>任务名</th>
-            <th>调度格式</th>
-            <th>父任务</th>
-            <th>子任务</th>
-            <th>状态</th>
-            <th>工具</th>
+            <th data-align="center" data-width="5%">任务ID</th>
+            <th data-align="center" data-width="20%">任务名</th>
+            <th data-align="center" data-width="5%">是否启用</th>
+            <th data-align="center" data-width="15%">机器池</th>
+            <th data-align="center" data-width="10%">调度格式</th>
+            <th data-align="center" data-width="5%">优先级</th>
+            <th data-align="center" data-width="10%">父任务</th>
+            <th data-align="center" data-width="10%">子任务</th>
+            <th data-align="center" data-width="5%">创建者</th>
+            <th data-align="center" data-width="10%">最近状态</th>
+            <th data-align="center" data-width="5%">工具</th>
         </tr>
         </thead>
 
@@ -37,28 +34,38 @@
         <tr>
             <td>{{ task.id }}</td>
             <td>{{ task.name }}</td>
-            <td>{{ task.scheduled_type }}</td>
+            <td>
+               {% if task.valid %}
+               <input type="checkbox" disabled="disabled" checked>
+               {% else %}
+               <input type="checkbox" disabled="disabled" unchecked>
+               {% endif %}
+            </td>
+            <td>{{ task.machine_pool }}</td>
+            <td>{{ task.scheduled_type }} {{ task.hour }}:{{ task.minute }}</td>
+            <td>{{ task.priority }}</td>
             <td>{{ task.father_task }}</td>
             <td>None</td>
-            <td>None</td>
-            <td>None</td>
+            <td>{{ task.user }}</td>
+            <td>
+                <a href="#" class="btn btn-success">成功</a>
+                <a href="#" class="btn btn-default">查看日志</a>
+            </td>
+            <td>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="#">编辑</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">停用</a></li>
+                        <li><a href="#">删除</a></li>
+                    </ul>
+                </div>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
 
-<div align="center">
-    <nav>
-        <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
-    </nav>
-</div>
 {% endblock %}

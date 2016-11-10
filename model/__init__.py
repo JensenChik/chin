@@ -17,19 +17,20 @@ def reset_db():
     BaseModel.metadata.drop_all(engine)
     BaseModel.metadata.create_all(engine)
     session = DBSession()
-    session.add(Task(name='python 脚本', user='chin',
-                     valid=True, group='python task',
-                     create_time=datetime.now(),
-                     command='python -c "print 12306"',
-                     priority=10, machine_pool=["cubieboard", "arduino"],
-                     rerun=True, rerun_times=3,
-                     scheduled_type='day', hour=0, minute=1))
-    session.add(Task(name='shell 脚本', user='chin',
-                     valid=True, group='shell task',
-                     create_time=datetime.now(),
-                     command='sh -c "echo hello shell"',
-                     priority=10, machine_pool=["cubieboard", "arduino"],
-                     rerun=True, rerun_times=3,
-                     scheduled_type='day', hour=0, minute=2))
+    for i in range(10):
+        session.add(Task(name='python 脚本', user='chin',
+                         valid=True, group='python task',
+                         create_time=datetime.now(),
+                         command='python -c "print 12306"',
+                         priority=10, machine_pool=["cubieboard", "arduino"],
+                         rerun=True, rerun_times=3,
+                         scheduled_type='day', hour=0, minute=1))
+        session.add(Task(name='shell 脚本', user='chin',
+                         valid=True, group='shell task',
+                         create_time=datetime.now(),
+                         command='sh -c "echo hello shell"',
+                         priority=10, machine_pool=["cubieboard", "arduino"],
+                         rerun=True, rerun_times=3,
+                         scheduled_type='day', hour=0, minute=2))
     session.commit()
     session.close()

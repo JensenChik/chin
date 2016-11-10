@@ -6,8 +6,12 @@
     <script src="../static/bootstrap/js/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap-table.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-table-zh-CN.js"></script>
 </head>
 
+<script>
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+</script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
