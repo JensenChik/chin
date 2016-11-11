@@ -3,7 +3,7 @@
 {% block body %}
     <h2>操作日志</h2>
     <div class="row" style="margin-right: 0;">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <ul id="myTab" class="nav nav-tabs">
                 <li>
                     <a href="/list_execute_log">执行日志</a>
@@ -11,40 +11,12 @@
                 <li class="active"><a href="/list_action_log">操作日志</a></li>
             </ul>
         </div>
-        <div class="col-md-5"></div>
-        <div class="input-group col-md-3">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">日志id<span
-                            class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">日志id</a></li>
-                        <li><a href="#">操作者</a></li>
-                        <li><a href="#">操作时间</a></li>
-                    </ul>
-                </div><!-- /btn-group -->
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">等于<span
-                            class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">等于</a></li>
-                        <li><a href="#">不等于</a></li>
-                        <li><a href="#">包含</a></li>
-                        <li><a href="#">不包含</a></li>
-                        <li><a href="#">大于</a></li>
-                        <li><a href="#">小于</a></li>
-                    </ul>
-                </div><!-- /btn-group -->
-                <input type="text" class="form-control">
-            </div><!-- /input-group -->
-
-
-        </div>
     </div>
 
 
     <div style="margin-top: 1%">
-        <table data-toggle="table">
+        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+           data-show-columns="true" data-show-toggle="true" pageSize="20">
             <thead>
             <tr>
                 <th>日志ID</th>
@@ -58,20 +30,5 @@
             </tbody>
         </table>
     </div>
-
-    <div align="center">
-        <nav>
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </nav>
-    </div>
-
 
 {% endblock %}

@@ -39,4 +39,4 @@ if __name__ == "__main__":
         reset_db()
 
     else:
-        print "不支持参数%s" % action
+        print "不支持参数%s" % action, '只支持参数 runserver worker scheduler resetdb'
