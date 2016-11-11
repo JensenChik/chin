@@ -3,16 +3,17 @@
 {% block body %}
 <h2>任务列表</h2>
 <div class="row" style="margin-right: 0;">
-        <ul id="myTab" class="nav nav-tabs">
-            <li class="active">
-                <a href="/">任务列表</a>
-            </li>
-            <li><a href="/new_task">新建任务</a></li>
-        </ul>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="/">任务列表</a>
+        </li>
+        <li><a href="/new_task">新建任务</a></li>
+    </ul>
 </div>
 
 <div style="margin-top: 1%">
-    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-show-toggle="true" pageSize="20">
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+           data-show-columns="true" data-show-toggle="true" pageSize="20">
         <thead>
         <tr>
             <th data-align="center" data-width="5%">任务ID</th>
@@ -33,27 +34,43 @@
         {% for task in tasks %}
         <tr>
             <td>{{ task.id }}</td>
-            <td>{{ task.name }}</td>
+            <td title="python 'test.py'">{{ task.name }}</td>
             <td>
-               {% if task.valid %}
-               <input type="checkbox" disabled="disabled" checked>
-               {% else %}
-               <input type="checkbox" disabled="disabled" unchecked>
-               {% endif %}
+                {% if task.valid %}
+                <input type="checkbox" disabled="disabled" checked>
+                {% else %}
+                <input type="checkbox" disabled="disabled" unchecked>
+                {% endif %}
             </td>
-            <td>{{ task.machine_pool }}</td>
-            <td>{{ task.scheduled_type }} {{ task.hour }}:{{ task.minute }}</td>
+            <td>
+                {% for machine in task.machine_pool %}
+                <a href="#" class="btn btn-default btn-xs">{{ machine }}</a>
+                {% endfor %}
+            </td>
+            <td>
+                {% if task.scheduled_type == 'day' %}
+                <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                {% elif task.scheduled_type == 'week' %}
+                <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                {% elif task.scheduled_type == 'month' %}
+                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{ task.day }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                {% elif task.scheduled_type == 'once' %}
+                {{ task.year }}-{{ task.month }}-{{ task.day }} {{ task.hour }}:{{ task.minute }}:0
+                {% endif %}
+
+            </td>
             <td>{{ task.priority }}</td>
             <td>{{ task.father_task }}</td>
             <td>None</td>
             <td>{{ task.user }}</td>
             <td>
-                <a href="#" class="btn btn-success">成功</a>
-                <a href="#" class="btn btn-default">查看日志</a>
+                <a href="#" class="btn btn-success btn-xs">成功</a>
+                <a href="#" class="btn btn-default btn-xs">查看日志</a>
             </td>
             <td>
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span
+                            class="caret"></span></button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
                         <li><a href="#">编辑</a></li>
                         <li class="divider"></li>

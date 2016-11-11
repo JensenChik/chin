@@ -18,19 +18,40 @@ def reset_db():
     BaseModel.metadata.create_all(engine)
     session = DBSession()
     for i in range(10):
-        session.add(Task(name='python 脚本', user='chin',
+        session.add(Task(name='每日调度的python脚本', user='chin',
                          valid=True, group='python task',
                          create_time=datetime.now(),
                          command='python -c "print 12306"',
                          priority=10, machine_pool=["cubieboard", "arduino"],
                          rerun=True, rerun_times=3,
                          scheduled_type='day', hour=0, minute=1))
-        session.add(Task(name='shell 脚本', user='chin',
+        session.add(Task(name='每日调度的shell脚本', user='chin',
                          valid=True, group='shell task',
                          create_time=datetime.now(),
                          command='sh -c "echo hello shell"',
-                         priority=10, machine_pool=["cubieboard", "arduino"],
+                         priority=9, machine_pool=["cubieboard", "arduino"],
                          rerun=True, rerun_times=3,
                          scheduled_type='day', hour=0, minute=2))
+        session.add(Task(name='每周调度的shell脚本', user='chin',
+                         valid=True, group='shell task',
+                         create_time=datetime.now(),
+                         command='sh -c "echo schedule every week"',
+                         priority=8, machine_pool=["cubieboard", "arduino"],
+                         rerun=True, rerun_times=3,
+                         scheduled_type='week', weekday=1, hour=0, minute=3))
+        session.add(Task(name='每月调度的shell脚本', user='chin',
+                         valid=True, group='shell task',
+                         create_time=datetime.now(),
+                         command='sh -c "echo schedule every month"',
+                         priority=7, machine_pool=["cubieboard", "arduino", "alienware"],
+                         rerun=True, rerun_times=3,
+                         scheduled_type='month', day=2, hour=0, minute=4))
+        session.add(Task(name='调度一次的shell脚本', user='chin',
+                         valid=False, group='shell task',
+                         create_time=datetime.now(),
+                         command='sh -c "echo schedule once"',
+                         priority=5, machine_pool=["cubieboard"],
+                         rerun=False,
+                         scheduled_type='once',  year=2016, month=8, day=10, hour=0, minute=4))
     session.commit()
     session.close()
