@@ -62,7 +62,11 @@
 
             </td>
             <td>{{ task.priority }}</td>
-            <td>{{ task.father_task }}</td>
+            <td>
+                {% for father in task.father_task %}
+                <a class="btn btn-default btn-xs">{{ father }}</a>
+                {% endfor %}
+            </td>
             <td>None</td>
             <td>{{ task.user }}</td>
             <td>

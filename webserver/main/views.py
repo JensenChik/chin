@@ -2,15 +2,18 @@
 from . import admin
 from flask import render_template, request, redirect, url_for
 from model import DBSession, Task, TaskInstance, User
-from flask.ext.login import login_user, login_required
+from flask.ext.login import login_user, login_required, logout_user, current_user
 from webserver import login_manager
+from datetime import datetime
 import json
 
 
 @login_manager.user_loader
 def load_user(user_id):
     session = DBSession()
-    return session.query(User).get(int(user_id))
+    uid = session.query(User).get(int(user_id))
+    session.close()
+    return uid
 
 
 @login_manager.unauthorized_handler
@@ -33,6 +36,13 @@ def login():
         return redirect('/')
 
 
+@admin.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')
+
+
 @admin.route('/')
 @login_required
 def home():
@@ -42,12 +52,6 @@ def home():
     return render_template('list_task.html', tasks=tasks)
 
 
-@admin.route('/list_task')
-@login_required
-def list_task():
-    return render_template('list_task.html')
-
-
 @admin.route('/new_task', methods=['POST', 'GET'])
 @login_required
 def new_task():
@@ -55,20 +59,35 @@ def new_task():
         extend_id = request.args.get('extend_id')
         return render_template('new_task.html')
     else:
-        task_name = request.form.get('task_name')
-        command = request.form.get('command')
-        valid = request.form.get('valid')
-        priority = request.form.get('priority')
-        rerun = request.form.get('rerun')
-        rerun_time = request.form.get('rerun_times')
-        father_task = request.form.get('father_task')
-        machine_pool = request.form.get('machine_pool')
+        data = request.form
+        task = Task(
+                name=data.get('task_name'),
+                user=current_user.name,
+                create_time=datetime.now(),
+                command=data.get('command'),
+                priority=data.get('priority'),
+                machine_pool=data.get('machine_pool').split('\n'),
+                father_task=data.get('father_task').split('\n'),
+                valid=data.get('valid') == 'true',
+                rerun=data.get('rerun') == 'true',
+                rerun_times=data.get('rerun_times'),
+                scheduled_type=data.get('scheduled_type'),
+                year=data.get('year'),
+                month=data.get('month'),
+                day=data.get('day'),
+                hour=data.get('hour'),
+                minute=data.get('minute')
+        )
+        session = DBSession()
+        session.add(task)
+        session.commit()
+        session.close()
         return '/' if request.form.get('has_next') == 'false' else 'new_task'
 
 
 @admin.route('/list_execute_log')
 @login_required
-def list_execute_lg():
+def list_execute_log():
     session = DBSession()
     tasks_instance = session.query(TaskInstance, Task) \
         .join(Task, TaskInstance.task_id == Task.id) \
@@ -86,13 +105,27 @@ def list_action_log():
 @admin.route('/list_user')
 @login_required
 def list_user():
-    return render_template('list_user.html')
+    session = DBSession()
+    users = session.query(User).order_by(User.id.desc()).all()
+    session.close()
+    return render_template('list_user.html', users=users)
 
 
-@admin.route('/new_user')
+@admin.route('/new_user', methods=['GET', 'POST'])
 @login_required
 def new_user():
-    return render_template('new_user.html')
+    if request.method == 'GET':
+        return render_template('new_user.html')
+    else:
+        user = User()
+        user.name = request.form.get('user_name')
+        user.password = request.form.get('password')
+        user.email = request.form.get('email')
+        session = DBSession()
+        session.add(user)
+        session.commit()
+        session.close()
+        return redirect('/list_user')
 
 
 @admin.route('/list_machine')

@@ -4,7 +4,6 @@ from sqlalchemy import Column, Integer, Text, Boolean, String, DateTime, SmallIn
 import enum, json
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from webserver import login_manager
 
 BaseModel = declarative_base()
 
@@ -24,10 +23,8 @@ class Task(BaseModel):
                id=Column(Integer, primary_key=True, doc="任务id"),
                name=Column(Text, doc="任务名"),
                user=Column(String(32), doc="任务创建者"),
-               group=Column(String(32), doc="任务所属组"),
                create_time=Column(DateTime, doc="任务创建时间"),
                command=Column(Text, doc="任务执行命令"),
-               args=Column(Text, doc="任务执行参数"),
                priority=Column(SmallInteger, doc="任务优先级"),
                machine_pool=Column(Json, doc="机器池list"),
                father_task=Column(Json, doc="父任务"),
@@ -47,14 +44,13 @@ class Task(BaseModel):
     id = Column(Integer, primary_key=True, doc="任务id")
     name = Column(Text, doc="任务名")
     user = Column(String(32), doc="任务创建者")
-    group = Column(String(32), doc="任务所属组")
     create_time = Column(DateTime, doc="任务创建时间")
 
     # 执行相关
     command = Column(Text, doc="任务执行命令")
     priority = Column(SmallInteger, default=0, doc="任务优先级")
-    machine_pool = Column(Json, doc="机器池list")
-    father_task = Column(Json, doc="父任务")
+    machine_pool = Column(Json, default=[], doc="机器池list")
+    father_task = Column(Json, default=[], doc="父任务")
 
     # 调度相关
     valid = Column(Boolean, index=True, default=False, doc="是否调度")
@@ -111,6 +107,7 @@ class User(UserMixin, BaseModel):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), unique=True)
     password_hash = Column(String(128))
+    email = Column(String(64))
 
     @property
     def password(self):
