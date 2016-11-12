@@ -1,49 +1,32 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h2>用户列表</h2>
-    <div class="row" style="margin-right: 0;">
-        <div class="col-md-4">
-            <ul id="myTab" class="nav nav-tabs">
-                <li class="active">
-                    <a href="/list_user">用户列表</a>
-                </li>
-                <li><a href="/new_user">新建用户</a></li>
-            </ul>
-        </div>
-        <div class="col-md-5"></div>
-        <div class="input-group col-md-3">
-            <span class="input-group-btn"><button class="btn btn-default" type="button">搜索</button></span>
-            <input type="text" class="form-control">
-        </div><!-- /input-group -->
+<h2>用户列表</h2>
+<div class="row" style="margin-right: 0;">
+    <div class="col-md-12">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="/list_user">用户列表</a>
+            </li>
+            <li><a href="/new_user">新建用户</a></li>
+        </ul>
     </div>
+</div>
 
-    <div style="margin-top: 1%">
-        <table data-toggle="table">
-            <thead>
-            <tr>
-                <th>用户名</th>
-                <th>邮箱</th>
-                <th>操作</th>
-            </tr>
-            </thead>
+<div style="margin-top: 1%">
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+           data-show-columns="true" data-show-toggle="true">
+        <thead>
+        <tr>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>操作</th>
+        </tr>
+        </thead>
 
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
-    <div align="center">
-        <nav>
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </nav>
-    </div>
 {% endblock %}
