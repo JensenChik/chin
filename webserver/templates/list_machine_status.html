@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h2>机器状态</h2>
+<div class="row" style="margin-right: 0;">
+    <div class="col-md-12">
+        <ul id="myTab" class="nav nav-tabs">
+            <li><a href="/list_machine">机器列表</a></li>
+            <li class="active"><a href="/list_machine_status">机器状态</a></li>
+            <li><a href="/new_machine">添加机器</a></li>
+        </ul>
+    </div>
+</div>
+
+<div style="margin-top: 1%">
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+           data-show-columns="true" data-show-toggle="true">
+        <thead>
+        <tr>
+            <th>机器名</th>
+            <th>CPU使用率</th>
+            <th>内存总量</th>
+            <th>内存使用量</th>
+            <th>内存剩余量</th>
+            <th>内存使用率</th>
+            <th>心跳时间</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,38 +1,86 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h2>执行日志</h2>
-    <div class="row" style="margin-right: 0;">
-        <div class="col-md-12">
-            <ul id="myTab" class="nav nav-tabs">
-                <li class="active">
-                    <a href="/list_execute_log">执行状态</a>
-                </li>
-                <li><a href="/list_action_log">操作日志</a></li>
-            </ul>
-        </div>
+<h2>执行日志</h2>
+<div class="row" style="margin-right: 0;">
+    <div class="col-md-12">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="/list_execute_log">执行状态</a>
+            </li>
+            <li><a href="/list_action_log">操作日志</a></li>
+        </ul>
     </div>
+</div>
 
-    <div style="margin-top: 1%">
-        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+<div style="margin-top: 1%">
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
            data-show-columns="true" data-show-toggle="true" pageSize="20">
-            <thead>
-            <tr>
-                <th>任务ID</th>
-                <th>版本号</th>
-                <th>任务名</th>
-                <th>执行机器</th>
-                <th>开始时间</th>
-                <th>结束时间</th>
-                <th>状态</th>
-                <th>操作</th>
-                <th>日志</th>
-            </tr>
-            </thead>
+        <thead>
+        <tr>
+            <th data-align="center" data-width="10%">日志ID</th>
+            <th data-align="center" data-width="5%">任务ID</th>
+            <th data-align="center" data-width="10%">版本号</th>
+            <th data-align="center" data-width="20%">任务名</th>
+            <th data-align="center" data-width="5%">执行机器</th>
+            <th data-align="center" data-width="10%">入池时间</th>
+            <th data-align="center" data-width="10%">开始时间</th>
+            <th data-align="center" data-width="10%">结束时间</th>
+            <th data-align="center" data-width="5%">执行次数</th>
+            <th data-align="center" data-width="10%">状态</th>
+            <th data-align="center" data-width="５%">操作</th>
+        </tr>
+        </thead>
 
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+        <tbody>
+        {% for instance in tasks_instance %}
+        {% set task = instance[1] %}
+        {% set instance = instance[0] %}
+        <tr>
+            <td>{{ instance.id }}</td>
+            <td>{{ instance.task_id }}</td>
+            <td>{{ instance.version }}</td>
+            <td>{{ task.name }}</td>
+            <td><a class="btn btn-default btn-xs">{{ instance.execute_machine }}</a></td>
+            <td>{{ instance.pooled_time }}</td>
+            <td>{{ instance.begin_time }}</td>
+            <td>{{ instance.finish_time }}</td>
+            <td>{{ instance.run_count }}</td>
+            <td>
+                {% if instance.status == 'waiting' %}
+                <a class="btn btn-default btn-xs">等待中</a>
+                {% elif instance.status == 'running' %}
+                <a class="btn btn-warning btn-xs">运行中</a>
+                {% elif instance.status == 'finish' %}
+                <a class="btn btn-success btn-xs">成功</a>
+                <a href="#" class="btn btn-default btn-xs">查看日志</a>
+                {% elif instance.status == 'failed' %}
+                <a class="btn btn-danger btn-xs">失败</a>
+                <a href="#" class="btn btn-default btn-xs">查看日志</a>
+                {% elif instance.status == 'repairing' %}
+                <a class="btn btn-danger btn-xs">修复中</a>
+                {% endif %}
+
+            </td>
+            <td>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span
+                            class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="#">重跑</a></li>
+                        <li><a href="#">中止执行</a></li>
+                        <li><a href="#">置为成功</a></li>
+                        <li><a href="#">置为失败</a></li>
+                        <li><a href="#">置为修复中</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
 
 {% endblock %}

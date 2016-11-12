@@ -11,6 +11,7 @@
 
 <script>
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+    $('[data-submenu]').submenupicker();
 </script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -23,6 +24,7 @@
                 <li id="nav-home"><a href="/">任务列表</a></li>
                 <li><a href="/list_execute_log">日志查询</a></li>
                 <li><a href="/list_user">用户管理</a></li>
+                <li><a href="/list_machine">机器管理</a></li>
 
                 <li role="presentation" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">管理员 <span class="caret"></span> </a>

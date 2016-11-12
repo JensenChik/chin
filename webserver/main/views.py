@@ -1,7 +1,7 @@
 # coding=utf-8
 from . import admin
 from flask import render_template, request, redirect, url_for
-from model import DBSession, Task
+from model import DBSession, Task, TaskInstance
 import json
 
 
@@ -14,6 +14,7 @@ def login():
 def home():
     session = DBSession()
     tasks = session.query(Task).order_by(Task.id.desc()).all()
+    session.close()
     return render_template('list_task.html', tasks=tasks)
 
 
@@ -39,10 +40,14 @@ def new_task():
         return '/' if request.form.get('has_next') == 'false' else 'new_task'
 
 
-
 @admin.route('/list_execute_log')
 def list_execute_lg():
-    return render_template('list_execute_log.html')
+    session = DBSession()
+    tasks_instance = session.query(TaskInstance, Task) \
+        .join(Task, TaskInstance.task_id == Task.id) \
+        .order_by(TaskInstance.id.desc()).all()
+    session.close()
+    return render_template('list_execute_log.html', tasks_instance=tasks_instance)
 
 
 @admin.route('/list_action_log')
@@ -58,3 +63,18 @@ def list_user():
 @admin.route('/new_user')
 def new_user():
     return render_template('new_user.html')
+
+
+@admin.route('/list_machine')
+def list_machine():
+    return render_template('list_machine.html')
+
+
+@admin.route('/list_machine_status')
+def list_machine_status():
+    return render_template('list_machine_status.html')
+
+
+@admin.route('/new_machine')
+def new_machine():
+    return render_template('new_machine.html')
