@@ -74,6 +74,7 @@ def new_task():
                 scheduled_type=data.get('scheduled_type'),
                 year=data.get('year'),
                 month=data.get('month'),
+                weekday=data.get('weekday'),
                 day=data.get('day'),
                 hour=data.get('hour'),
                 minute=data.get('minute')
