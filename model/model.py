@@ -1,8 +1,10 @@
-
 # coding=utf-8
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Text, Boolean, String, DateTime, SmallInteger, ForeignKey, Enum, TypeDecorator
 import enum, json
+from flask.ext.login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from webserver import login_manager
 
 BaseModel = declarative_base()
 
@@ -81,7 +83,8 @@ class TaskInstance(BaseModel):
             begin_time=Column(DateTime, doc='开始执行时间'),
             finish_time=Column(DateTime, doc='执行结束时间'),
             run_count=Column(SmallInteger, default=0, doc="执行次数"),
-            status=Column(Enum('waiting', 'abandon', 'running', 'finish', 'failed', 'killing', 'repairing'), index=True, doc='状态'),
+            status=Column(Enum('waiting', 'abandon', 'running', 'finish', 'failed', 'killing', 'repairing'), index=True,
+                          doc='状态'),
             notify=Column(Boolean, index=True, default=False, doc="是否已报警")
     ): pass
 
@@ -95,9 +98,33 @@ class TaskInstance(BaseModel):
     begin_time = Column(DateTime, doc='开始执行时间')
     finish_time = Column(DateTime, doc='执行结束时间')
     run_count = Column(SmallInteger, default=0, doc="执行次数")
-    status = Column(Enum('waiting', 'abandon', 'running', 'finish', 'failed', 'killing', 'repairing'), index=True, doc='状态')
+    status = Column(Enum('waiting', 'abandon', 'running', 'finish', 'failed', 'killing', 'repairing'), index=True,
+                    doc='状态')
     notify = Column(Boolean, index=True, default=False, doc="是否已报警")
 
     def __repr__(self):
         return '<TaskQueue %s>' % self.id
+
+
+class User(UserMixin, BaseModel):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), unique=True)
+    password_hash = Column(String(128))
+
+    @property
+    def password(self):
+        raise AttributeError('password 只有写权限')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __repr__(self):
+        return 'user', self.id, self.name
+
+
 

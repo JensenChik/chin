@@ -1,7 +1,7 @@
 # coding=utf-8
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from model import Task, TaskInstance, BaseModel
+from model import Task, TaskInstance, BaseModel, User
 import ConfigParser
 from datetime import datetime
 import json
@@ -52,6 +52,10 @@ def reset_db():
                          command='sh -c "echo schedule once"',
                          priority=5, machine_pool=["cubieboard"],
                          rerun=False,
-                         scheduled_type='once',  year=2016, month=8, day=10, hour=0, minute=4))
+                         scheduled_type='once', year=2016, month=8, day=10, hour=0, minute=4))
+    default_user = User()
+    default_user.name = 'chin'
+    default_user.password = 'chin'
+    session.add(default_user)
     session.commit()
     session.close()
