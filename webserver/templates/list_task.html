@@ -46,16 +46,21 @@
             </td>
             <td>
                 {% for machine in task.machine_pool %}
+                {% if machine != ''　%}
                 <a href="#" class="btn btn-default btn-xs">{{ machine }}</a>
+                {% endif %}
                 {% endfor %}
             </td>
             <td>
                 {% if task.scheduled_type == 'day' %}
-                <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute
+                }}
                 {% elif task.scheduled_type == 'week' %}
-                <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour
+                }}:{{ task.minute }}
                 {% elif task.scheduled_type == 'month' %}
-                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{ task.day }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{
+                task.day }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
                 {% elif task.scheduled_type == 'once' %}
                 {{ task.year }}-{{ task.month }}-{{ task.day }} {{ task.hour }}:{{ task.minute }}:0
                 {% endif %}
@@ -64,10 +69,18 @@
             <td>{{ task.priority }}</td>
             <td>
                 {% for father in task.father_task %}
+                {% if father != '' %}
                 <a class="btn btn-default btn-xs">{{ father }}</a>
+                {% endif %}
                 {% endfor %}
             </td>
-            <td>None</td>
+            <td>
+                {% for child in task.child_task %}
+                {% if child != '' %}
+                <a class="btn btn-default btn-xs">{{ child }}</a>
+                {% endif %}
+                {% endfor %}
+            </td>
             <td>{{ task.user }}</td>
             <td>
                 <a href="#" class="btn btn-success btn-xs">成功</a>

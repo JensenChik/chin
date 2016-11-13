@@ -5,6 +5,7 @@ from model import DBSession, Task, TaskInstance, User
 from flask.ext.login import login_user, login_required, logout_user, current_user
 from webserver import login_manager
 from datetime import datetime
+from sqlalchemy.orm.attributes import flag_modified
 import json
 
 
@@ -81,6 +82,11 @@ def new_task():
         )
         session = DBSession()
         session.add(task)
+
+        for father_id in data.get('father_task').split('\n'):
+            father_task = session.query(Task).filter_by(id=father_id).first()
+            father_task.child_task.append(str(task.id))
+            flag_modified(father_task, "child_task")
         session.commit()
         session.close()
         return '/' if request.form.get('has_next') == 'false' else 'new_task'
