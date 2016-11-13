@@ -6,6 +6,7 @@ from flask.ext.login import login_user, login_required, logout_user, current_use
 from webserver import login_manager
 from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
+from sqlalchemy import and_
 import json
 
 
@@ -97,7 +98,7 @@ def new_task():
 def list_execute_log():
     session = DBSession()
     tasks_instance = session.query(TaskInstance, Task) \
-        .join(Task, TaskInstance.task_id == Task.id) \
+        .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
         .order_by(TaskInstance.id.desc()).all()
     session.close()
     return render_template('list_execute_log.html', tasks_instance=tasks_instance)
