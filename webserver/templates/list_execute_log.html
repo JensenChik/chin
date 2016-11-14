@@ -41,15 +41,15 @@
             <td>{{ task.name }}</td>
             <td><a class="btn btn-default btn-xs">{{ instance.execute_machine }}</a></td>
             <td>{{ instance.pooled_time }}</td>
-            <td>{{ instance.begin_time }}</td>
-            <td>{{ instance.finish_time }}</td>
+            <td>{{ instance.begin_time or '' }}</td>
+            <td>{{ instance.finish_time or '' }}</td>
             <td>{{ instance.run_count }}</td>
             <td>
                 {% if instance.status == 'waiting' %}
                 <a class="btn btn-default btn-xs">等待中</a>
                 {% elif instance.status == 'running' %}
                 <a class="btn btn-warning btn-xs">运行中</a>
-                {% elif instance.status == 'finish' %}
+                {% elif instance.status == 'success' %}
                 <a class="btn btn-success btn-xs">成功</a>
                 <a href="#" class="btn btn-default btn-xs">查看日志</a>
                 {% elif instance.status == 'failed' %}
@@ -58,7 +58,6 @@
                 {% elif instance.status == 'repairing' %}
                 <a class="btn btn-danger btn-xs">修复中</a>
                 {% endif %}
-
             </td>
             <td>
                 <div class="input-group-btn">

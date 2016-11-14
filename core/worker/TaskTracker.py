@@ -5,19 +5,18 @@ import time
 from datetime import datetime
 from subprocess import Popen
 from model import Task, TaskInstance, DBSession
+import ConfigParser
 
 
 class Shell:
     # 具体的任务线程
-    def __init__(self, command, task_id, version):
-        self.command = command
+    def __init__(self, command, task_id, version, log_path):
         self.task_id = task_id
         self.version = version
         now = datetime.now().strftime('%Y%m%d%H%M%S')
-        self.log = open('{}_{}_{}.log'.format(self.task_id, self.version, now), 'w')
-
-    def run(self):
-        self.process = Popen(self.command, shell=True, preexec_fn=os.setsid, stdout=self.log, stderr=self.log)
+        self.log_path = os.path.join(log_path, '{}_{}_{}.log'.format(task_id, version, now))
+        self.log = open(self.log_path, 'w')
+        self.process = Popen(command, shell=True, preexec_fn=os.setsid, stdout=self.log, stderr=self.log)
 
     def is_running(self):
         return self.process.poll() is None
@@ -26,15 +25,23 @@ class Shell:
         os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
 
     def success(self):
-        return self.process.returncode
+        return self.process.returncode == 0
+
+    def get_log(self):
+        with open(self.log_path) as log:
+            log_content = log.read()
+        return log_content
 
 
 class TaskTracker:
     # 负责执行任务
     def __init__(self):
-        self.name = 'cubietruck-plus'
+        cf = ConfigParser.ConfigParser()
+        cf.read('chin.ini')
+        self.heartbeat_sec = int(cf.get('worker', 'heartbeat_sec'))
+        self.name = cf.get('worker', 'name')
+        self.log_path = cf.get('worker', 'log_path')
         self.running = []
-        pass
 
     # 扫描数据库看是否有属于自己的任务
     def execute(self, session):
@@ -44,9 +51,8 @@ class TaskTracker:
             .all()
         for taskInstance in waiting_task:
             task = session.query(Task).filter_by(id=taskInstance.task_id).first()
-            shell = Shell(task.command, task.id, taskInstance.version)
+            shell = Shell(task.command, task.id, taskInstance.version, self.log_path)
             self.running.append(shell)
-            shell.run()
             taskInstance.status = 'running'
             taskInstance.begin_time = datetime.now()
             taskInstance.run_count += 1
@@ -59,20 +65,17 @@ class TaskTracker:
     # 追踪任务执行
     def track(self, session):
         for shell in self.running:
-            if not shell.is_running():
-                print 'running'
-                continue
+            if shell.is_running(): continue
             task_instance = session.query(TaskInstance) \
                 .filter_by(task_id=shell.task_id) \
                 .filter_by(version=shell.version) \
                 .first()
             if shell.success():
-                print 'success'
                 task_instance.status = 'success'
+                task_instance.finish_time = datetime.now()
             else:
-                print 'failed'
                 task_instance.status = 'failed'
-            session.add(task_instance)
+            task_instance.log = shell.get_log()
         session.commit()
 
     # 反馈自身负载情况
@@ -83,10 +86,7 @@ class TaskTracker:
         while True:
             session = DBSession()
             self.execute(session)
-            print 'epoch'
-            time.sleep(20)
+            time.sleep(self.heartbeat_sec)
             self.kill(session)
             self.track(session)
             session.close()
-            time.sleep(10)
-

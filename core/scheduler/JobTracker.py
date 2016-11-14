@@ -2,12 +2,16 @@
 import time
 from datetime import datetime
 from model import Task, TaskInstance, DBSession
+import ConfigParser
 
 
 class JobTracker:
     # 负责分配任务，任务调度
     def __init__(self, current_date=None):
         self.current_date = current_date
+        cf = ConfigParser.ConfigParser()
+        cf.read('chin.ini')
+        self.heartbeat_sec = int(cf.get('scheduler', 'heartbeat_sec'))
 
     # 每天凌晨初始化版本号
     def init_every_day(self, session):
@@ -72,5 +76,4 @@ class JobTracker:
             self.allocate_machine(session)
             self.execute_status_feedback(session)
             session.close()
-            print 'echo'
-            time.sleep(1)
+            time.sleep(self.heartbeat_sec)
