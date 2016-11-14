@@ -99,7 +99,7 @@ def list_execute_log():
     session = DBSession()
     tasks_instance = session.query(TaskInstance, Task) \
         .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
-        .order_by(TaskInstance.id.desc()).all()
+        .order_by(TaskInstance.finish_time.desc(), TaskInstance.begin_time.desc(), TaskInstance.pooled_time.desc()).all()
     session.close()
     return render_template('list_execute_log.html', tasks_instance=tasks_instance)
 

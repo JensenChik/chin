@@ -18,7 +18,6 @@
            data-show-columns="true" data-show-toggle="true" pageSize="20">
         <thead>
         <tr>
-            <th data-align="center" data-width="10%">日志ID</th>
             <th data-align="center" data-width="5%">任务ID</th>
             <th data-align="center" data-width="10%">版本号</th>
             <th data-align="center" data-width="20%">任务名</th>
@@ -37,7 +36,6 @@
         {% set task = instance[1] %}
         {% set instance = instance[0] %}
         <tr>
-            <td>{{ instance.id }}</td>
             <td>{{ instance.task_id }}</td>
             <td>{{ instance.version }}</td>
             <td>{{ task.name }}</td>
