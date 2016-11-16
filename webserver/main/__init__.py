@@ -4,4 +4,4 @@ from flask import Blueprint
 admin = Blueprint('nazgrim', __name__)
 
 from . import views
-from . import error
+from . import errors
