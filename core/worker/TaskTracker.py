@@ -72,10 +72,11 @@ class TaskTracker:
                 .first()
             if shell.success():
                 task_instance.status = 'success'
-                task_instance.finish_time = datetime.now()
             else:
                 task_instance.status = 'failed'
+            task_instance.finish_time = datetime.now()
             task_instance.log = shell.get_log()
+            self.running.remove(shell)
         session.commit()
 
     # 反馈自身负载情况
