@@ -3,9 +3,20 @@ __author__ = 'jinxiu.qi'
 from flask import Flask
 from flask.ext.login import LoginManager
 import ConfigParser
+import logging
 
 cf = ConfigParser.ConfigParser()
 cf.read('chin.ini')
+
+logging.basicConfig(
+        level=logging.DEBUG,
+        format='[%(levelname)s]\t%(asctime)s\t%(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        filename=cf.get('webserver', 'log_path') + '/webserver.log',
+        filemode='a'
+)
+logger = logging.getLogger('webserver')
+
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 
