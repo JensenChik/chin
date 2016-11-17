@@ -9,7 +9,7 @@ import json
 cf = ConfigParser.ConfigParser()
 cf.read('chin.ini')
 DATABASE_URI = cf.get('db', 'sql_conn')
-engine = create_engine(DATABASE_URI, encoding='utf-8')
+engine = create_engine(DATABASE_URI, pool_recycle=3600, encoding='utf-8')
 DBSession = sessionmaker(engine)
 root_name = cf.get('webserver', 'root_name')
 root_password = cf.get('webserver', 'root_password')
