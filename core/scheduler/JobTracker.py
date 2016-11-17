@@ -48,10 +48,19 @@ class JobTracker:
             .all()
 
         for task_instance in prepared_tasks:
-            # todo:父任务已执行完毕
-            task_instance.status = 'waiting'
-            task_instance.pooled_time = datetime.now()
-            session.add(task_instance)
+            # 如果今天的父任务们都执行完毕
+            father_all_done = True
+            father_id = session.query(Task.father_task).filter_by(id=task_instance.task_id).first()[0]
+            if father_id != []:
+                father_status = session.query(TaskInstance.status) \
+                    .filter(TaskInstance.task_id.in_(father_id)) \
+                    .filter(TaskInstance.version >= midnight).all()
+                for status in father_status:
+                    if status != 'success':
+                        father_all_done = False
+            if father_all_done:
+                task_instance.status = 'waiting'
+                task_instance.pooled_time = datetime.now()
 
         session.commit()
 

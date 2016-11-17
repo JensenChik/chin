@@ -57,7 +57,7 @@
                 {% elif task.scheduled_type == 'week' %}
                 <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
                 {% elif task.scheduled_type == 'month' %}
-                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{ task.day | zfill }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
+                <a href="#" class="btn btn-default btn-xs">M {{ task.day | zfill }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
                 {% elif task.scheduled_type == 'once' %}
                 {{ task.year }}-{{ task.month | zfill }}-{{ task.day | zfill }} {{ task.hour | zfill }}:{{ task.minute | zfill }}:00
                 {% endif %}
