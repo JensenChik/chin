@@ -56,7 +56,7 @@ class JobTracker:
                     .filter(TaskInstance.task_id.in_(father_id)) \
                     .filter(TaskInstance.version >= midnight).all()
                 for status in father_status:
-                    if status != 'success':
+                    if status[0] != 'success':
                         father_all_done = False
             if father_all_done:
                 task_instance.status = 'waiting'
