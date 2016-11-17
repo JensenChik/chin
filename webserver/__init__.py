@@ -20,10 +20,13 @@ logger = logging.getLogger('webserver')
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 
+def zfill(s, length=2):
+    return str(s).zfill(length)
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = cf.get('webserver', 'secret_key')
+    app.add_template_filter(zfill, name='zfill')
     login_manager.init_app(app)
 
     # 初始化蓝图

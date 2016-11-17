@@ -53,16 +53,13 @@
             </td>
             <td>
                 {% if task.scheduled_type == 'day' %}
-                <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute
-                }}
+                <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
                 {% elif task.scheduled_type == 'week' %}
-                <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour
-                }}:{{ task.minute }}
+                <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
                 {% elif task.scheduled_type == 'month' %}
-                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{
-                task.day }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour }}:{{ task.minute }}
+                <a href="#" class="btn btn-default btn-xs">M</a> <a href="#" class="btn btn-default btn-xs">D {{ task.day | zfill }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
                 {% elif task.scheduled_type == 'once' %}
-                {{ task.year }}-{{ task.month }}-{{ task.day }} {{ task.hour }}:{{ task.minute }}:0
+                {{ task.year }}-{{ task.month | zfill }}-{{ task.day | zfill }} {{ task.hour | zfill }}:{{ task.minute | zfill }}:00
                 {% endif %}
 
             </td>
