@@ -15,7 +15,7 @@
 
 <div style="margin-top: 1%">
     <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
-           data-show-columns="true" data-show-toggle="true" pageSize="20">
+           data-show-columns="true" data-show-toggle="true">
         <thead>
         <tr>
             <th data-align="center" data-width="5%">任务ID</th>
@@ -51,10 +51,11 @@
                 <a class="btn btn-warning btn-xs">运行中</a>
                 {% elif instance.status == 'success' %}
                 <a class="btn btn-success btn-xs">成功</a>
-                <a href="#" class="btn btn-default btn-xs">查看日志</a>
+                <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
+                   onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
                 {% elif instance.status == 'failed' %}
                 <a class="btn btn-danger btn-xs">失败</a>
-                <a href="#" class="btn btn-default btn-xs">查看日志</a>
+                <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs">查看日志</a>
                 {% elif instance.status == 'repairing' %}
                 <a class="btn btn-danger btn-xs">修复中</a>
                 {% endif %}
@@ -74,10 +75,31 @@
             </td>
         </tr>
         {% endfor %}
-
         </tbody>
     </table>
 </div>
 
+
+<script>
+    function get_log_detail(task_id, version) {
+        $.post('/get_log_detail', {'task_id': task_id, 'version': version}, function (result) {
+            document.getElementById('log_content').innerText = result;
+        });
+    }
+</script>
+
+<div class="modal fade" id="log_detail" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" align="center">
+        <div class="modal-content" style="width: 100%" align="left">
+            <div class="modal-header">
+                <h4 class="modal-title">日志详情</h4>
+            </div>
+            <div id="log_content" style="margin: 5% 5% 5% 5%"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

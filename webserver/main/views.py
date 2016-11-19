@@ -103,6 +103,16 @@ def list_execute_log():
     session.close()
     return render_template('list_execute_log.html', tasks_instance=tasks_instance)
 
+@admin.route('/get_log_detail', methods=['POST'])
+@login_required
+def get_log_detail():
+    session = DBSession()
+    task_id = request.form.get('task_id')
+    version = request.form.get('version')
+    log_detail = session.query(TaskInstance.log).filter_by(task_id=task_id, version=version).first() if version is not None \
+        else session.query(TaskInstance.log).filter_by(task_id=task_id).order_by(TaskInstance.begin_time.desc()).first()
+    return log_detail
+
 
 @admin.route('/list_action_log')
 @login_required
