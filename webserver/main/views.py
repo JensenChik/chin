@@ -1,6 +1,6 @@
 # coding=utf-8
 from . import admin
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, send_file
 from model import DBSession, Task, TaskInstance, User
 from flask.ext.login import login_user, login_required, logout_user, current_user
 from webserver import login_manager
@@ -54,6 +54,11 @@ def home():
     return render_template('list_task.html', tasks=tasks)
 
 
+@admin.route('/favicon.ico')
+def ico():
+    return send_file('static/chin.ico')
+
+
 @admin.route('/new_task', methods=['POST', 'GET'])
 @login_required
 def new_task():
@@ -99,9 +104,11 @@ def list_execute_log():
     session = DBSession()
     tasks_instance = session.query(TaskInstance, Task) \
         .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
-        .order_by(TaskInstance.finish_time.desc(), TaskInstance.begin_time.desc(), TaskInstance.pooled_time.desc()).all()
+        .order_by(TaskInstance.finish_time.desc(), TaskInstance.begin_time.desc(),
+                  TaskInstance.pooled_time.desc()).all()
     session.close()
     return render_template('list_execute_log.html', tasks_instance=tasks_instance)
+
 
 @admin.route('/get_log_detail', methods=['POST'])
 @login_required
@@ -109,7 +116,8 @@ def get_log_detail():
     session = DBSession()
     task_id = request.form.get('task_id')
     version = request.form.get('version')
-    log_detail = session.query(TaskInstance.log).filter_by(task_id=task_id, version=version).first() if version is not None \
+    log_detail = session.query(TaskInstance.log).filter_by(task_id=task_id,
+                                                           version=version).first() if version is not None \
         else session.query(TaskInstance.log).filter_by(task_id=task_id).order_by(TaskInstance.begin_time.desc()).first()
     return log_detail
 
