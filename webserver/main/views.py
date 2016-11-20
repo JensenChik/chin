@@ -88,11 +88,17 @@ def new_task():
         )
         session = DBSession()
         session.add(task)
+        
+        father_task = data.get('father_task')
 
-        for father_id in data.get('father_task').split('\n'):
-            father_task = session.query(Task).filter_by(id=father_id).first()
-            father_task.child_task.append(str(task.id))
-            flag_modified(father_task, "child_task")
+        # 填充父任务的子任务
+        # todo:父任务填写错误返回异常
+        if father_task is not None and father_task.strip() != '':
+            for father_id in father_task.split('\n'):
+                father_task = session.query(Task).filter_by(id=father_id).first()
+                father_task.child_task.append(str(task.id))
+                flag_modified(father_task, "child_task")
+
         session.commit()
         session.close()
         return '/' if request.form.get('has_next') == 'false' else 'new_task'
