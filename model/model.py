@@ -1,7 +1,7 @@
 # coding=utf-8
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Text, Boolean, String, DateTime, SmallInteger, ForeignKey, Enum, TypeDecorator
-import enum, json
+import enum, json, zlib
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -16,6 +16,15 @@ class Json(TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return json.loads(value)
+
+class BinaryString(TypeDecorator):
+    impl = Text
+
+    def process_bind_param(self, value, dialect):
+        return zlib.compress(value)
+
+    def process_result_value(self, value, dialect):
+        return zlig.decompress(value)
 
 
 class Task(BaseModel):
