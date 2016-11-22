@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, Text, Boolean, String, DateTime, SmallIn
 import enum, json, zlib
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.types import LargeBinary
 
 BaseModel = declarative_base()
 
@@ -18,13 +19,13 @@ class Json(TypeDecorator):
         return json.loads(value)
 
 class BinaryString(TypeDecorator):
-    impl = Text
+    impl = LargeBinary
 
     def process_bind_param(self, value, dialect):
         return zlib.compress(value)
 
     def process_result_value(self, value, dialect):
-        return zlig.decompress(value)
+        return zlib.decompress(value)
 
 
 class Task(BaseModel):
