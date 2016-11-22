@@ -16,7 +16,7 @@ root_password = cf.get('webserver', 'root_password')
 root_email = cf.get('webserver', 'root_email')
 
 
-def reset_db():
+def mock_db():
     BaseModel.metadata.drop_all(engine)
     BaseModel.metadata.create_all(engine)
     session = DBSession()
@@ -57,6 +57,20 @@ def reset_db():
                      priority=5, machine_pool=["cubieboard"],
                      rerun=False,
                      scheduled_type='once', year=2016, month=8, day=10, hour=0, minute=4))
+    root = User()
+    root.name = root_name
+    root.password = root_password
+    root.email = root_email
+    session.add(root)
+    session.commit()
+    session.close()
+
+
+
+def clean_db():
+    BaseModel.metadata.drop_all(engine)
+    BaseModel.metadata.create_all(engine)
+    session = DBSession()
     root = User()
     root.name = root_name
     root.password = root_password
