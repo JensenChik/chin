@@ -72,7 +72,7 @@ class TaskInstance(BaseModel):
     run_count = Column(SmallInteger, default=0, doc="执行次数")
     status = Column(Enum('waiting', 'running', 'success', 'failed', 'killing', 'repairing'), index=True,
                     doc='状态')
-    log = Column(Text, default='', doc="日志")
+    log = Column(BinaryString, default='', doc="日志")
     notify = Column(Boolean, index=True, default=False, doc="是否已报警")
 
     def __repr__(self):
