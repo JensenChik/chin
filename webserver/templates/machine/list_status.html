@@ -1,18 +1,14 @@
-{% extends 'layout.html' %}
+{% extends 'machine/layout.html' %}
 
-{% block body %}
-<h2>机器状态</h2>
-<div class="row" style="margin-right: 0;">
-    <div class="col-md-12">
-        <ul id="myTab" class="nav nav-tabs">
-            <li><a href="/list_machine">机器列表</a></li>
-            <li class="active"><a href="/list_machine_status">机器状态</a></li>
-            <li><a href="/new_machine">添加机器</a></li>
-        </ul>
-    </div>
-</div>
+{% block title %}
+    <h2>机器状态</h2>
+{% endblock %}
 
+{% block content %}
 <div style="margin-top: 1%">
+    <script>
+        document.getElementById("list_machine_status").className = "active";
+    </script>
     <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
            data-show-columns="true" data-show-toggle="true">
         <thead>

@@ -1,0 +1,204 @@
+{% extends 'task/layout.html' %}
+
+{% block title %}
+    <h2>修改任务</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("modify_task").className = "active";
+    </script>
+    <div style="margin: 2% 10% 0 10%">
+        <form action="/modify_task" method="POST">
+            <div class="row">
+                <div class="col-md-2" align="right">
+                    任务id
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="extend" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    任务名
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="task_name" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    执行命令
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="command" class="form-control">
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    是否启用
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" id="valid">
+                        <option value="true">是</option>
+                        <option value="false">否</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    优先级
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" id="priority">
+                        <option value="1">1(最低)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected="selected">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9(最高)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    失败后是否重跑
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" id="rerun">
+                        <option value="true">是</option>
+                        <option value="false">否</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    重跑次数
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" id="rerun_times">
+                        <option value="1">1</option>
+                        <option value="2" selected="selected">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    父任务
+                </div>
+                <div class="col-md-10">
+                <textarea id="father_task" class="form-control" rows="4"
+                          style="overflow: auto; resize: none"></textarea>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    机器池
+                </div>
+                <div class="col-md-10">
+                <textarea id="machine_pool" class="form-control" rows="4"
+                          style="overflow: auto; resize: none"></textarea>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    调度形式
+                </div>
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <ul class="dropdown-menu dropdown-menu-left" role="menu">
+                                <li><a onclick="change_scheduled_format('每日')">每日</a></li>
+                                <li><a onclick="change_scheduled_format('每周')">每周</a></li>
+                                <li><a onclick="change_scheduled_format('每月')">每月</a></li>
+                                <li><a onclick="change_scheduled_format('一次')">一次</a></li>
+                            </ul>
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span id="scheduled_type">每日</span><span class="caret"></span>
+                            </button>
+                        </div>
+                        <div id="scheduled_format">
+                            <div id="每日" class="input-group">
+                                {% include 'time/hour.html' ignore missing %}
+                                {% include 'time/minute.html' ignore missing %}
+                            </div>
+                            <div id="每周" style="display: none">
+                                {% include 'time/weekday.html' ignore missing %}
+                                {% include 'time/hour.html' ignore missing %}
+                                {% include 'time/minute.html' ignore missing %}
+                            </div>
+
+                            <div id="每月" style="display: none">
+                                {% include 'time/day.html' ignore missing %}
+                                {% include 'time/hour.html' ignore missing %}
+                                {% include 'time/minute.html' ignore missing %}
+                            </div>
+
+
+                            <div id="一次" style="display: none">
+                                {% include 'time/year.html' ignore missing %}
+                                {% include 'time/month.html' ignore missing %}
+                                {% include 'time/day.html' ignore missing %}
+                                {% include 'time/hour.html' ignore missing %}
+                                {% include 'time/minute.html' ignore missing %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" align="center" style="margin-top: 1%">
+                <input type="button" class="btn btn-primary" onclick="submit_new_task(false)" value="提交">
+                <input type="button" class="btn btn-primary" onclick="submit_new_task(true)" value="提交并新建下一个">
+            </div>
+        </form>
+    </div>
+    <script>
+        function change_scheduled_format(scheduled_type) {
+            $('#scheduled_type').html(scheduled_type);
+            $('#scheduled_format').children().each(function () {
+                $(this).hide()
+            });
+            $('#' + scheduled_type).show();
+        }
+        function submit_new_task(has_next) {
+            var scheduled_type = $('#scheduled_type').html();
+            var scheduled_time = $('#' + scheduled_type);
+            scheduled_type = {'每周': 'week', '每日': 'day', '每月': 'month', '一次': 'once'}[scheduled_type];
+            var task_meta = {
+                'task_name': $('#task_name').val(),
+                'command': $('#command').val(),
+                'valid': $('#valid').val(),
+                'priority': $('#priority').val(),
+                'rerun': $('#rerun').val(),
+                'rerun_times': $('#rerun_times').val(),
+                'machine_pool': $('#machine_pool').val(),
+                'father_task': $('#father_task').val(),
+                'scheduled_type': scheduled_type,
+                'year': scheduled_time.children('.scheduled_year').children().val(),
+                'month': scheduled_time.children('.scheduled_month').children().val(),
+                'weekday': scheduled_time.children('.scheduled_weekday').children().val(),
+                'day': scheduled_time.children('.scheduled_day').children().val(),
+                'hour': scheduled_time.children('.scheduled_hour').children().val(),
+                'minute': scheduled_time.children('.scheduled_minute').children().val(),
+                'has_next': has_next
+            };
+            $.post('/new_task', task_meta, function (result) {
+                location.href = result;
+            });
+        }
+    </script>
+{% endblock %}

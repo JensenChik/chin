@@ -1,0 +1,101 @@
+{% extends 'log/layout.html' %}
+
+{% block title %}
+    <h2>执行日志</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("list_execute_log").className = "active";
+    </script>
+    <div style="margin-top: 1%">
+        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+               data-show-columns="true" data-show-toggle="true">
+            <thead>
+            <tr>
+                <th data-align="center" data-width="5%">任务ID</th>
+                <th data-align="center" data-width="10%">版本号</th>
+                <th data-align="center" data-width="20%">任务名</th>
+                <th data-align="center" data-width="5%">执行机器</th>
+                <th data-align="center" data-width="10%">入池时间</th>
+                <th data-align="center" data-width="10%">开始时间</th>
+                <th data-align="center" data-width="10%">结束时间</th>
+                <th data-align="center" data-width="5%">执行次数</th>
+                <th data-align="center" data-width="10%">状态</th>
+                <th data-align="center" data-width="５%">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for instance in tasks_instance %}
+                {% set task = instance[1] %}
+                {% set instance = instance[0] %}
+                <tr>
+                    <td>{{ instance.task_id }}</td>
+                    <td>{{ instance.version }}</td>
+                    <td>{{ task.name }}</td>
+                    <td><a class="btn btn-default btn-xs">{{ instance.execute_machine }}</a></td>
+                    <td>{{ instance.pooled_time }}</td>
+                    <td>{{ instance.begin_time or '' }}</td>
+                    <td>{{ instance.finish_time or '' }}</td>
+                    <td>{{ instance.run_count }}</td>
+                    <td>
+                        {% if instance.status == 'waiting' %}
+                            <a class="btn btn-default btn-xs">等待中</a>
+                        {% elif instance.status == 'running' %}
+                            <a class="btn btn-warning btn-xs">运行中</a>
+                        {% elif instance.status == 'success' %}
+                            <a class="btn btn-success btn-xs">成功</a>
+                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
+                               onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
+                        {% elif instance.status == 'failed' %}
+                            <a class="btn btn-danger btn-xs">失败</a>
+                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs">查看日志</a>
+                        {% elif instance.status == 'repairing' %}
+                            <a class="btn btn-danger btn-xs">修复中</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                操作<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li><a href="#">重跑</a></li>
+                                <li><a href="#">中止执行</a></li>
+                                <li><a href="#">置为成功</a></li>
+                                <li><a href="#">置为失败</a></li>
+                                <li><a href="#">置为修复中</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        function get_log_detail(task_id, version) {
+            $.post('/get_log_detail', {'task_id': task_id, 'version': version}, function (result) {
+                document.getElementById('log_content').innerText = result;
+            });
+        }
+    </script>
+
+    <div class="modal fade" id="log_detail" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" align="center">
+            <div class="modal-content" style="width: 100%" align="left">
+                <div class="modal-header">
+                    <h4 class="modal-title">日志详情</h4>
+                </div>
+                <div id="log_content" style="margin: 5% 5% 5% 5%"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

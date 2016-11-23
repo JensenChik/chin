@@ -1,22 +1,17 @@
-{% extends 'layout.html' %}
+{% extends 'machine/layout.html' %}
 
-{% block body %}
-<h2>新建用户</h2>
-<div class="row" style="margin-right: 0;">
-    <div class="col-md-12">
-        <ul id="myTab" class="nav nav-tabs">
-            <li>
-                <a href="/list_user">用户列表</a>
-            </li>
-            <li class="active"><a href="/new_user">新建用户</a></li>
-        </ul>
-    </div>
-</div>
-<div style="margin: 2% 10% 0 10%">
-    <form action="/new_user" method="post">
+{% block title %}
+    <h2>修改机器</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("modify_machine").className = "active";
+    </script>
+    <div style="margin: 2% 10% 0 10%">
         <div class="row">
             <div class="col-md-2" align="right">
-                用户名
+                机器名
             </div>
             <div class="col-md-10">
                 <input type="text" name="user_name" class="form-control">
@@ -24,26 +19,24 @@
         </div>
         <div class="row" style="margin-top: 1%">
             <div class="col-md-2" align="right">
-                密码
+                ip地址
             </div>
             <div class="col-md-10">
-                <input type="text" name="password" class="form-control">
+                <input type="text" name="user_name" class="form-control" placeholder="可选">
             </div>
         </div>
         <div class="row" style="margin-top: 1%">
             <div class="col-md-2" align="right">
-                邮箱
+                mac地址
             </div>
             <div class="col-md-10">
-                <input type="text" name="email" class="form-control">
+                <input type="text" name="user_name" class="form-control" placeholder="可选">
             </div>
         </div>
 
         <div class="row" align="center" style="margin-top: 1%">
             <button type="submit" class="btn btn-primary">保存</button>
         </div>
-    </form>
-</div>
-
+    </div>
 
 {% endblock %}

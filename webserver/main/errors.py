@@ -10,7 +10,7 @@ def not_found(e):
     exstr = traceback.format_exc()
     logger.error(request.remote_addr + '请求url:' + request.url + '失败, 返回404')
     logger.error(exstr)
-    return render_template('error.html', error_code='404'), 404
+    return render_template('base/error.html', error_code='404'), 404
 
 
 @admin.app_errorhandler(500)
@@ -18,4 +18,4 @@ def server_error(e):
     exstr = traceback.format_exc()
     logger.error(request.remote_addr + '请求url:' + request.url + '失败, 返回500')
     logger.error(exstr)
-    return render_template('error.html', error_code='500'), 500
+    return render_template('base/error.html', error_code='500'), 500
