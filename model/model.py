@@ -18,6 +18,7 @@ class Json(TypeDecorator):
     def process_result_value(self, value, dialect):
         return json.loads(value)
 
+
 class BinaryString(TypeDecorator):
     impl = LargeBinary
 
@@ -48,7 +49,7 @@ class Task(BaseModel):
     valid = Column(Boolean, index=True, default=False, doc="是否调度")
     rerun = Column(Boolean, index=True, default=False, doc="当失败时是否自动重新执行")
     rerun_times = Column(SmallInteger, default=0, doc="重新执行次数")
-    scheduled_type = Column(Enum('once', 'day', 'week', 'month', 'year'), index=True, doc="调度频率")
+    scheduled_type = Column(Enum('once', 'day', 'week', 'month'), index=True, doc="调度频率")
     year = Column(SmallInteger, doc="调度时间-年")
     month = Column(SmallInteger, doc="调度时间-月")
     weekday = Column(SmallInteger, doc="调度时间-周几")
@@ -58,6 +59,28 @@ class Task(BaseModel):
 
     def __repr__(self):
         return '<Task %s>' % self.id
+
+    def to_json(self):
+        return json.dumps({
+            'id': self.id,
+            'name': self.name,
+            'user': self.user,
+            'command': self.command,
+            'priority': self.priority,
+            'machine_pool': self.machine_pool,
+            'father_task': self.father_task,
+            'child_task': self.child_task,
+            'valid': self.valid,
+            'rerun': self.rerun,
+            'rerun_times': self.rerun_times,
+            'scheduled_type': self.scheduled_type,
+            'year': self.year,
+            'month': self.month,
+            'weekday': self.weekday,
+            'day': self.day,
+            'hour': self.hour,
+            'minute': self.minute
+        })
 
 
 class TaskInstance(BaseModel):
@@ -100,6 +123,3 @@ class User(UserMixin, BaseModel):
 
     def __repr__(self):
         return 'user', self.id, self.name
-
-
-

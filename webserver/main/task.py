@@ -69,3 +69,13 @@ def modify_task():
         return render_template('task/modify.html')
     else:
         pass
+
+
+@admin.route('/get_task_detail', methods=['POST'])
+@login_required
+def get_task_detail():
+    task_id = int(request.form.get("task_id"))
+    session = DBSession()
+    task = session.query(Task).filter_by(id=task_id).first()
+    session.close()
+    return task.to_json()
