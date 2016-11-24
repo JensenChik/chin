@@ -24,6 +24,7 @@ def new_task():
         return render_template('task/new.html')
     else:
         data = request.form
+        father_tasks = data.get('father_task').strip()
         task = Task(
                 name=data.get('task_name'),
                 user=current_user.name,
@@ -31,7 +32,7 @@ def new_task():
                 command=data.get('command'),
                 priority=data.get('priority'),
                 machine_pool=data.get('machine_pool').split('\n'),
-                father_task=data.get('father_task').split('\n'),
+                father_task=[int(i) for i in father_tasks.split('\n')] if father_tasks != '' else [],
                 valid=data.get('valid') == 'true',
                 rerun=data.get('rerun') == 'true',
                 rerun_times=data.get('rerun_times'),
@@ -46,15 +47,12 @@ def new_task():
         session = DBSession()
         session.add(task)
 
-        father_task = data.get('father_task')
-
         # 填充父任务的子任务
         # todo:父任务填写错误返回异常
-        if father_task is not None and father_task.strip() != '':
-            for father_id in father_task.split('\n'):
-                father_task = session.query(Task).filter_by(id=father_id).first()
-                father_task.child_task.append(str(task.id))
-                flag_modified(father_task, "child_task")
+        for father_id in task.father_task:
+            father_task = session.query(Task).filter_by(id=father_id).first()
+            father_task.child_task.append(task.id)
+            flag_modified(father_task, "child_task")
 
         session.commit()
         session.close()
@@ -70,6 +68,7 @@ def modify_task():
     else:
         data = request.form
         task_id = int(data.get('task_id'))
+        new_father_tasks = data.get('father_task').strip()
         session = DBSession()
         task = session.query(Task).filter_by(id=task_id).first()
 
@@ -90,21 +89,21 @@ def modify_task():
         task.minute = data.get('minute')
 
         # 旧的父任务解绑
-        if task.father_task != [] and task.father_task != None:
-            for old_father_id in task.father_task:
-                old_father_task = session.query(Task).filter_by(id=old_father_id).first()
-                old_father_task.child_task.remove(task_id)
-                flag_modified(old_father_task, "child_task")
+        for old_father_id in task.father_task:
+            old_father_task = session.query(Task).filter_by(id=old_father_id).first()
+            old_father_task.child_task.remove(task_id)
+            flag_modified(old_father_task, "child_task")
+
+        task.father_task = new_father_tasks.split('\n') if new_father_tasks != '' else []
 
         # 新父任务绑定
-        new_father_task = data.get('father_task')
-        if new_father_task is not None and new_father_task.strip() != '':
-            for father_id in new_father_task.split('\n'):
-                father_task = session.query(Task).filter_by(id=father_id).first()
-                father_task.child_task.append(task_id)
-                flag_modified(father_task, "child_task")
+        for father_id in task.father_task:
+            father_task = session.query(Task).filter_by(id=father_id).first()
+            father_task.child_task.append(task_id)
+            flag_modified(father_task, "child_task")
 
-        task.father_task = new_father_task.split('\n')
+        print 'done'
+
         session.commit()
         session.close()
         return '/list_task' if request.form.get('has_next') == 'false' else 'modify_task'
