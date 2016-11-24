@@ -20,7 +20,6 @@ def list_task():
 @login_required
 def new_task():
     if request.method == 'GET':
-        extend_id = request.args.get('extend_id')
         return render_template('task/new.html')
     else:
         data = request.form
@@ -63,7 +62,6 @@ def new_task():
 @login_required
 def modify_task():
     if request.method == 'GET':
-        extend_id = request.args.get('extend_id')
         return render_template('task/modify.html')
     else:
         data = request.form
@@ -101,8 +99,6 @@ def modify_task():
             father_task = session.query(Task).filter_by(id=father_id).first()
             father_task.child_task.append(task_id)
             flag_modified(father_task, "child_task")
-
-        print 'done'
 
         session.commit()
         session.close()
