@@ -90,10 +90,11 @@ def modify_task():
         task.minute = data.get('minute')
 
         # 旧的父任务解绑
-        for old_father_id in task.father_task:
-            old_father_task = session.query(Task).filter_by(id=old_father_id).first()
-            old_father_task.child_task.remove(task_id)
-            flag_modified(old_father_task, "child_task")
+        if task.father_task != [] and task.father_task != None:
+            for old_father_id in task.father_task:
+                old_father_task = session.query(Task).filter_by(id=old_father_id).first()
+                old_father_task.child_task.remove(task_id)
+                flag_modified(old_father_task, "child_task")
 
         # 新父任务绑定
         new_father_task = data.get('father_task')
