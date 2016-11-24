@@ -58,7 +58,7 @@ def new_task():
 
         session.commit()
         session.close()
-        return '/' if request.form.get('has_next') == 'false' else 'new_task'
+        return '/list_task' if request.form.get('has_next') == 'false' else 'new_task'
 
 
 @admin.route('/modify_task', methods=['POST', 'GET'])
@@ -68,7 +68,45 @@ def modify_task():
         extend_id = request.args.get('extend_id')
         return render_template('task/modify.html')
     else:
-        pass
+        data = request.form
+        task_id = int(data.get('task_id'))
+        session = DBSession()
+        task = session.query(Task).filter_by(id=task_id).first()
+
+        task.name = data.get('task_name')
+        task.command = data.get('command')
+        task.priority = data.get('priority')
+        task.machine_pool = data.get('machine_pool').split('\n')
+        task.valid = data.get('valid') == 'true'
+        task.rerun = data.get('rerun') == 'true'
+        task.rerun_times = data.get('rerun_times')
+        task.scheduled_type = data.get('scheduled_type')
+        # todo:版本号问题
+        task.year = data.get('year')
+        task.month = data.get('month')
+        task.weekday = data.get('weekday')
+        task.day = data.get('day')
+        task.hour = data.get('hour')
+        task.minute = data.get('minute')
+
+        # 旧的父任务解绑
+        for old_father_id in task.father_task:
+            old_father_task = session.query(Task).filter_by(id=old_father_id).first()
+            old_father_task.child_task.remove(task_id)
+            flag_modified(old_father_task, "child_task")
+
+        # 新父任务绑定
+        new_father_task = data.get('father_task')
+        if new_father_task is not None and new_father_task.strip() != '':
+            for father_id in new_father_task.split('\n'):
+                father_task = session.query(Task).filter_by(id=father_id).first()
+                father_task.child_task.append(task_id)
+                flag_modified(father_task, "child_task")
+
+        task.father_task = new_father_task.split('\n')
+        session.commit()
+        session.close()
+        return '/list_task' if request.form.get('has_next') == 'false' else 'modify_task'
 
 
 @admin.route('/get_task_detail', methods=['POST'])

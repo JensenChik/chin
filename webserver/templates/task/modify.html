@@ -161,8 +161,8 @@
                 </div>
             </div>
             <div class="row" align="center" style="margin-top: 1%">
-                <input type="button" class="btn btn-primary" onclick="submit_new_task(false)" value="更新">
-                <input type="button" class="btn btn-primary" onclick="submit_new_task(true)" value="更新并修改下一个">
+                <input type="button" class="btn btn-primary" onclick="modify_task(false)" value="更新">
+                <input type="button" class="btn btn-primary" onclick="modify_task(true)" value="更新并修改下一个">
             </div>
         </form>
     </div>
@@ -211,11 +211,12 @@
             });
         }
 
-        function submit_new_task(has_next) {
+        function modify_task(has_next) {
             var scheduled_type = $('#scheduled_type').html();
             var scheduled_time = $('#' + scheduled_type);
             scheduled_type = {'每周': 'week', '每日': 'day', '每月': 'month', '一次': 'once'}[scheduled_type];
             var task_meta = {
+                'task_id': $('#task_id').val(),
                 'task_name': $('#task_name').val(),
                 'command': $('#command').val(),
                 'valid': $('#valid').val(),
