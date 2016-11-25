@@ -50,7 +50,8 @@
                                onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
                         {% elif instance.status == 'failed' %}
                             <a class="btn btn-danger btn-xs">失败</a>
-                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs">查看日志</a>
+                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs
+                               onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
                         {% elif instance.status == 'repairing' %}
                             <a class="btn btn-danger btn-xs">修复中</a>
                         {% endif %}
