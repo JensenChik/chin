@@ -1,7 +1,7 @@
 # coding=utf-8
 from . import admin
 from flask import render_template, request
-from model import DBSession, Task
+from model import DBSession, Task, TaskInstance
 from flask.ext.login import login_required, current_user
 from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
@@ -113,3 +113,15 @@ def get_task_detail():
     task = session.query(Task).filter_by(id=task_id).first()
     session.close()
     return task.to_json()
+
+
+@admin.route('/run_at_once', methods=['POST'])
+def run_at_once():
+    task_id = int(request.form.get("task_id"))
+    version = datetime.now().strftime('%Y%m%d%H%M%S')
+    session = DBSession()
+    instance = TaskInstance(task_id=task_id, version=version)
+    session.add(instance)
+    session.commit()
+    session.close()
+    return str(task_id)

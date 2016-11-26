@@ -80,11 +80,12 @@
                         <div class="input-group-btn">
                             <a href="/list_instance_log?task_id={{ task.id }}" class="btn btn-default btn-xs">查看日志</a>
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                操作<span
-                                    class="caret"></span></button>
+                                操作<span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a href="#">编辑</a></li>
+                                <li><a onclick="run_at_once('{{ task.id }}')">立即执行</a></li>
                                 <li class="divider"></li>
+                                <li><a href="#">编辑</a></li>
                                 <li><a href="#">停用</a></li>
                                 <li><a href="#">删除</a></li>
                             </ul>
@@ -95,4 +96,13 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        function run_at_once(task_id) {
+            $.post('/run_at_once', {'task_id': task_id}, function (result) {
+                location.href = '/list_instance_log?task_id=' + result;
+            });
+        }
+    </script>
+
 {% endblock %}
