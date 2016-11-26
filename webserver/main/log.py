@@ -36,6 +36,20 @@ def list_action_log():
     return render_template('log/list_action.html')
 
 
+@admin.route('/rerun', methods=['POST'])
+@login_required
+def rerun():
+    task_id = request.form.get('task_id')
+    version = request.form.get('version')
+    # todo:非法重跑检测
+    session = DBSession()
+    task_instance = session.query(TaskInstance).filter_by(task_id=task_id, version=version).first()
+    task_instance.status = None
+    session.commit()
+    session.close()
+    return render_template('log/list_action.html')
+
+
 @admin.route('/get_log_detail', methods=['POST'])
 @login_required
 def get_log_detail():

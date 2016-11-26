@@ -50,7 +50,7 @@
                                onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
                         {% elif instance.status == 'failed' %}
                             <a class="btn btn-danger btn-xs">失败</a>
-                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs
+                            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
                                onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
                         {% elif instance.status == 'repairing' %}
                             <a class="btn btn-danger btn-xs">修复中</a>
@@ -62,7 +62,7 @@
                                 操作<span
                                     class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a href="#">重跑</a></li>
+                                <li><a onclick="rerun('{{ instance.task_id }}', '{{ instance.version }}')">重跑</a></li>
                                 <li><a href="#">中止执行</a></li>
                                 <li><a href="#">置为成功</a></li>
                                 <li><a href="#">置为失败</a></li>
@@ -83,6 +83,12 @@
                 document.getElementById('log_content').innerText = result;
             });
         }
+        function rerun(task_id, version) {
+            $.post('/rerun', {'task_id': task_id, 'version': version}, function () {
+                location.reload();
+            });
+        }
+
     </script>
 
     <div class="modal fade" id="log_detail" tabindex="-1" role="dialog">
