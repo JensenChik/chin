@@ -21,7 +21,6 @@
                 <th data-align="center" data-width="10%">父任务</th>
                 <th data-align="center" data-width="10%">子任务</th>
                 <th data-align="center" data-width="5%">创建者</th>
-                <th data-align="center" data-width="10%">最近状态</th>
                 <th data-align="center" data-width="5%">工具</th>
             </tr>
             </thead>
@@ -78,11 +77,8 @@
                     </td>
                     <td>{{ task.user }}</td>
                     <td>
-                        <a href="#" class="btn btn-success btn-xs">成功</a>
-                        <a href="#" class="btn btn-default btn-xs">查看日志</a>
-                    </td>
-                    <td>
                         <div class="input-group-btn">
+                            <a href="/list_instance_log?task_id={{ task.id }}" class="btn btn-default btn-xs">查看日志</a>
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                 操作<span
                                     class="caret"></span></button>

@@ -8,6 +8,14 @@
     <script>
         document.getElementById("list_instance_log").className = "active";
     </script>
+
+    <div class="input-group col-md-3" style="float: left;margin-top: 20px">
+        <input type="text" id="task_id" class="form-control" placeholder="任务id">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" onclick="get_instance()">查询</button>
+      </span>
+    </div>
+
     <div style="margin-top: 1%">
         <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
                data-show-columns="true" data-show-toggle="true">
@@ -81,6 +89,10 @@
             $.post('/get_log_detail', {'task_id': task_id, 'version': version}, function (result) {
                 document.getElementById('log_content').innerText = result;
             });
+        }
+
+        function get_instance() {
+            location.href = '/list_instance_log?task_id=' + $('#task_id').val();
         }
     </script>
 
