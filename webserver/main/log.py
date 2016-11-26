@@ -1,9 +1,10 @@
 # coding=utf-8
 from . import admin
 from flask import render_template, request
-from model import DBSession, Task, TaskInstance
-from flask.ext.login import login_required
+from model import DBSession, Task, TaskInstance, Action
+from flask.ext.login import login_required, current_user
 from sqlalchemy import and_
+from datetime import datetime
 
 
 @admin.route('/list_execute_log')
@@ -36,7 +37,9 @@ def list_instance_log():
 @admin.route('/list_action_log')
 @login_required
 def list_action_log():
-    return render_template('log/list_action.html')
+    session = DBSession()
+    actions = session.query(Action).order_by(Action.create_time.desc()).all()
+    return render_template('log/list_action.html', actions=actions)
 
 
 @admin.route('/rerun', methods=['POST'])
@@ -49,6 +52,11 @@ def rerun():
     task_instance = session.query(TaskInstance).filter_by(task_id=task_id, version=version).first()
     task_instance.status = None
     session.commit()
+
+    action = Action(user_name=current_user.name, content='重新执行版本号为 {} 的任务 {}'.format(version, task_id), create_time=datetime.now())
+    session.add(action)
+    session.commit()
+
     session.close()
     return render_template('log/list_action.html')
 

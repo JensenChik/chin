@@ -1,8 +1,9 @@
 # coding=utf-8
 from . import admin
 from flask import render_template, request, redirect
-from model import DBSession, User
-from flask.ext.login import login_required
+from model import DBSession, User, Action
+from flask.ext.login import login_required, current_user
+from datetime import datetime
 
 
 @admin.route('/list_user')
@@ -27,6 +28,11 @@ def new_user():
         session = DBSession()
         session.add(user)
         session.commit()
+
+        action = Action(user_name=current_user.name, content='新建用户 {}'.format(user.name), create_time=datetime.now())
+        session.add(action)
+        session.commit()
+
         session.close()
         return redirect('/list_user')
 

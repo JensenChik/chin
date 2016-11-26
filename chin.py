@@ -8,7 +8,7 @@ sys.setdefaultencoding('utf-8')
 
 from core.scheduler import JobTracker
 from core.worker import TaskTracker
-from model import mock_db, clean_db
+from model import mock_db, clean_db, build_db
 from flask.ext.script import Manager, Shell, Server
 from webserver import create_app
 import ConfigParser
@@ -40,6 +40,8 @@ if __name__ == "__main__":
 
     elif action == "clean_db":
         clean_db()
+    elif action == "build_db":
+        build_db()
 
     else:
         print "不支持参数%s" % action, '只支持参数 runserver worker scheduler mock_db clean_db'

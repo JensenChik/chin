@@ -1,7 +1,7 @@
 # coding=utf-8
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from model import Task, TaskInstance, BaseModel, User
+from model import Task, TaskInstance, BaseModel, User, Action
 import ConfigParser
 from datetime import datetime
 import json
@@ -20,9 +20,10 @@ def mock_db():
     BaseModel.metadata.drop_all(engine)
     BaseModel.metadata.create_all(engine)
     session = DBSession()
-    task_param = [(0, 1, [], [2]), (0, 2, [1, 3]), (0, 30, [], [2]), (0, 40, [5, 6]), (4, 12, [], [4]), (5, 36, [], [4]), (6, 18), (7, 46), (8, 36),
-            (9, 24), (10, 48), (11, 49), (12, 13), (13, 0), (14, 19), (15, 33), (16, 17),
-            (17, 54), (18, 35), (19, 27), (20, 22), (21, 41), (22, 49), (23, 11)]
+    task_param = [(0, 1, [], [2]), (0, 2, [1, 3]), (0, 30, [], [2]), (0, 40, [5, 6]), (4, 12, [], [4]),
+                  (5, 36, [], [4]), (6, 18), (7, 46), (8, 36),
+                  (9, 24), (10, 48), (11, 49), (12, 13), (13, 0), (14, 19), (15, 33), (16, 17),
+                  (17, 54), (18, 35), (19, 27), (20, 22), (21, 41), (22, 49), (23, 11)]
     for t in task_param:
         try:
             father_task = t[2]
@@ -71,7 +72,6 @@ def mock_db():
     session.close()
 
 
-
 def clean_db():
     BaseModel.metadata.drop_all(engine)
     BaseModel.metadata.create_all(engine)
@@ -83,3 +83,7 @@ def clean_db():
     session.add(root)
     session.commit()
     session.close()
+
+
+def build_db():
+    BaseModel.metadata.create_all(engine)

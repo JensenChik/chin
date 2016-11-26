@@ -21,6 +21,15 @@
             </thead>
 
             <tbody>
+            {% for action in actions %}
+                <tr>
+                    <td>{{ action.id }}</td>
+                    <td>{{ action.user_name }}</td>
+                    <td>{{ action.content }}</td>
+                    <td>{{ action.create_time }}</td>
+                </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </div>

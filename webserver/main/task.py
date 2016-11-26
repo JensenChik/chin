@@ -1,7 +1,7 @@
 # coding=utf-8
 from . import admin
 from flask import render_template, request
-from model import DBSession, Task, TaskInstance
+from model import DBSession, Task, TaskInstance, Action
 from flask.ext.login import login_required, current_user
 from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
@@ -53,7 +53,14 @@ def new_task():
             father_task.child_task.append(task.id)
             flag_modified(father_task, "child_task")
 
+        # todo: 若运行之间晚于当前时间，则补偿一条版本号
+
         session.commit()
+
+        action = Action(user_name=current_user.name, content='创建任务 {}'.format(task.id), create_time=datetime.now())
+        session.add(action)
+        session.commit()
+
         session.close()
         return '/list_task' if request.form.get('has_next') == 'false' else 'new_task'
 
@@ -101,6 +108,11 @@ def modify_task():
             flag_modified(father_task, "child_task")
 
         session.commit()
+
+        action = Action(user_name=current_user.name, content='修改任务 {}'.format(task.id), create_time=datetime.now())
+        session.add(action)
+        session.commit()
+
         session.close()
         return '/list_task' if request.form.get('has_next') == 'false' else 'modify_task'
 
@@ -123,5 +135,10 @@ def run_at_once():
     instance = TaskInstance(task_id=task_id, version=version)
     session.add(instance)
     session.commit()
+
+    action = Action(user_name=current_user.name, content='强制执行任务 {}'.format(task_id), create_time=datetime.now())
+    session.add(action)
+    session.commit()
+
     session.close()
     return str(task_id)

@@ -123,3 +123,15 @@ class User(UserMixin, BaseModel):
 
     def __repr__(self):
         return 'user', self.id, self.name
+
+
+class Action(BaseModel):
+    __tablename__ = 'action'
+
+    id = Column(Integer, primary_key=True, doc="操作id")
+    user_name = Column(String(64), doc='用户')
+    content = Column(String(128), doc='操作详情')
+    create_time = Column(DateTime, doc='操作时间')
+
+    def __repr__(self):
+        return '<action %s>' % self.id
