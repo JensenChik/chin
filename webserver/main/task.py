@@ -69,7 +69,8 @@ def new_task():
 @login_required
 def modify_task():
     if request.method == 'GET':
-        return render_template('task/modify.html')
+        task_id = request.args.get('task_id')
+        return render_template('task/modify.html', task_id=task_id)
     else:
         data = request.form
         task_id = int(data.get('task_id'))
