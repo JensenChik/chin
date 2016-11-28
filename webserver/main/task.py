@@ -5,6 +5,7 @@ from model import DBSession, Task, TaskInstance, Action
 from flask.ext.login import login_required, current_user
 from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
+import json
 
 
 @admin.route('/list_task')
@@ -63,6 +64,30 @@ def new_task():
 
         session.close()
         return '/list_task' if request.form.get('has_next') == 'false' else 'new_task'
+
+
+@admin.route('/reverse_task_valid', methods=['POST'])
+@login_required
+def reverse_task_valid():
+    task_id = int(request.form.get('task_id'))
+    valid = request.form.get('valid') == 'True'
+    session = DBSession()
+    task = session.query(Task).filter_by(id=task_id).first()
+    task.valid = not valid
+    session.commit()
+
+    action = Action(user_name=current_user.name, content='{}任务 {}'.format('启用' if task.valid else '停用', task.id),
+                    create_time=datetime.now())
+    session.add(action)
+    session.commit()
+
+    session.close()
+    return json.dumps({
+        "status": "success",
+        "data": {
+            "url": "/list_task"
+        }
+    })
 
 
 @admin.route('/modify_task', methods=['POST', 'GET'])
