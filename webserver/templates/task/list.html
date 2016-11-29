@@ -9,7 +9,7 @@
     </script>
     <div style="margin-top: 1%">
         <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
-               data-show-columns="true" data-show-toggle="true">
+               data-show-columns="true" data-show-toggle="true" id="table">
             <thead>
             <tr>
                 <th data-align="center" data-width="5%">任务ID</th>
@@ -34,7 +34,7 @@
                         {% if task.valid %}
                             <input type="checkbox" disabled="disabled" checked>
                         {% else %}
-                            <input type="checkbox" disabled="disabled" unchecked>
+                            <input type="checkbox" disabled="disabled">
                         {% endif %}
                     </td>
                     <td>
@@ -77,7 +77,7 @@
                     </td>
                     <td>{{ task.user }}</td>
                     <td>
-                        <div class="input-group-btn">
+                        <div class="input-group-btn dropdown">
                             <a href="/list_instance_log?task_id={{ task.id }}" class="btn btn-default btn-xs">查看日志</a>
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                 操作<span class="caret"></span>
@@ -114,6 +114,13 @@
             });
         }
 
+        $(document).ready(function () {
+            $('.dropdown').on('shown.bs.dropdown', function () {
+                $('#table').bootstrapTable('scrollTo', 'bottom');
+                var diff_y = $(window).scrollTop() - $('#table').bootstrapTable('getScrollPosition');
+                $('body,html').animate({'scrollTop': diff_y}, 0);
+            });
+        });
     </script>
 
 {% endblock %}
