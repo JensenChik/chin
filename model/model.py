@@ -5,6 +5,7 @@ import enum, json, zlib
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.types import LargeBinary
+from sqlalchemy.dialects.mysql import LONGBLOB
 
 BaseModel = declarative_base()
 
@@ -20,7 +21,8 @@ class Json(TypeDecorator):
 
 
 class BinaryString(TypeDecorator):
-    impl = LargeBinary
+    # impl = LargeBinary
+    impl = LONGBLOB
 
     def process_bind_param(self, value, dialect):
         return zlib.compress(value)
