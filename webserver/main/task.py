@@ -186,4 +186,9 @@ def run_at_once():
     session.commit()
 
     session.close()
-    return str(task_id)
+    return json.dumps({
+        'status': 'success',
+        'data': {
+            'url': '/list_instance_log?task_id={}'.format(task_id)
+        }
+    })
