@@ -62,8 +62,8 @@ class Task(BaseModel):
     def __repr__(self):
         return '<Task %s>' % self.id
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             'id': self.id,
             'name': self.name,
             'user': self.user,
@@ -82,7 +82,7 @@ class Task(BaseModel):
             'day': self.day,
             'hour': self.hour,
             'minute': self.minute
-        })
+        }
 
 
 class TaskInstance(BaseModel):

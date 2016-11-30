@@ -160,7 +160,16 @@ def get_task_detail():
     session = DBSession()
     task = session.query(Task).filter_by(id=task_id).first()
     session.close()
-    return task.to_json()
+    if task is None:
+        return json.dumps({
+            'status': 'failed',
+            'err_info': "不存在任务{}".format(task_id)
+        })
+    else:
+        return json.dumps({
+            'status': 'success',
+            'data': task.to_dict()
+        })
 
 
 @admin.route('/run_at_once', methods=['POST'])

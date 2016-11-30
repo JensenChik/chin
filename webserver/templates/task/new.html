@@ -15,7 +15,8 @@
                     继承
                 </div>
                 <div class="col-md-10">
-                    <input type="text" id="extend" class="form-control" onblur="load_task_detail()" placeholder="失去焦点后将填充数据,请耐心等候">
+                    <input type="text" id="extend" class="form-control" onblur="load_task_detail()"
+                           placeholder="失去焦点后将填充数据,请耐心等候">
                 </div>
             </div>
             <div class="row" style="margin-top: 1%">
@@ -183,37 +184,42 @@
 
         function load_task_detail() {
             $.post('/get_task_detail', {'task_id': $('#extend').val()}, function (result) {
-                var task = JSON.parse(result);
-                $('#task_name').val(task.name);
-                $('#command').val(task.command);
-                $('#valid').val(task.valid.toString());
-                $('#priority').val(task.priority);
-                $('#rerun').val(task.rerun.toString());
-                $('#rerun_times').val(task.rerun_times);
-                $('#father_task').val(task.father_task.join('\n'));
-                $('#machine_pool').val(task.machine_pool.join('\n'));
-                if (task.scheduled_type == 'day') {
-                    change_scheduled_format('每日');
-                    $('#每日').children('.scheduled_hour').children().val(task.hour);
-                    $('#每日').children('.scheduled_minute').children().val(task.minute);
-                } else if (task.scheduled_type == 'week') {
-                    change_scheduled_format('每周');
-                    $('#每周').children('.scheduled_weekday').children().val(task.weekday);
-                    $('#每周').children('.scheduled_hour').children().val(task.hour);
-                    $('#每周').children('.scheduled_minute').children().val(task.minute);
-                } else if (task.scheduled_type == 'month') {
-                    change_scheduled_format('每月');
-                    $('#每月').children('.scheduled_day').children().val(task.day);
-                    $('#每月').children('.scheduled_hour').children().val(task.hour);
-                    $('#每月').children('.scheduled_minute').children().val(task.minute);
-                } else if (task.scheduled_type == 'month') {
-                } else if (task.scheduled_type == 'once') {
-                    change_scheduled_format('一次');
-                    $('#一次').children('.scheduled_year').children().val(task.year);
-                    $('#一次').children('.scheduled_month').children().val(task.month);
-                    $('#一次').children('.scheduled_day').children().val(task.day);
-                    $('#一次').children('.scheduled_hour').children().val(task.hour);
-                    $('#一次').children('.scheduled_minute').children().val(task.minute);
+                result = JSON.parse(result);
+                if (result.status == 'success') {
+                    var task = result.data;
+                    $('#task_name').val(task.name);
+                    $('#command').val(task.command);
+                    $('#valid').val(task.valid.toString());
+                    $('#priority').val(task.priority);
+                    $('#rerun').val(task.rerun.toString());
+                    $('#rerun_times').val(task.rerun_times);
+                    $('#father_task').val(task.father_task.join('\n'));
+                    $('#machine_pool').val(task.machine_pool.join('\n'));
+                    if (task.scheduled_type == 'day') {
+                        change_scheduled_format('每日');
+                        $('#每日').children('.scheduled_hour').children().val(task.hour);
+                        $('#每日').children('.scheduled_minute').children().val(task.minute);
+                    } else if (task.scheduled_type == 'week') {
+                        change_scheduled_format('每周');
+                        $('#每周').children('.scheduled_weekday').children().val(task.weekday);
+                        $('#每周').children('.scheduled_hour').children().val(task.hour);
+                        $('#每周').children('.scheduled_minute').children().val(task.minute);
+                    } else if (task.scheduled_type == 'month') {
+                        change_scheduled_format('每月');
+                        $('#每月').children('.scheduled_day').children().val(task.day);
+                        $('#每月').children('.scheduled_hour').children().val(task.hour);
+                        $('#每月').children('.scheduled_minute').children().val(task.minute);
+                    } else if (task.scheduled_type == 'month') {
+                    } else if (task.scheduled_type == 'once') {
+                        change_scheduled_format('一次');
+                        $('#一次').children('.scheduled_year').children().val(task.year);
+                        $('#一次').children('.scheduled_month').children().val(task.month);
+                        $('#一次').children('.scheduled_day').children().val(task.day);
+                        $('#一次').children('.scheduled_hour').children().val(task.hour);
+                        $('#一次').children('.scheduled_minute').children().val(task.minute);
+                    }
+                } else if (result.status == 'failed') {
+                    alert(result.err_info);
                 }
             });
         }
@@ -243,7 +249,7 @@
             };
             $.post('/new_task', task_meta, function (result) {
                 result = JSON.parse(result);
-                if(result.status == 'success'){
+                if (result.status == 'success') {
                     location.href = result.data.url;
                 }
             });
