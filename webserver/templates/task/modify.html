@@ -236,7 +236,10 @@
                 'has_next': has_next
             };
             $.post('/modify_task', task_meta, function (result) {
-                location.href = result;
+                result = JSON.parse(result);
+                if(result.status == 'success'){
+                    location.href = result.data.url;
+                }
             });
         }
         {% if task_id is not none %}

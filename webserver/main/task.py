@@ -145,7 +145,12 @@ def modify_task():
         session.commit()
 
         session.close()
-        return '/list_task' if request.form.get('has_next') == 'false' else 'modify_task'
+        return json.dumps({
+            'status': 'success',
+            'data': {
+                'url': '/list_task' if request.form.get('has_next') == 'false' else 'modify_task'
+            }
+        })
 
 
 @admin.route('/get_task_detail', methods=['POST'])
