@@ -63,7 +63,12 @@ def new_task():
         session.commit()
 
         session.close()
-        return '/list_task' if request.form.get('has_next') == 'false' else 'new_task'
+        return json.dumps({
+            'status': 'success',
+            'data': {
+                'url': '/list_task' if request.form.get('has_next') == 'false' else 'new_task'
+            }
+        })
 
 
 @admin.route('/reverse_task_valid', methods=['POST'])

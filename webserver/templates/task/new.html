@@ -242,7 +242,10 @@
                 'has_next': has_next
             };
             $.post('/new_task', task_meta, function (result) {
-                location.href = result;
+                result = JSON.parse(result);
+                if(result.status == 'success'){
+                    location.href = result.data.url;
+                }
             });
         }
     </script>
