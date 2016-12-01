@@ -19,6 +19,13 @@ name = cubietruck-plus
 log_path = logs/worker
 heartbeat_sec = 5
 
+[mail]
+host = your_smtp_host.com
+port = your_smtp_port
+sender = sender@sender_domain.com
+passwd = password_of_sender
+receiver = receiver@receiver_domain.com
+
 [uwsgi]
 http = 0.0.0.0:8443
 chdir = /path/to/chin

@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from model import Task, TaskInstance, DBSession
 import ConfigParser
+from core.scheduler.Email import Email
 
 
 class JobTracker:
@@ -75,7 +76,20 @@ class JobTracker:
     # 任务失败反馈
     def execute_status_feedback(self, session):
         failed_tasks = session.query(TaskInstance).filter_by(status='failed').filter_by(notify=False).all()
-        pass
+        for task_instance in failed_tasks:
+            subject = '[任务失败] 任务 {}-{} 执行失败'.format(task_instance.task_id, task_instance.version)
+            msg = '''执行机器:{}\n入池时间:{}\n开始时间:{}\n结束时间:{}\n执行次数:{}\n日志详情:\n{}'''.format(
+                    task_instance.execute_machine,
+                    task_instance.pooled_time,
+                    task_instance.begin_time,
+                    task_instance.finish_time,
+                    task_instance.run_count,
+                    task_instance.log
+            )
+            email = Email()
+            email.send(subject, msg)
+            task_instance.notify = True
+        session.commit()
 
     def serve(self):
         while True:
