@@ -22,11 +22,11 @@ class JobTracker:
             self.current_date = current_date
 
             # 将昨天没有执行的任务置为失败
-            unto_tasks = session.query(TaskInstance)\
+            undo_tasks = session.query(TaskInstance)\
                 .filter(TaskInstance.version < str(self.current_date.strftime('%Y%m%d')))\
                 .filter(TaskInstance.status == None)\
                 .all()
-            for task_instance in unto_tasks:
+            for task_instance in undo_tasks:
                 task_instance.log = "任务当天没有执行，被调度器杀死"
                 task_instance.status = "failed"
 
