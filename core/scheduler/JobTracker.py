@@ -20,6 +20,17 @@ class JobTracker:
         # 跨天
         if self.current_date != current_date:
             self.current_date = current_date
+
+            # 将昨天没有执行的任务置为失败
+            unto_tasks = session.query(TaskInstance)\
+                .filter(TaskInstance.version < str(self.current_date.strftime('%Y%m%d')))\
+                .filter(TaskInstance.status == None)\
+                .all()
+            for task_instance in unto_tasks:
+                task_instance.log = "任务当天没有执行，被调度器杀死"
+                task_instance.status = "failed"
+
+            # 生成当天的版本号
             valid_tasks = session.query(Task).filter_by(valid=True).all()
             for task in valid_tasks:
                 # 当天的版本号
