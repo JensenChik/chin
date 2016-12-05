@@ -12,7 +12,7 @@
     <div class="input-group col-md-3" style="float: left;margin-top: 20px">
         <input type="text" id="task_id" class="form-control" placeholder="任务id">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onclick="get_instance()">查询</button>
+        <button class="btn btn-default" type="button" onclick="list_instance_log($('#task_id').val())">查询</button>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
                         {% elif instance.status == 'success' %}
                             <a class="btn btn-success btn-xs">成功</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
-                               onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
+                               onclick="fill_log_to_div('{{ instance.task_id }}', '{{ instance.version }}', 'log_content')">查看日志</a>
                         {% elif instance.status == 'failed' %}
                             <a class="btn btn-danger btn-xs">失败</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs">查看日志</a>
@@ -85,16 +85,6 @@
 
 
     <script>
-        function get_log_detail(task_id, version) {
-            $.post('/get_log_detail', {'task_id': task_id, 'version': version}, function (result) {
-                document.getElementById('log_content').innerText = result;
-            });
-        }
-
-        function get_instance() {
-            location.href = '/list_instance_log?task_id=' + $('#task_id').val();
-        }
-
         $(document).ready(function () {
             $('.dropdown').on('shown.bs.dropdown', function () {
                 $('#table').bootstrapTable('scrollTo', 'bottom');

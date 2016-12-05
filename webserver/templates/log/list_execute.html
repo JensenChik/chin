@@ -47,13 +47,13 @@
                         {% elif instance.status == 'success' %}
                             <a class="btn btn-success btn-xs">成功</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
-                               onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
+                               onclick="fill_log_to_div('{{ instance.task_id }}', '{{ instance.version }}', 'log_content')">查看日志</a>
                         {% elif instance.status == 'killing' %}
                             <a class="btn btn-danger btn-xs">killing</a>
                         {% elif instance.status == 'failed' %}
                             <a class="btn btn-danger btn-xs">失败</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
-                               onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
+                               onclick="fill_log_to_div('{{ instance.task_id }}', '{{ instance.version }}', 'log_content')">查看日志</a>
                         {% elif instance.status == 'repairing' %}
                             <a class="btn btn-danger btn-xs">修复中</a>
                         {% endif %}
@@ -91,18 +91,6 @@
 
 
     <script>
-        function get_log_detail(task_id, version) {
-            document.getElementById('log_content').innerText = '';
-            $.post('/get_log_detail', {'task_id': task_id, 'version': version}, function (result) {
-                document.getElementById('log_content').innerText = result;
-            });
-        }
-        function rerun(task_id, version) {
-            $.post('/rerun', {'task_id': task_id, 'version': version}, function () {
-                location.reload();
-            });
-        }
-
         $(document).ready(function () {
             $('.dropdown').on('shown.bs.dropdown', function () {
                 $('#table').bootstrapTable('scrollTo', 'bottom');
@@ -110,7 +98,6 @@
                 $('body,html').animate({'scrollTop': diff_y}, 0);
             });
         });
-
     </script>
 
     <div class="modal fade" id="log_detail" tabindex="-1" role="dialog">
