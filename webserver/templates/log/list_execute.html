@@ -48,6 +48,8 @@
                             <a class="btn btn-success btn-xs">成功</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
                                onclick="get_log_detail('{{ instance.task_id }}', '{{ instance.version }}')">查看日志</a>
+                        {% elif instance.status == 'killing' %}
+                            <a class="btn btn-danger btn-xs">killing</a>
                         {% elif instance.status == 'failed' %}
                             <a class="btn btn-danger btn-xs">失败</a>
                             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
@@ -62,11 +64,22 @@
                                 操作<span
                                     class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a onclick="rerun('{{ instance.task_id }}', '{{ instance.version }}')">重跑</a></li>
-                                <li><a href="#">中止执行</a></li>
-                                <li><a href="#">置为成功</a></li>
-                                <li><a href="#">置为失败</a></li>
-                                <li><a href="#">置为修复中</a></li>
+                                {% if instance.status == 'failed' or instance.status == 'success' %}
+                                    <li>
+                                        <a onclick="rerun('{{ instance.task_id }}', '{{ instance.version }}')">重跑</a>
+                                    </li>
+                                {% endif %}
+                                {% if instance.status == 'running' %}
+                                    <li>
+                                        <a onclick="kill_task('{{ instance.task_id }}', '{{ instance.version }}')">中止执行</a>
+                                    </li>
+                                {% elif instance.status == 'failed' or instance.status == 'repairing' %}
+                                    <li><a href="#">置为成功</a></li>
+                                    <li><a href="#">置为修复中</a></li>
+                                {% elif instance.status == 'success' %}
+                                    <li><a href="#">置为失败</a></li>
+                                    <li><a href="#">置为修复中</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </td>

@@ -60,7 +60,13 @@ class TaskTracker:
 
     # 杀死任务
     def kill(self, session):
-        pass
+        killing_tasks = session.query(TaskInstance)\
+            .filter_by(execute_machine=self.name)\
+            .filter_by(status='killing').all()
+        for task_instance in killing_tasks:
+            for running_task in self.running:
+                if running_task.task_id == task_instance.task_id and running_task.version == task_instance.version:
+                    running_task.kill()
 
     # 追踪任务执行
     def track(self, session):

@@ -70,7 +70,7 @@
                                     class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                 <li><a href="#">重跑</a></li>
-                                <li><a href="#">中止执行</a></li>
+                                <li><a onclick="kill_task('{{ instance.task_id }}', '{{ instance.version }}')">中止执行</a></li>
                                 <li><a href="#">置为成功</a></li>
                                 <li><a href="#">置为失败</a></li>
                                 <li><a href="#">置为修复中</a></li>

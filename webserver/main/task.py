@@ -192,3 +192,25 @@ def run_at_once():
             'url': '/list_instance_log?task_id={}'.format(task_id)
         }
     })
+
+
+@admin.route('/kill_task', methods=['POST'])
+def kill_task():
+    task_id = int(request.form.get("task_id"))
+    version = request.form.get("version")
+    session = DBSession()
+    task_instance = session.query(TaskInstance).filter_by(task_id=task_id).filter_by(version=version).first()
+    task_instance.status = 'killing'
+    session.commit()
+
+    action = Action(user_name=current_user.name, content='中止版本号为 {} 的任务 {}'.format(version, task_id),
+                    create_time=datetime.now())
+    session.add(action)
+    session.commit()
+
+    session.close()
+    return json.dumps({
+        'status': 'success',
+        'data': {
+        }
+    })
