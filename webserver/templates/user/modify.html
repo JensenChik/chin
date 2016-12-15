@@ -14,7 +14,7 @@
                 用户名
             </div>
             <div class="col-md-10">
-                <input type="text" id="user_name" class="form-control" onblur="get_user_detail()">
+                <input type="text" id="user_name" class="form-control" onblur="get_user_detail($('#user_name').val())">
             </div>
         </div>
         <div class="row" style="margin-top: 1%">
@@ -43,36 +43,10 @@
         </div>
 
         <div class="row" align="center" style="margin-top: 1%">
-            <button type="button" class="btn btn-primary" onclick="modify_user()">保存</button>
+            <button type="button" class="btn btn-primary"
+                    onclick="modify_user($('#user_name').val(), $('#old_password').val(), $('#new_password').val(), $('#email').val())">
+                保存
+            </button>
         </div>
     </div>
-    <script>
-        function modify_user() {
-            var user = {
-                "user_name": $('#user_name').val(),
-                "old_password": $('#old_password').val(),
-                "new_password": $('#new_password').val(),
-                "email": $('#email').val()
-            };
-            $.post('/modify_user', user, function (result) {
-                result = JSON.parse(result);
-                if (result.status == 'success') {
-                    location.href = result.data.href;
-                } else if (result.status == 'failed') {
-                    alert(result.err_info);
-                }
-            });
-        }
-
-        function get_user_detail() {
-            $.post('/get_user_detail', {'user_name': $('#user_name').val()}, function (result) {
-                result = JSON.parse(result);
-                if (result.status == 'success') {
-                    $('#email').val(result.data.email);
-                } else if (result.status == 'failed') {
-                    alert(result.err_info);
-                }
-            });
-        }
-    </script>
 {% endblock %}

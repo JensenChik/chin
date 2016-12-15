@@ -47,3 +47,31 @@ function reverse_task_valid(task_id, valid) {
         }
     });
 }
+
+function get_user_detail(user_name) {
+    $.post('/get_user_detail', {'user_name': user_name}, function (result) {
+        result = JSON.parse(result);
+        if (result.status == 'success') {
+            $('#email').val(result.data.email);
+        } else if (result.status == 'failed') {
+            alert(result.err_info);
+        }
+    });
+}
+
+function modify_user(user_name, old_password, new_password, email) {
+    var user = {
+        "user_name": user_name,
+        "old_password": old_password,
+        "new_password": new_password,
+        "email": email
+    };
+    $.post('/modify_user', user, function (result) {
+        result = JSON.parse(result);
+        if (result.status == 'success') {
+            location.href = result.data.href;
+        } else if (result.status == 'failed') {
+            alert(result.err_info);
+        }
+    });
+}
