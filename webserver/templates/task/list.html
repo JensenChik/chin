@@ -101,24 +101,6 @@
     </div>
 
     <script>
-        function run_at_once(task_id) {
-            $.post('/run_at_once', {'task_id': task_id}, function (result) {
-                result = JSON.parse(result);
-                if (result.status == 'success') {
-                    location.href = result.data.url;
-                }
-            });
-        }
-
-        function reverse_task_valid(task_id, valid) {
-            $.post('/reverse_task_valid', {'task_id': task_id, 'valid': valid}, function (result) {
-                result = JSON.parse(result);
-                if (result.status == 'success') {
-                    location.href = result.data.url;
-                }
-            });
-        }
-
         $(document).ready(function () {
             $('.dropdown').on('shown.bs.dropdown', function () {
                 $('#table').bootstrapTable('scrollTo', 'bottom');

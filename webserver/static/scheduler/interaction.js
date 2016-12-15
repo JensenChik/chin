@@ -29,3 +29,21 @@ function rerun(task_id, version) {
 function list_instance_log(task_id) {
     location.href = '/list_instance_log?task_id=' + task_id;
 }
+
+function run_at_once(task_id) {
+    $.post('/run_at_once', {'task_id': task_id}, function (result) {
+        result = JSON.parse(result);
+        if (result.status == 'success') {
+            location.href = result.data.url;
+        }
+    });
+}
+
+function reverse_task_valid(task_id, valid) {
+    $.post('/reverse_task_valid', {'task_id': task_id, 'valid': valid}, function (result) {
+        result = JSON.parse(result);
+        if (result.status == 'success') {
+            location.href = result.data.url;
+        }
+    });
+}
