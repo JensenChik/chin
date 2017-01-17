@@ -3,7 +3,8 @@ from . import admin
 from flask import render_template, request
 from model import DBSession, Task, TaskInstance, Action
 from flask.ext.login import login_required, current_user
-from sqlalchemy import and_
+from sqlalchemy import and_, desc
+from sqlalchemy.sql.expression import case
 from datetime import datetime
 
 
@@ -13,8 +14,11 @@ def list_execute_log():
     session = DBSession()
     tasks_instance = session.query(TaskInstance, Task) \
         .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
-        .order_by(TaskInstance.finish_time.desc(), TaskInstance.begin_time.desc(),
-                  TaskInstance.pooled_time.desc()).all()
+        .order_by(desc(case((
+            (and_(TaskInstance.finish_time >= TaskInstance.begin_time, TaskInstance.finish_time >= TaskInstance.pooled_time), TaskInstance.finish_time),
+            (and_(TaskInstance.begin_time >= TaskInstance.finish_time, TaskInstance.begin_time >= TaskInstance.pooled_time), TaskInstance.begin_time),
+            (and_(TaskInstance.pooled_time >= TaskInstance.finish_time, TaskInstance.pooled_time >= TaskInstance.begin_time), TaskInstance.pooled_time),
+        ))))
     session.close()
     return render_template('log/list_execute.html', tasks_instance=tasks_instance)
 
@@ -53,7 +57,8 @@ def rerun():
     task_instance.status = None
     session.commit()
 
-    action = Action(user_name=current_user.name, content='重新执行版本号为 {} 的任务 {}'.format(version, task_id), create_time=datetime.now())
+    action = Action(user_name=current_user.name, content='重新执行版本号为 {} 的任务 {}'.format(version, task_id),
+                    create_time=datetime.now())
     session.add(action)
     session.commit()
 
