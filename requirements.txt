@@ -1,2 +1,5 @@
 flask-login=0.4.0
 flask-script=2.0.5
+mysql-python=1.2.5
+sqlalchemy=1.1.4
+enum=0.4.6
