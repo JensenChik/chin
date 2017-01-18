@@ -4,23 +4,16 @@ from flask import render_template, request
 from model import DBSession, Task, TaskInstance, Action
 from flask.ext.login import login_required, current_user
 from sqlalchemy import and_, desc
-from sqlalchemy.sql.expression import case
+from sqlalchemy.sql.functions import coalesce
+from sqlalchemy.sql import func
 from datetime import datetime
+import json
 
 
 @admin.route('/list_execute_log')
 @login_required
 def list_execute_log():
-    session = DBSession()
-    tasks_instance = session.query(TaskInstance, Task) \
-        .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
-        .order_by(desc(case((
-            (and_(TaskInstance.finish_time >= TaskInstance.begin_time, TaskInstance.finish_time >= TaskInstance.pooled_time), TaskInstance.finish_time),
-            (and_(TaskInstance.begin_time >= TaskInstance.finish_time, TaskInstance.begin_time >= TaskInstance.pooled_time), TaskInstance.begin_time),
-            (and_(TaskInstance.pooled_time >= TaskInstance.finish_time, TaskInstance.pooled_time >= TaskInstance.begin_time), TaskInstance.pooled_time),
-        ))))
-    session.close()
-    return render_template('log/list_execute.html', tasks_instance=tasks_instance)
+    return render_template('log/list_execute.html')
 
 
 @admin.route('/list_instance_log')
@@ -65,6 +58,94 @@ def rerun():
 
     session.close()
     return render_template('log/list_action.html')
+
+
+@admin.route('/get_log_by_page', methods=['GET'])
+@login_required
+def get_log_by_page():
+    limit = int(request.args.get('limit'))
+    offset = int(request.args.get('offset'))
+    session = DBSession()
+    tasks_instance = session.query(TaskInstance, Task) \
+        .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
+        .order_by(desc(func.greatest(
+        coalesce(TaskInstance.pooled_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.begin_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.finish_time, func.date('1900-01-01'))
+    )))
+
+    count = tasks_instance.count()
+    all_instance = tasks_instance.offset(offset).limit(limit).all()
+
+    table = []
+
+    status_template = """
+        {% if status == 'waiting' %}
+            <a class="btn btn-default btn-xs">等待中</a>
+        {% elif status == 'running' %}
+            <a class="btn btn-warning btn-xs">运行中</a>
+        {% elif status == 'success' %}
+            <a class="btn btn-success btn-xs">成功</a>
+            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
+               onclick="fill_log_to_div('{{ task_id }}', '{{ version }}', 'log_content')">查看日志</a>
+        {% elif status == 'killing' %}
+            <a class="btn btn-danger btn-xs">killing</a>
+        {% elif status == 'failed' %}
+            <a class="btn btn-danger btn-xs">失败</a>
+            <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
+               onclick="fill_log_to_div('{{ task_id }}', '{{ version }}', 'log_content')">查看日志</a>
+        {% elif instance.status == 'repairing' %}
+            <a class="btn btn-danger btn-xs">修复中</a>
+        {% endif %}
+    """
+
+    action_template = """
+        <div class="input-group-btn dropdown">
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                操作<span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                {% if status == 'failed' or status == 'success' %}
+                    <li><a onclick="rerun('{{ task_id }}', '{{ version }}')">重跑</a></li>
+                {% endif %}
+                {% if status == 'running' %}
+                    <li><a onclick="kill_task('{{ task_id }}', '{{ version }}')">中止执行</a></li>
+                {% elif status == 'failed' or status == 'repairing' %}
+                    <li><a href="#">置为成功</a></li>
+                    <li><a href="#">置为修复中</a></li>
+                {% elif status == 'success' %}
+                    <li><a href="#">置为失败</a></li>
+                    <li><a href="#">置为修复中</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    """
+    from jinja2 import Template
+
+    for instance, meta in all_instance:
+        row = {
+            'task_id': instance.task_id,
+            'version': instance.version,
+            'name': meta.name,
+            'execute_machine': '<a class="btn btn-default btn-xs">%s</a>' % instance.execute_machine,
+            'pooled_time': str(instance.pooled_time or ''),
+            'begin_time': str(instance.begin_time or ''),
+            'finish_time': str(instance.finish_time or ''),
+            'run_count': instance.run_count,
+            'status': Template(status_template).render(
+                status=instance.status,
+                task_id=instance.task_id,
+                version=instance.version
+            ),
+            'action': Template(action_template).render(
+                status=instance.status,
+                task_id=instance.task_id,
+                version=instance.version
+            )
+        }
+        table.append(row)
+    session.close()
+
+    return json.dumps({'total': count, 'rows': table})
 
 
 @admin.route('/get_log_detail', methods=['POST'])
