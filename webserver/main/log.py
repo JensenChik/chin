@@ -54,7 +54,7 @@ def rerun():
     # todo:非法重跑检测
     session = DBSession()
     task_instance = session.query(TaskInstance).filter_by(task_id=task_id, version=version).first()
-    task_instance.pooling_time = datetime.now()
+    task_instance.pooled_time = datetime.now()
     task_instance.status = 'waiting'
     session.commit()
 
