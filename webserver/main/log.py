@@ -54,7 +54,7 @@ def rerun():
     # todo:非法重跑检测
     session = DBSession()
     task_instance = session.query(TaskInstance).filter_by(task_id=task_id, version=version).first()
-    task_instance.status = None
+    task_instance.status = 'waiting'
     session.commit()
 
     action = Action(user_name=current_user.name, content='重新执行版本号为 {} 的任务 {}'.format(version, task_id),
