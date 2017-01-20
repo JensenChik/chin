@@ -43,6 +43,19 @@ class TaskTracker:
         self.log_path = cf.get('worker', 'log_path')
         self.running = []
 
+        # 清理worker重启前遗留的任务
+        session = DBSession()
+        remain_task = session.query(TaskInstance)\
+            .filter_by(execute_machine=self.name)\
+            .filter_by(status='running')\
+            .all()
+        for instance in remain_task:
+            instance.log = '由于 worker 重启，宕机前 running 的任务无法确定是否执行成功，请手动校验'
+            instance.status = 'failed'
+            instance.finish_time = datetime.now()
+        session.commit()
+        session.close()
+
     # 扫描数据库看是否有属于自己的任务
     def execute(self, session):
         waiting_task = session.query(TaskInstance) \
