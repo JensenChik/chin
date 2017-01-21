@@ -3,6 +3,9 @@ import time
 from datetime import datetime
 from model import Task, TaskInstance, DBSession
 import ConfigParser
+import logging
+import traceback
+import os
 from core.scheduler.Email import Email
 
 
@@ -14,6 +17,14 @@ class JobTracker:
         cf.read('chin.ini')
         self.heartbeat_sec = int(cf.get('scheduler', 'heartbeat_sec'))
 
+        # 配置logger
+        self.log_path = cf.get('scheduler', 'log_path')
+        self.logger = logging.getLogger('scheduler')
+        handler = logging.FileHandler(os.path.join(self.log_path, 'scheduler.log'))
+        handler.setLevel(logging.INFO)
+        handler.setFormatter(logging.Formatter('[%(levelname)s]\t%(asctime)s\t%(message)s'))
+        self.logger.addHandler(handler)
+
     # 每天凌晨初始化版本号
     def init_every_day(self, session):
         current_date = datetime.date(datetime.now())
@@ -22,9 +33,9 @@ class JobTracker:
             self.current_date = current_date
 
             # 将昨天没有执行的任务置为失败
-            undo_tasks = session.query(TaskInstance)\
-                .filter(TaskInstance.version < str(self.current_date.strftime('%Y%m%d')))\
-                .filter(TaskInstance.status == None)\
+            undo_tasks = session.query(TaskInstance) \
+                .filter(TaskInstance.version < str(self.current_date.strftime('%Y%m%d'))) \
+                .filter(TaskInstance.status == None) \
                 .all()
             for task_instance in undo_tasks:
                 task_instance.log = "任务当天没有执行，被调度器杀死"
@@ -90,12 +101,12 @@ class JobTracker:
         for task_instance in failed_tasks:
             subject = '[任务失败] 任务 {}-{} 执行失败'.format(task_instance.task_id, task_instance.version)
             msg = '''执行机器:{}\n入池时间:{}\n开始时间:{}\n结束时间:{}\n执行次数:{}\n日志详情:\n{}'''.format(
-                    task_instance.execute_machine,
-                    task_instance.pooled_time,
-                    task_instance.begin_time,
-                    task_instance.finish_time,
-                    task_instance.run_count,
-                    task_instance.log
+                task_instance.execute_machine,
+                task_instance.pooled_time,
+                task_instance.begin_time,
+                task_instance.finish_time,
+                task_instance.run_count,
+                task_instance.log
             )
             email = Email()
             email.send(subject, msg)
@@ -104,10 +115,14 @@ class JobTracker:
 
     def serve(self):
         while True:
-            session = DBSession()
-            self.init_every_day(session)
-            self.make_waiting(session)
-            self.allocate_machine(session)
-            self.execute_status_feedback(session)
-            session.close()
-            time.sleep(self.heartbeat_sec)
+            try:
+                session = DBSession()
+                self.init_every_day(session)
+                self.make_waiting(session)
+                self.allocate_machine(session)
+                self.execute_status_feedback(session)
+                session.close()
+                time.sleep(self.heartbeat_sec)
+            except Exception, e:
+                self.logger.error(e)
+                self.logger.error(traceback.format_exc())
