@@ -4,18 +4,16 @@ from flask import Flask
 from flask.ext.login import LoginManager
 import ConfigParser
 import logging
+import os
 
 cf = ConfigParser.ConfigParser()
 cf.read('chin.ini')
 
-logging.basicConfig(
-        level=logging.DEBUG,
-        format='[%(levelname)s]\t%(asctime)s\t%(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        filename=cf.get('webserver', 'log_path') + '/webserver.log',
-        filemode='a'
-)
 logger = logging.getLogger('webserver')
+handler = logging.FileHandler(os.path.join(cf.get('webserver', 'log_path'), 'webserver.log'))
+handler.setLevel(logging.DEBUG)
+handler.setFormatter(logging.Formatter('[%(levelname)s]\t%(asctime)s\t%(message)s'))
+logger.addHandler(handler)
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
