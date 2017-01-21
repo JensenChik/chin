@@ -94,7 +94,7 @@ def get_log_by_page():
             <a class="btn btn-danger btn-xs">失败</a>
             <a data-toggle="modal" data-target="#log_detail" class="btn btn-default btn-xs"
                onclick="fill_log_to_div('{{ task_id }}', '{{ version }}', 'log_content')">查看日志</a>
-        {% elif instance.status == 'repairing' %}
+        {% elif status == 'repairing' %}
             <a class="btn btn-danger btn-xs">修复中</a>
         {% endif %}
     """
