@@ -6,6 +6,8 @@ from datetime import datetime
 from subprocess import Popen
 from model import Task, TaskInstance, DBSession
 import ConfigParser
+import logging
+import traceback
 
 
 class Shell:
@@ -40,14 +42,21 @@ class TaskTracker:
         cf.read('chin.ini')
         self.heartbeat_sec = int(cf.get('worker', 'heartbeat_sec'))
         self.name = cf.get('worker', 'name')
-        self.log_path = cf.get('worker', 'log_path')
         self.running = []
+
+        # 配置logger
+        self.log_path = cf.get('worker', 'log_path')
+        self.logger = logging.getLogger('worker')
+        handler = logging.FileHandler(os.path.join(self.log_path, 'worker.log'))
+        handler.setLevel(logging.INFO)
+        handler.setFormatter(logging.Formatter('[%(levelname)s]\t%(asctime)s\t%(message)s'))
+        self.logger.addHandler(handler)
 
         # 清理worker重启前遗留的任务
         session = DBSession()
-        remain_task = session.query(TaskInstance)\
-            .filter_by(execute_machine=self.name)\
-            .filter_by(status='running')\
+        remain_task = session.query(TaskInstance) \
+            .filter_by(execute_machine=self.name) \
+            .filter_by(status='running') \
             .all()
         for instance in remain_task:
             instance.log = '由于 worker 重启，宕机前 running 的任务无法确定是否执行成功，请手动校验'
@@ -73,8 +82,8 @@ class TaskTracker:
 
     # 杀死任务
     def kill(self, session):
-        killing_tasks = session.query(TaskInstance)\
-            .filter_by(execute_machine=self.name)\
+        killing_tasks = session.query(TaskInstance) \
+            .filter_by(execute_machine=self.name) \
             .filter_by(status='killing').all()
         for task_instance in killing_tasks:
             not_in_running_list = True
@@ -115,9 +124,13 @@ class TaskTracker:
 
     def serve(self):
         while True:
-            session = DBSession()
-            self.execute(session)
-            time.sleep(self.heartbeat_sec)
-            self.kill(session)
-            self.track(session)
-            session.close()
+            try:
+                session = DBSession()
+                self.execute(session)
+                time.sleep(self.heartbeat_sec)
+                self.kill(session)
+                self.track(session)
+                session.close()
+            except Exception, e:
+                self.logger.error(e)
+                self.logger.error(traceback.format_exc())
