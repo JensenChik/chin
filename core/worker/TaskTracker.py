@@ -77,9 +77,20 @@ class TaskTracker:
             .filter_by(execute_machine=self.name)\
             .filter_by(status='killing').all()
         for task_instance in killing_tasks:
+            not_in_running_list = True
+
+            # 常规的 killing 任务
             for running_task in self.running:
                 if running_task.task_id == task_instance.task_id and running_task.version == task_instance.version:
                     running_task.kill()
+                    not_in_running_list = False
+
+            # 在worker挂掉期间killing任务
+            if not_in_running_list:
+                task_instance.status = False
+                task_instance.log = 'worker宕机期间执行killing操作，任务不确定是否killing成功，请手动确认'
+                task_instance.finish_time = datetime.now()
+        session.commit()
 
     # 追踪任务执行
     def track(self, session):
