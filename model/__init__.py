@@ -1,7 +1,7 @@
 # coding=utf-8
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from model import Task, TaskInstance, BaseModel, User, Action
+from model import Task, TaskInstance, BaseModel, User, Action, Machine
 import ConfigParser
 from datetime import datetime
 import json

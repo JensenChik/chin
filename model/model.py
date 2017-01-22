@@ -137,3 +137,15 @@ class Action(BaseModel):
 
     def __repr__(self):
         return '<action %s>' % self.id
+
+
+class Machine(BaseModel):
+    __tablename__ = 'machine'
+
+    id = Column(Integer, primary_key=True, doc="机器id")
+    name = Column(String(64), unique=True, index=True, doc="机器名")
+    ip = Column(String(15), doc="机器ip")
+    mac = Column(String(20), doc="机器mac地址")
+
+    def __repr__(self):
+        return '<machine %s>' % self.id
