@@ -23,6 +23,16 @@
             </thead>
 
             <tbody>
+            {% for machine in machines %}
+                <tr>
+                    <td>{{ machine.name }}</td>
+                    <td>{{ machine.ip or '' }}</td>
+                    <td>{{ machine.mac or '' }}</td>
+                    <td>{{ machine.cpu_load or '' }}</td>
+                    <td>{{ machine.men_load or '' }}</td>
+                    <td>{{ machine.update_time or '' }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

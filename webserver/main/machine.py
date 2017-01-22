@@ -10,9 +10,9 @@ from datetime import datetime
 @login_required
 def list_machine():
     session = DBSession()
-    session.query(Machine)
+    machines = session.query(Machine).all()
     session.close()
-    return render_template('machine/list.html')
+    return render_template('machine/list.html', machines=machines)
 
 
 @admin.route('/list_machine_status')
