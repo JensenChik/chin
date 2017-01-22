@@ -9,35 +9,36 @@
         document.getElementById("new_machine").className = "active";
     </script>
     <div style="margin: 2% 10% 0 10%">
-        <div class="row">
-            <div class="col-md-2" align="right">
-                机器名
+        <form action="/new_machine" method="post">
+            <div class="row">
+                <div class="col-md-2" align="right">
+                    机器名
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="machine_name" class="form-control">
+                </div>
             </div>
-            <div class="col-md-10">
-                <input type="text" name="user_name" class="form-control">
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    ip地址
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="ip" class="form-control" placeholder="可选">
+                </div>
             </div>
-        </div>
-        <div class="row" style="margin-top: 1%">
-            <div class="col-md-2" align="right">
-                ip地址
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    mac地址
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="mac" class="form-control" placeholder="可选">
+                </div>
             </div>
-            <div class="col-md-10">
-                <input type="text" name="user_name" class="form-control" placeholder="可选">
-            </div>
-        </div>
-        <div class="row" style="margin-top: 1%">
-            <div class="col-md-2" align="right">
-                mac地址
-            </div>
-            <div class="col-md-10">
-                <input type="text" name="user_name" class="form-control" placeholder="可选">
-            </div>
-        </div>
 
-        <div class="row" align="center" style="margin-top: 1%">
-            <button type="submit" class="btn btn-primary">保存</button>
-            <button type="submit" class="btn btn-primary">保存并新建下一个</button>
-        </div>
+            <div class="row" align="center" style="margin-top: 1%">
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
     </div>
 
 {% endblock %}
