@@ -9,6 +9,9 @@ from datetime import datetime
 @admin.route('/list_machine')
 @login_required
 def list_machine():
+    session = DBSession()
+    session.query(Machine)
+    session.close()
     return render_template('machine/list.html')
 
 
@@ -24,9 +27,8 @@ def new_machine():
     if request.method == 'GET':
         return render_template('machine/new.html')
     else:
-        print 'hello'
         machine = Machine()
-        machine.name = request.form.get('name')
+        machine.name = request.form.get('machine_name')
         machine.ip = request.form.get('ip')
         machine.mac = request.form.get('mac')
         session = DBSession()
