@@ -146,6 +146,9 @@ class Machine(BaseModel):
     name = Column(String(64), unique=True, index=True, doc="机器名")
     ip = Column(String(15), doc="机器ip")
     mac = Column(String(20), doc="机器mac地址")
+    cpu_load = Column(Integer, doc="当前cpu负载")
+    men_load = Column(Integer, doc="当前内存负载")
+    update_time = Column(DateTime, doc="更新时间")
 
     def __repr__(self):
         return '<machine %s>' % self.id
