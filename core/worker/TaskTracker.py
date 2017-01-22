@@ -127,10 +127,10 @@ class TaskTracker:
             try:
                 session = DBSession()
                 self.execute(session)
-                time.sleep(self.heartbeat_sec)
                 self.kill(session)
                 self.track(session)
                 session.close()
             except Exception, e:
                 self.logger.error(e)
                 self.logger.error(traceback.format_exc())
+            time.sleep(self.heartbeat_sec)

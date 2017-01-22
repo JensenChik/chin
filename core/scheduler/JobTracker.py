@@ -122,7 +122,7 @@ class JobTracker:
                 self.allocate_machine(session)
                 self.execute_status_feedback(session)
                 session.close()
-                time.sleep(self.heartbeat_sec)
             except Exception, e:
                 self.logger.error(e)
                 self.logger.error(traceback.format_exc())
+            time.sleep(self.heartbeat_sec)
