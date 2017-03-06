@@ -122,7 +122,7 @@ class TaskTracker:
     # 反馈自身负载情况
     def health_feedback(self, session):
         men_load = psutil.virtual_memory().percent
-        cpu_load = psutil.cpu_percent(1)
+        cpu_load = psutil.cpu_percent(3)
         machine = session.query(Machine).filter_by(name=self.name).first()
         machine.men_load = men_load
         machine.cpu_load = cpu_load
@@ -140,7 +140,6 @@ class TaskTracker:
                 self.health_feedback(session)
                 session.close()
             except Exception, e:
-                print e
                 self.logger.error(e)
                 self.logger.error(traceback.format_exc())
             time.sleep(self.heartbeat_sec)
