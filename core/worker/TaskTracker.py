@@ -121,17 +121,14 @@ class TaskTracker:
 
     # 反馈自身负载情况
     def health_feedback(self, session):
-        print self.name,
         men_load = psutil.virtual_memory().percent
         cpu_load = psutil.cpu_percent(1)
         machine = session.query(Machine).filter_by(name=self.name).first()
-        print machine
         machine.men_load = men_load
         machine.cpu_load = cpu_load
         machine.update_time = datetime.now()
         session.add(machine)
         session.commit()
-
 
     def serve(self):
         while True:
