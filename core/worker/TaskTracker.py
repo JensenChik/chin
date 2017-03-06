@@ -4,10 +4,11 @@ import signal
 import time
 from datetime import datetime
 from subprocess import Popen
-from model import Task, TaskInstance, DBSession
+from model import Task, TaskInstance, DBSession, Machine
 import ConfigParser
 import logging
 import traceback
+import psutil
 
 
 class Shell:
@@ -119,8 +120,18 @@ class TaskTracker:
         session.commit()
 
     # 反馈自身负载情况
-    def health_feedback(self):
-        pass
+    def health_feedback(self, session):
+        print self.name,
+        men_load = psutil.virtual_memory().percent
+        cpu_load = psutil.cpu_percent(1)
+        machine = session.query(Machine).filter_by(name=self.name).first()
+        print machine
+        machine.men_load = men_load
+        machine.cpu_load = cpu_load
+        machine.update_time = datetime.now()
+        session.add(machine)
+        session.commit()
+
 
     def serve(self):
         while True:
@@ -129,8 +140,10 @@ class TaskTracker:
                 self.execute(session)
                 self.kill(session)
                 self.track(session)
+                self.health_feedback(session)
                 session.close()
             except Exception, e:
+                print e
                 self.logger.error(e)
                 self.logger.error(traceback.format_exc())
             time.sleep(self.heartbeat_sec)
