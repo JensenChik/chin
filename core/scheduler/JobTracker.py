@@ -6,6 +6,7 @@ import ConfigParser
 import logging
 import traceback
 import os
+from random import choice
 from core.scheduler.Email import Email
 
 
@@ -91,7 +92,8 @@ class JobTracker:
     def allocate_machine(self, session):
         waiting_tasks = session.query(TaskInstance).filter_by(status='waiting').all()
         for task_instance in waiting_tasks:
-            task_instance.execute_machine = 'cubietruck-plus'
+            machine_pool = session.query(Task).filter_by(id=task_instance.task_id).first().machine_pool
+            task_instance.execute_machine = choice(machine_pool)
             session.add(task_instance)
         session.commit()
 
