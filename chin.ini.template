@@ -19,7 +19,7 @@ name = cubietruck-plus
 log_path = logs/worker
 heartbeat_sec = 5
 
-[mail]
+[email]
 host = your_smtp_host.com
 port = your_smtp_port
 sender = sender@sender_domain.com
@@ -35,8 +35,8 @@ processes = 4
 threads = 2
 
 # [program:webserver]
-# command=env PATH="/path/to/your/python/bin" uwsgi /path/to/chin/chin.ini
 # directory=/path/to/chin
+# command=env PATH="/path/to/your/python/bin" uwsgi chin.ini
 # user=root
 # autostart=true
 # autorestart=true
@@ -44,8 +44,8 @@ threads = 2
 # die-on-term=true
 
 # [program:scheduler]
-# command=env PATH="/path/to/your/python/bin" python /path/to/chin/chin.py scheduler
 # directory=/path/to/chin
+# command=env PATH="/path/to/your/python/bin" python chin.py scheduler
 # user=root
 # autostart=true
 # autorestart=true
@@ -53,8 +53,8 @@ threads = 2
 # die-on-term=true
 
 # [program:worker]
-# command=env PATH="/path/to/your/python/bin" python /path/to/chin/chin.py worker
 # directory=/path/to/chin
+# command=env PATH="/path/to/your/python/bin" python chin.py worker
 # user=root
 # autostart=true
 # autorestart=true
