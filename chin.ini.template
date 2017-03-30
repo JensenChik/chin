@@ -43,3 +43,20 @@ threads = 2
 # stdout_logfile=/path/to/chin/logs/uwsgi_supervisor.log
 # die-on-term=true
 
+# [program:scheduler]
+# command=env PATH="/path/to/your/python/bin" python /path/to/chin/chin.py scheduler
+# directory=/path/to/chin
+# user=root
+# autostart=true
+# autorestart=true
+# stdout_logfile=/path/to/chin/logs/scheduler/scheduler_supervisor.log
+# die-on-term=true
+
+# [program:worker]
+# command=env PATH="/path/to/your/python/bin" python /path/to/chin/chin.py worker
+# directory=/path/to/chin
+# user=root
+# autostart=true
+# autorestart=true
+# stdout_logfile=/path/to/chin/logs/worker/worker_supervisor.log
+# die-on-term=true
