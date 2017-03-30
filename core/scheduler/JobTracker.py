@@ -127,4 +127,5 @@ class JobTracker:
             except Exception, e:
                 self.logger.error(e)
                 self.logger.error(traceback.format_exc())
+                session.close()
             time.sleep(self.heartbeat_sec)
