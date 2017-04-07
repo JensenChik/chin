@@ -63,22 +63,7 @@ def rerun():
 @admin.route('/get_log_by_page', methods=['GET'])
 @login_required
 def get_log_by_page():
-    limit = int(request.args.get('limit'))
-    offset = int(request.args.get('offset'))
-    session = DBSession()
-    tasks_instance = session.query(TaskInstance, Task) \
-        .join(Task, and_(TaskInstance.task_id == Task.id, TaskInstance.status.isnot(None))) \
-        .order_by(desc(func.greatest(
-        coalesce(TaskInstance.pooled_time, func.date('1900-01-01')),
-        coalesce(TaskInstance.begin_time, func.date('1900-01-01')),
-        coalesce(TaskInstance.finish_time, func.date('1900-01-01'))
-    )))
-
-    count = tasks_instance.count()
-    all_instance = tasks_instance.offset(offset).limit(limit).all()
-
-    table = []
-
+    from jinja2 import Template
     status_template = """
         {% if status == 'waiting' %}
             <a class="btn btn-default btn-xs">等待中</a>
@@ -119,9 +104,25 @@ def get_log_by_page():
             </ul>
         </div>
     """
-    from jinja2 import Template
 
-    for instance, meta in all_instance:
+    limit = int(request.args.get('limit'))
+    offset = int(request.args.get('offset'))
+    session = DBSession()
+
+    tasks_instance = session.query(TaskInstance) \
+        .filter(TaskInstance.status != None) \
+        .order_by(desc(func.greatest(
+        coalesce(TaskInstance.pooled_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.begin_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.finish_time, func.date('1900-01-01'))))
+    )
+    count = tasks_instance.count()
+    tasks_instance = tasks_instance.offset(offset).limit(limit).all()
+
+    table = []
+
+    for instance in tasks_instance:
+        meta = session.query(Task).filter_by(id=instance.task_id).first()
         row = {
             'task_id': instance.task_id,
             'version': instance.version,
