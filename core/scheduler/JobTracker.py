@@ -41,6 +41,7 @@ class JobTracker:
             for task_instance in undo_tasks:
                 task_instance.log = "任务当天没有执行，被调度器杀死"
                 task_instance.status = "failed"
+                task_instance.finish_time = datetime.now()
 
             # 生成当天的版本号
             valid_tasks = session.query(Task).filter_by(valid=True).all()
