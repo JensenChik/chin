@@ -39,7 +39,7 @@
                     </td>
                     <td>
                         {% for machine in task.machine_pool %}
-                            {% if machine != ''　 %}
+                            {% if machine != '' %}
                                 <a href="#" class="btn btn-default btn-xs">{{ machine }}</a>
                             {% endif %}
                         {% endfor %}
@@ -84,6 +84,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                 <li><a onclick="run_at_once('{{ task.id }}')">立即执行</a></li>
+                                <li><a onclick="join_queue('{{ task.id }}')">加入当天队列</a></li>
                                 <li><a href="/modify_task?task_id={{ task.id }}">编辑</a></li>
                                 {% if task.valid %}
                                     <li><a onclick="reverse_task_valid('{{ task.id }}', '{{ task.valid }}')">停用</a></li>

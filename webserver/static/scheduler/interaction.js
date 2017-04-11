@@ -39,6 +39,13 @@ function run_at_once(task_id) {
     });
 }
 
+function join_queue(task_id) {
+    $.post('/join_queue', {'task_id': task_id}, function (result) {
+        result = JSON.parse(result);
+        alert(result.info);
+    })
+}
+
 function reverse_task_valid(task_id, valid) {
     $.post('/reverse_task_valid', {'task_id': task_id, 'valid': valid}, function (result) {
         result = JSON.parse(result);

@@ -26,23 +26,23 @@ def new_task():
         data = request.form
         father_tasks = data.get('father_task').strip()
         task = Task(
-                name=data.get('task_name'),
-                user=current_user.name,
-                create_time=datetime.now(),
-                command=data.get('command'),
-                priority=data.get('priority'),
-                machine_pool=data.get('machine_pool').split('\n'),
-                father_task=[int(i) for i in father_tasks.split('\n')] if father_tasks != '' else [],
-                valid=data.get('valid') == 'true',
-                rerun=data.get('rerun') == 'true',
-                rerun_times=data.get('rerun_times'),
-                scheduled_type=data.get('scheduled_type'),
-                year=data.get('year'),
-                month=data.get('month'),
-                weekday=data.get('weekday'),
-                day=data.get('day'),
-                hour=data.get('hour'),
-                minute=data.get('minute')
+            name=data.get('task_name'),
+            user=current_user.name,
+            create_time=datetime.now(),
+            command=data.get('command'),
+            priority=data.get('priority'),
+            machine_pool=data.get('machine_pool').split('\n'),
+            father_task=[int(i) for i in father_tasks.split('\n')] if father_tasks != '' else [],
+            valid=data.get('valid') == 'true',
+            rerun=data.get('rerun') == 'true',
+            rerun_times=data.get('rerun_times'),
+            scheduled_type=data.get('scheduled_type'),
+            year=data.get('year'),
+            month=data.get('month'),
+            weekday=data.get('weekday'),
+            day=data.get('day'),
+            hour=data.get('hour'),
+            minute=data.get('minute')
         )
         session = DBSession()
         session.add(task)
@@ -191,6 +191,38 @@ def run_at_once():
         'data': {
             'url': '/list_instance_log?task_id={}'.format(task_id)
         }
+    })
+
+
+@admin.route('/join_queue', methods=['POST'])
+def join_queue():
+    task_id = int(request.form.get("task_id"))
+    session = DBSession()
+    meta = session.query(Task).filter_by(id=task_id).first()
+    current_date = datetime.today()
+    version = datetime(current_date.year, current_date.month, current_date.day,
+                       meta.hour, meta.minute, 0).strftime('%Y%m%d%H%M%S')
+
+    instance = session.query(TaskInstance).filter_by(task_id=task_id).filter_by(version=version).first()
+    if instance != None:
+        return json.dumps({
+            'status': 'failed',
+            'info': '将任务 {} 已存在版本号{}，并入队列失败'.format(task_id, version)
+        })
+    instance = TaskInstance(task_id=task_id, version=version)
+    session.add(instance)
+    session.commit()
+
+    action = Action(user_name=current_user.name, content='将任务 {} 并入当天队列'.format(task_id), create_time=datetime.now())
+    session.add(action)
+    session.commit()
+
+    info = "将任务 {} 并入当天队列成功，任务将于今天 {}:{}:00 执行".format(task_id, meta.hour, meta.minute)
+
+    session.close()
+    return json.dumps({
+        'status': 'success',
+        'info': info
     })
 
 
