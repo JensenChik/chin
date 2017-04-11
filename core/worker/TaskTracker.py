@@ -19,7 +19,8 @@ class Shell:
         now = datetime.now().strftime('%Y%m%d%H%M%S')
         self.log_path = os.path.join(log_path, '{}_{}_{}.log'.format(task_id, version, now))
         self.log = open(self.log_path, 'w')
-        self.process = Popen(command, shell=True, preexec_fn=os.setsid, stdout=self.log, stderr=self.log)
+        self.process = Popen(command, shell=True, env=dict(os.environ.items()),
+                             preexec_fn=os.setsid, stdout=self.log, stderr=self.log)
 
     def is_running(self):
         return self.process.poll() is None
