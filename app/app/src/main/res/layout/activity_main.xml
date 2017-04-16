@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
+    tools:context="space.conj.chin.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#000000"
+        android:layout_marginTop="495dp"
+        android:layout_height="1dp"/>
+
+    <Button
+        android:id="@+id/taskTab"
+        android:layout_width="81dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="490dp"
+        android:layout_marginLeft="0dp"
+        android:drawableTop="@drawable/task"
+        android:background="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="任务" />
+
+    <Button
+        android:id="@+id/logTab"
+        android:layout_width="81dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="490dp"
+        android:layout_marginLeft="81dp"
+        android:drawableTop="@drawable/log"
+        android:background="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="日志" />
+
+    <Button
+        android:id="@+id/userTab"
+        android:layout_width="81dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="490dp"
+        android:layout_marginLeft="162dp"
+        android:drawableTop="@drawable/user"
+        android:background="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="用户" />
+
+    <Button
+        android:id="@+id/machineTab"
+        android:layout_width="81dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="490dp"
+        android:drawableTop="@drawable/machine"
+        android:layout_marginLeft="243dp"
+        android:background="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="机器" />
+
+
+</RelativeLayout>
