@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="这里显示日志"/>
+        android:text="这里显示机器列表"/>
 
     <space.conj.chin.layout.Navigation
         android:layout_width="match_parent"

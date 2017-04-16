@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by hit-s on 2017/4/15.
  */
-public class LogActivity extends AppCompatActivity{
+public class MachineActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.log);
+        setContentView(R.layout.machine);
     }
 }
