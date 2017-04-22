@@ -1,33 +1,20 @@
 package space.conj.chin;
 
-import android.os.Handler;
-import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
-import com.google.gson.Gson;
-import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -50,7 +37,7 @@ public class TaskActivity extends AppCompatActivity {
 
         FormEncodingBuilder builder = new FormEncodingBuilder();
         builder.add("user_name", "xxxxxxx");
-        builder.add("password", "xxxxxxxxxxx");
+        builder.add("password", "xxxxxxxxx");
         Request request = new Request.Builder()
                 .url("http://chin.nazgrim.com/login")
                 .post(builder.build())
@@ -82,9 +69,16 @@ public class TaskActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(Response response) throws IOException {
-                Log.i("COOKIE2", response.header("Set-Cookie"));
-                Log.i("HTML", response.body().string());
+            public void onResponse(final Response response) throws IOException {
+                Log.i("COOKIE", response.header("Set-Cookie"));
+                final String content = response.body().string();
+                Log.i("HTML", content);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        httpResponse.setText(content);
+                    }
+                });
             }
         });
 
