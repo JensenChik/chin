@@ -177,7 +177,7 @@ def run_at_once():
     task_id = int(request.form.get("task_id"))
     version = datetime.now().strftime('%Y%m%d%H%M%S')
     session = DBSession()
-    instance = TaskInstance(task_id=task_id, version=version)
+    instance = TaskInstance(task_id=task_id, version=version, status='waiting')
     session.add(instance)
     session.commit()
 
