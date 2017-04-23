@@ -8,13 +8,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.net.CookieManager;
+
+import space.conj.chin.tools.RequestClient;
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -33,33 +33,9 @@ public class TaskActivity extends AppCompatActivity {
         ListView tasks = (ListView) findViewById(R.id.list_task);
         httpResponse = (TextView) findViewById(R.id.http_response);
 
-        OkHttpClient client = new OkHttpClient().setCookieHandler(new CookieManager());
+        OkHttpClient client = RequestClient.getInstance();
 
-        FormEncodingBuilder builder = new FormEncodingBuilder();
-        builder.add("user_name", "xxxxxxx");
-        builder.add("password", "xxxxxxxxx");
         Request request = new Request.Builder()
-                .url("http://chin.nazgrim.com/login")
-                .post(builder.build())
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            public void onFailure(Request request, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                Log.i("COOKIE", response.header("Set-Cookie"));
-            }
-        });
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        request = new Request.Builder()
                 .url("http://chin.nazgrim.com/get_log_by_page?order=asc&offset=10&limit=10")
                 .build();
         client.newCall(request).enqueue(new Callback() {

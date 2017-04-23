@@ -24,7 +24,7 @@ public class LaunchActivity extends AppCompatActivity {
         Log.i("Home", "进入主页面");
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(LaunchActivity.this, TaskActivity.class));
+                startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
                 finish();
             }
         }, 500);
