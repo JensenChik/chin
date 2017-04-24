@@ -7,11 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="0dp"
-    tools:context=".TaskActivity">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/http_response"/>
+    tools:context=".ListTaskActivity">
     <ListView
         android:id="@+id/list_task"
         android:layout_width="match_parent"

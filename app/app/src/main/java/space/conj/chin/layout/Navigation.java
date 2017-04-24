@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import space.conj.chin.LogActivity;
 import space.conj.chin.MachineActivity;
 import space.conj.chin.R;
-import space.conj.chin.TaskActivity;
+import space.conj.chin.ListTaskActivity;
 import space.conj.chin.UserActivity;
 
 
@@ -36,7 +35,7 @@ public class Navigation extends LinearLayout {
         taskTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TaskActivity.class);
+                Intent intent = new Intent(getContext(), ListTaskActivity.class);
                 getContext().startActivity(intent);
             }
         });

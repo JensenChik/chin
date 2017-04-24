@@ -19,7 +19,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.net.CookieManager;
 
 import space.conj.chin.tools.RequestClient;
 
@@ -66,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Response response) throws IOException {
                         if (response.headers().names().contains("Set-Cookie")) {
                             Log.i("LOGIN COOKIE", response.header("Set-Cookie"));
-                            startActivity(new Intent(LoginActivity.this, TaskActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ListTaskActivity.class));
                             finish();
                         } else {
                             Looper.prepare();
