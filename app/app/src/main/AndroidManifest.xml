@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" android:launchMode="singleTask"/>
-        <activity android:name=".TaskActivity" android:launchMode="singleTask"/>
+        <activity android:name=".ListTaskActivity" android:launchMode="singleTask"/>
         <activity android:name=".LogActivity" android:launchMode="singleTask"/>
         <activity android:name=".UserActivity" android:launchMode="singleTask"/>
         <activity android:name=".MachineActivity" android:launchMode="singleTask"/>
