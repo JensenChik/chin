@@ -6,7 +6,10 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -17,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import space.conj.chin.bean.Task;
 import space.conj.chin.tools.RequestClient;
 
 @SuppressWarnings("unchecked")
@@ -44,13 +48,17 @@ public class ListTaskActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Response response) throws IOException {
                 Log.i("COOKIE", response.header("Set-Cookie"));
-                final String json = response.body().string();
-                Log.i("json", json);
-                List<Map<String, Object>> tasks = (List<Map<String, Object>>) new ObjectMapper()
-                        .readValue(json, HashMap.class).get("data");
-                final String[] taskName = new String[tasks.size()];
+                final String responseJson = response.body().string();
+                Map<String, Object> respondMap = new ObjectMapper().readValue(responseJson, HashMap.class);
+
+                List<Task> taskList = Lists.newArrayList();
+                for (Map<String, Object> json : (List<Map>) respondMap.get("data")) {
+                    taskList.add(new Task(json));
+                }
+
+                final String[] taskName = new String[taskList.size()];
                 for (int i = 0; i < taskName.length; i++) {
-                    taskName[i] = tasks.get(i).get("name").toString();
+                    taskName[i] = taskList.get(i).getName();
                 }
 
                 runOnUiThread(new Runnable() {
