@@ -1,6 +1,9 @@
 package space.conj.chin.bean;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hit-s on 2017/4/26.
@@ -10,20 +13,43 @@ public class Task {
     private String name;
     private String createTime;
     private String command;
-    private short priority;
+    private int priority;
     private List<String> machinePool;
     private List<Integer> fatherTask;
     private List<Integer> childTask;
     private boolean valid;
     private boolean rerun;
-    private short rerunTimes;
+    private int rerunTimes;
     private String scheduledType;
-    private short year;
-    private short month;
-    private short weekday;
-    private short day;
-    private short hour;
-    private short minute;
+    private int year;
+    private int month;
+    private int weekday;
+    private int day;
+    private int hour;
+    private int minute;
+
+    public Task(Map<String, Object> json) {
+        id = (int) json.get("id");
+        name = (String) json.get("name");
+        createTime = (String) json.get("create_time");
+        command = (String) json.get("command");
+        priority = (int) json.get("priority");
+        machinePool = (List<String>) json.get("machine_pool");
+        fatherTask = (List<Integer>) json.get("father_task");
+        childTask = (List<Integer>) json.get("child_task");
+        valid = (boolean) json.get("valid");
+        rerun = (boolean) json.get("rerun");
+        rerunTimes = (int) json.get("rerun_times");
+
+        scheduledType = (String) json.get("scheduled_type");
+        year = (int) Optional.fromNullable(json.get("year")).or(-1);
+        month = (int) Optional.fromNullable(json.get("month")).or(-1);
+        weekday = (int) Optional.fromNullable(json.get("weekday")).or(-1);
+        day = (int) Optional.fromNullable(json.get("day")).or(-1);
+        hour = (int) Optional.fromNullable(json.get("hour")).or(-1);
+        minute = (int) Optional.fromNullable(json.get("minute")).or(-1);
+
+    }
 
     public int getId() {
         return id;
@@ -57,7 +83,7 @@ public class Task {
         this.command = command;
     }
 
-    public short getPriority() {
+    public int getPriority() {
         return priority;
     }
 
@@ -105,7 +131,7 @@ public class Task {
         this.rerun = rerun;
     }
 
-    public short getRerunTimes() {
+    public int getRerunTimes() {
         return rerunTimes;
     }
 
@@ -121,7 +147,7 @@ public class Task {
         this.scheduledType = scheduledType;
     }
 
-    public short getYear() {
+    public int getYear() {
         return year;
     }
 
@@ -129,7 +155,7 @@ public class Task {
         this.year = year;
     }
 
-    public short getMonth() {
+    public int getMonth() {
         return month;
     }
 
@@ -137,7 +163,7 @@ public class Task {
         this.month = month;
     }
 
-    public short getWeekday() {
+    public int getWeekday() {
         return weekday;
     }
 
@@ -145,7 +171,7 @@ public class Task {
         this.weekday = weekday;
     }
 
-    public short getDay() {
+    public int getDay() {
         return day;
     }
 
@@ -153,7 +179,7 @@ public class Task {
         this.day = day;
     }
 
-    public short getHour() {
+    public int getHour() {
         return hour;
     }
 
@@ -161,7 +187,7 @@ public class Task {
         this.hour = hour;
     }
 
-    public short getMinute() {
+    public int getMinute() {
         return minute;
     }
 
