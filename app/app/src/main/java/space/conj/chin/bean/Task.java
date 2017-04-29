@@ -2,13 +2,14 @@ package space.conj.chin.bean;
 
 import com.google.common.base.Optional;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by hit-s on 2017/4/26.
  */
-public class Task {
+public class Task implements Serializable{
     private int id;
     private String name;
     private String createTime;
