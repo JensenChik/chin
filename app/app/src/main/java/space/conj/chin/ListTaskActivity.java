@@ -3,12 +3,9 @@ package space.conj.chin;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
 import space.conj.chin.tools.RequestClient;
 
 @SuppressWarnings("unchecked")
 public class ListTaskActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    private TaskListAdapter adapter;
     private ListView tasksList;
 
     @Override
@@ -51,7 +49,7 @@ public class ListTaskActivity extends AppCompatActivity {
                 final String responseJson = response.body().string();
                 Map<String, Object> respondMap = new ObjectMapper().readValue(responseJson, HashMap.class);
 
-                List<Task> taskList = Lists.newArrayList();
+                final List<Task> taskList = Lists.newArrayList();
                 for (Map<String, Object> json : (List<Map>) respondMap.get("data")) {
                     taskList.add(new Task(json));
                 }
@@ -64,8 +62,7 @@ public class ListTaskActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new ArrayAdapter<>(ListTaskActivity.this,
-                                R.layout.support_simple_spinner_dropdown_item, taskName);
+                        adapter = new TaskListAdapter(ListTaskActivity.this, R.layout.task_item, taskList);
                         tasksList.setAdapter(adapter);
                     }
                 });
