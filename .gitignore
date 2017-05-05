@@ -89,7 +89,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
-.idea/*
+*.idea*
 *.iml
 chin.ini
 logs/*
