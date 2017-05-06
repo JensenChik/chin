@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 
+import com.google.common.base.Joiner;
+
 import space.conj.chin.bean.Task;
 
 /**
@@ -28,6 +30,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     private TextView rerunTimes;
     private TextView scheduledType;
     private TextView scheduledTime;
+    private Joiner joiner = Joiner.on("\n");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +58,13 @@ public class TaskDetailActivity extends AppCompatActivity {
         createTime.setText(task.getCreateTime());
         command.setText(task.getCommand());
         priority.setText(String.valueOf(task.getPriority()));
-
+        machinePool.setText(joiner.join(task.getFatherTask()));
+        fatherTask.setText(joiner.join(task.getFatherTask()));
+        childTask.setText(joiner.join(task.getChildTask()));
+        valid.setText(String.valueOf(task.isValid()));
+        rerun.setText(String.valueOf(task.isRerun()));
+        rerunTimes.setText(String.valueOf(task.getRerunTimes()));
+        scheduledType.setText(task.getScheduledType());
+       
     }
 }
