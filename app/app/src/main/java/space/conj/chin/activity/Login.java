@@ -1,6 +1,5 @@
 package space.conj.chin.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,13 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 
 import space.conj.chin.R;
 import space.conj.chin.tools.RequestClient;
@@ -55,7 +47,6 @@ public class Login extends AppCompatActivity {
         editor = pref.edit();
         isRemember = pref.getBoolean("remember_password", false);
 
-
         if (isRemember) {
             userName.setText(pref.getString("user_name", ""));
             password.setText(pref.getString("password", ""));
@@ -65,56 +56,42 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                progressDialog.setTitle("正在登陆中");
-                progressDialog.setMessage("耐心等待...");
-                progressDialog.show();
-
-                OkHttpClient client = RequestClient.getInstance();
-
-                FormEncodingBuilder builder = new FormEncodingBuilder();
-                builder.add("user_name", userName.getText().toString());
-                builder.add("password", password.getText().toString());
-                final Request request = new Request.Builder()
-                        .url("http://chin.conj.space/login")
-                        .post(builder.build())
-                        .build();
-                client.newCall(request).enqueue(new Callback() {
-                    public void onFailure(Request request, IOException e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Response response) throws IOException {
-                        if (RequestClient.hasCookieOf("chin.conj.space")) {
-                            if (rememberPassword.isChecked()) {
-                                editor.putBoolean("remember_password", true);
-                                editor.putString("user_name", userName.getText().toString());
-                                editor.putString("password", password.getText().toString());
-                            } else {
-                                editor.clear();
-                            }
-                            editor.apply();
-                            startActivity(new Intent(Login.this, ListTask.class));
-                            progressDialog.dismiss();
-                            finish();
-                        } else {
-                            Looper.prepare();
-                            editor.clear();
-                            editor.apply();
-                            Toast.makeText(Login.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-                    }
-                });
-                progressDialog.hide();
+                login();
             }
         });
 
         if (isRemember) {
             login.performClick();
         }
+    }
 
+    private void login() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String userNameString = userName.getText().toString();
+                String passwordString = password.getText().toString();
 
+                boolean loginSuccess = RequestClient.login(userNameString, passwordString);
+                if (loginSuccess) {
+                    if (rememberPassword.isChecked()) {
+                        editor.putBoolean("remember_password", true);
+                        editor.putString("user_name", userNameString);
+                        editor.putString("password", passwordString);
+                    } else {
+                        editor.clear();
+                    }
+                    editor.apply();
+                    startActivity(new Intent(Login.this, ListTask.class));
+                    finish();
+                } else {
+                    Looper.prepare();
+                    editor.clear();
+                    editor.apply();
+                    Toast.makeText(Login.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        }).start();
     }
 }

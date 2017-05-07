@@ -28,6 +28,23 @@ public class ListTask extends AppCompatActivity {
         setContentView(R.layout.task);
         taskListView = (ListView) findViewById(R.id.list_task);
 
+        initTaskListView();
+
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Task task = taskList.get(position);
+                Intent intent = new Intent(ListTask.this, TaskDetail.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("task", task);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void initTaskListView() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -45,19 +62,6 @@ public class ListTask extends AppCompatActivity {
                 }
             }
         }).start();
-
-        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task task = taskList.get(position);
-                Intent intent = new Intent(ListTask.this, TaskDetail.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("task", task);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-
     }
 
 }

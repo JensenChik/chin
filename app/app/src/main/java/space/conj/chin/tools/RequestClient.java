@@ -1,8 +1,13 @@
 package space.conj.chin.tools;
 
+import android.content.Intent;
+import android.os.Looper;
+import android.widget.Toast;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -15,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import space.conj.chin.R;
+import space.conj.chin.activity.ListTask;
 import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
 
@@ -25,6 +31,7 @@ import space.conj.chin.bean.Task;
 public class RequestClient {
 
     private static OkHttpClient client = new OkHttpClient().setCookieHandler(new CookieManager());
+    private static final String domain = "chin.conj.space";
     private static final String host = "http://chin.conj.space/";
 
     private RequestClient() {
@@ -44,6 +51,19 @@ public class RequestClient {
             }
         }
         return hasCookie;
+    }
+
+    public static boolean login(String userName, String password) {
+        FormEncodingBuilder builder = new FormEncodingBuilder();
+        builder.add("user_name", userName);
+        builder.add("password", password);
+        Request request = new Request.Builder().url(host + "login").post(builder.build()).build();
+        try {
+            client.newCall(request).execute();
+        } catch (IOException e) {
+            return false;
+        }
+        return hasCookieOf(domain);
     }
 
     public static List<Task> getTaskList() throws IOException {
