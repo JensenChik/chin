@@ -67,6 +67,7 @@ class Task(BaseModel):
             'id': self.id,
             'name': self.name,
             'user': self.user,
+            'create_time': self.create_time and str(self.create_time),
             'command': self.command,
             'priority': self.priority,
             'machine_pool': self.machine_pool,
@@ -103,6 +104,21 @@ class TaskInstance(BaseModel):
 
     def __repr__(self):
         return '<TaskQueue %s>' % self.id
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "task_id": self.task_id,
+            "version": self.version,
+            "execute_machine": self.execute_machine,
+            "pooled_time": self.pooled_time and str(self.pooled_time),
+            "begin_time": self.begin_time and str(self.begin_time),
+            "finish_time": self.finish_time and str(self.finish_time),
+            "run_count": self.run_count,
+            "status": self.status,
+            "log": self.log,
+            "notify": self.notify
+        }
 
 
 class User(UserMixin, BaseModel):

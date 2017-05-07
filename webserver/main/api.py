@@ -3,6 +3,9 @@ from flask import request
 from flask.ext.login import login_required, current_user
 from model import DBSession, Task, TaskInstance, Action
 import json
+from sqlalchemy import and_, desc
+from sqlalchemy.sql.functions import coalesce
+from sqlalchemy.sql import func
 
 
 @admin.route('/api/list_task')
@@ -14,6 +17,24 @@ def api_list_task():
     return json.dumps({
         "status": "success",
         "data": [task.to_dict() for task in tasks]
+    }, ensure_ascii=False)
+
+
+@admin.route('/api/api_list_instance_of/<task_id>')
+@login_required
+def api_list_instance_by(task_id):
+    session = DBSession()
+    instance = session.query(TaskInstance) \
+        .filter(and_(TaskInstance.status != None, TaskInstance.task_id == task_id)) \
+        .order_by(desc(func.greatest(
+        coalesce(TaskInstance.pooled_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.begin_time, func.date('1900-01-01')),
+        coalesce(TaskInstance.finish_time, func.date('1900-01-01'))))
+    ).all()
+    session.close()
+    return json.dumps({
+        "status": "success",
+        "data": [i.to_dict() for i in instance]
     }, ensure_ascii=False)
 
 
