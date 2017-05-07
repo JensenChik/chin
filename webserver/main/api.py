@@ -20,7 +20,7 @@ def api_list_task():
     }, ensure_ascii=False)
 
 
-@admin.route('/api/api_list_instance_of/<task_id>')
+@admin.route('/api/list_instance_of/<task_id>')
 @login_required
 def api_list_instance_by(task_id):
     session = DBSession()
