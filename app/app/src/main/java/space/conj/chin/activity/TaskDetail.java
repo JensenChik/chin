@@ -66,6 +66,6 @@ public class TaskDetail extends AppCompatActivity {
         rerun.setText(String.valueOf(task.isRerun()));
         rerunTimes.setText(String.valueOf(task.getRerunTimes()));
         scheduledType.setText(task.getScheduledType());
-       
+        scheduledTime.setText(task.getScheduledTime());
     }
 }

@@ -2,6 +2,8 @@ package space.conj.chin.bean;
 
 import com.google.common.base.Optional;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +11,8 @@ import java.util.Map;
 /**
  * Created by hit-s on 2017/4/26.
  */
-public class Task implements Serializable{
+@SuppressWarnings("unchecked")
+public class Task implements Serializable {
     private int id;
     private String name;
     private String createTime;
@@ -22,12 +25,14 @@ public class Task implements Serializable{
     private boolean rerun;
     private int rerunTimes;
     private String scheduledType;
+    private String scheduledTime;
     private int year;
     private int month;
     private int weekday;
     private int day;
     private int hour;
     private int minute;
+
 
     public Task(Map<String, Object> json) {
         id = (int) json.get("id");
@@ -49,6 +54,28 @@ public class Task implements Serializable{
         day = (int) Optional.fromNullable(json.get("day")).or(-1);
         hour = (int) Optional.fromNullable(json.get("hour")).or(-1);
         minute = (int) Optional.fromNullable(json.get("minute")).or(-1);
+
+        switch (scheduledType) {
+            case "day":
+                scheduledType = "每天";
+                scheduledTime = new DateTime(1900, 1, 1, hour, minute, 0).toString("HH:mm:ss");
+                break;
+            case "week":
+                scheduledTime = "每周";
+                scheduledTime = "周" + weekday + "\t"
+                        + new DateTime(1900, 1, 1, hour, minute, 0).toString("HH:mm:ss");
+                break;
+            case "month":
+                scheduledTime = "每月";
+                scheduledTime = day + "号" + "\t"
+                        + new DateTime(1900, 1, 1, hour, minute, 0).toString("HH:mm:ss");
+                break;
+            case "once":
+                scheduledTime = "一次";
+                scheduledTime = new DateTime(year, month, day, hour, minute, 0)
+                        .toString("yyyy-MM-dd HH:mm:ss");
+                break;
+        }
 
     }
 
@@ -194,5 +221,13 @@ public class Task implements Serializable{
 
     public void setMinute(short minute) {
         this.minute = minute;
+    }
+
+    public String getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(String scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 }
