@@ -16,28 +16,33 @@ chin 是一个支持定时&依赖的轻量级分布式调度系统，相比于Li
 ```
 chin
 ┣━ app/app: android端
-┃  ┣━src
-┃  ┃  ┣━main
-┃  ┃  ┃  ┣━java/space/conj/chin:android核心代码
-┃  ┃  ┃  ┃  ┣━activity: andoroid activity
-┃  ┃  ┃  ┃  ┣━adapter: 自定义适配器
-┃  ┃  ┃  ┃  ┣━bean: java bean
-┃  ┃  ┃  ┃  ┣━layout: 自定义布局
-┃  ┃  ┃  ┃  ┗━tools: 工具类
-┃  ┃  ┃  ┗━res:资源
-┃  ┃  ┗━test:单元测试
-┃  ┗━build.gradle: gradle配置
-┣━core: 调度器核心
-┃  ┣━scheduler: master逻辑
-┃  ┗━worker: slave逻辑
-┣━model: 数据库表定义
-┣━webserver: www端
-┃  ┣━main: web核心逻辑
-┃  ┣━static: web静态资源
-┃  ┗━templates: jinja2渲染模板
-┣━chin.ini.template: 配置文件模板
-┣━chin.py: 启动脚本
-┗━requirements.txt: python依赖
+┃   ┣━ src
+┃   ┃   ┣━ main
+┃   ┃   ┃   ┣━ java/space/conj/chin:android核心代码
+┃   ┃   ┃   ┃    ┣━ activity: andoroid activity
+┃   ┃   ┃   ┃    ┣━ adapter: 自定义适配器
+┃   ┃   ┃   ┃    ┣━ bean: java bean
+┃   ┃   ┃   ┃    ┣━ layout: 自定义布局
+┃   ┃   ┃   ┃    ┗━ tools: 工具类
+┃   ┃   ┃   ┗━ res:资源
+┃   ┃   ┃
+┃   ┃   ┗━ test:单元测试
+┃   ┗━ build.gradle: gradle配置
+┃
+┣━ core: 调度器核心
+┃   ┣━ scheduler: master逻辑
+┃   ┗━ worker: slave逻辑
+┃
+┣━ model: 数据库表定义
+┃
+┣━ webserver: www端
+┃   ┣━ main: web核心逻辑
+┃   ┣━ static: web静态资源
+┃   ┗━ templates: jinja2渲染模板
+┃
+┣━ chin.ini.template: 配置文件模板
+┣━ chin.py: 启动脚本
+┗━ requirements.txt: python依赖
 ```
 
 
