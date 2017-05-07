@@ -7,17 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import space.conj.chin.R;
 import space.conj.chin.adapter.TaskListAdapter;
@@ -29,42 +22,30 @@ public class ListTask extends AppCompatActivity {
 
     private TaskListAdapter adapter;
     private ListView taskListView;
-    private List<Task> taskList = Lists.newArrayList();
+    private List<Task> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
         taskListView = (ListView) findViewById(R.id.list_task);
-
-        OkHttpClient client = RequestClient.getInstance();
-        Request request = new Request.Builder()
-                .url("http://chin.conj.space/api/list_task")
-                .build();
-        client.newCall(request).enqueue(new Callback() {
+        new Thread(new Runnable() {
             @Override
-            public void onFailure(Request request, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(final Response response) throws IOException {
-                Map<String, Object> responseJson = new ObjectMapper()
-                        .readValue(response.body().string(), HashMap.class);
-
-                for (Map<String, Object> metaJson : (List<Map>) responseJson.get("data")) {
-                    taskList.add(new Task(metaJson));
+            public void run() {
+                try {
+                    taskList = RequestClient.getTaskList();
+                    adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            taskListView.setAdapter(adapter);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
-                        taskListView.setAdapter(adapter);
-                    }
-                });
             }
-        });
+        }).start();
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
