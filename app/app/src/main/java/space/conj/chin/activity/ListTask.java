@@ -13,6 +13,7 @@ import java.util.List;
 import space.conj.chin.R;
 import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
+import space.conj.chin.tools.NewThread;
 import space.conj.chin.tools.RequestClient;
 
 @SuppressWarnings("unchecked")
@@ -28,7 +29,7 @@ public class ListTask extends AppCompatActivity {
         setContentView(R.layout.task);
         taskListView = (ListView) findViewById(R.id.list_task);
 
-        initTaskListView();
+        NewThread.run(this, "initTaskListView");
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -45,23 +46,18 @@ public class ListTask extends AppCompatActivity {
     }
 
     private void initTaskListView() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    taskList = RequestClient.getTaskList();
-                    adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            taskListView.setAdapter(adapter);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+        try {
+            taskList = RequestClient.getTaskList();
+            adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    taskListView.setAdapter(adapter);
                 }
-            }
-        }).start();
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

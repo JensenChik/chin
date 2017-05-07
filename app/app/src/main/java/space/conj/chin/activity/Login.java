@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 
 import space.conj.chin.R;
+import space.conj.chin.tools.NewThread;
 import space.conj.chin.tools.RequestClient;
 
 /**
@@ -56,7 +57,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                NewThread.run(Login.this, "login");
             }
         });
 
@@ -66,32 +67,27 @@ public class Login extends AppCompatActivity {
     }
 
     private void login() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String userNameString = userName.getText().toString();
-                String passwordString = password.getText().toString();
+        String userNameString = userName.getText().toString();
+        String passwordString = password.getText().toString();
 
-                boolean loginSuccess = RequestClient.login(userNameString, passwordString);
-                if (loginSuccess) {
-                    if (rememberPassword.isChecked()) {
-                        editor.putBoolean("remember_password", true);
-                        editor.putString("user_name", userNameString);
-                        editor.putString("password", passwordString);
-                    } else {
-                        editor.clear();
-                    }
-                    editor.apply();
-                    startActivity(new Intent(Login.this, ListTask.class));
-                    finish();
-                } else {
-                    Looper.prepare();
-                    editor.clear();
-                    editor.apply();
-                    Toast.makeText(Login.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
+        boolean loginSuccess = RequestClient.login(userNameString, passwordString);
+        if (loginSuccess) {
+            if (rememberPassword.isChecked()) {
+                editor.putBoolean("remember_password", true);
+                editor.putString("user_name", userNameString);
+                editor.putString("password", passwordString);
+            } else {
+                editor.clear();
             }
-        }).start();
+            editor.apply();
+            startActivity(new Intent(Login.this, ListTask.class));
+            finish();
+        } else {
+            Looper.prepare();
+            editor.clear();
+            editor.apply();
+            Toast.makeText(Login.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        }
     }
 }
