@@ -1,13 +1,11 @@
-package space.conj.chin;
+package space.conj.chin.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -21,12 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import space.conj.chin.R;
 import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
 import space.conj.chin.tools.RequestClient;
 
 @SuppressWarnings("unchecked")
-public class ListTaskActivity extends AppCompatActivity {
+public class ListTask extends AppCompatActivity {
 
     private TaskListAdapter adapter;
     private ListView taskListView;
@@ -60,7 +59,7 @@ public class ListTaskActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new TaskListAdapter(ListTaskActivity.this, R.layout.task_item, taskList);
+                        adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
                         taskListView.setAdapter(adapter);
                     }
                 });
@@ -71,7 +70,7 @@ public class ListTaskActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Task task = taskList.get(position);
-                Intent intent = new Intent(ListTaskActivity.this, TaskDetailActivity.class);
+                Intent intent = new Intent(ListTask.this, TaskDetail.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("task", task);
                 intent.putExtras(bundle);

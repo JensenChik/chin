@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="0dp"
-    tools:context=".ListTaskActivity">
+    tools:context=".activity.ListTask">
     <ListView
         android:id="@+id/list_task"
         android:layout_width="match_parent"

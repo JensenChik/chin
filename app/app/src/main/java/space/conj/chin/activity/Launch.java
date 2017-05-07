@@ -1,4 +1,4 @@
-package space.conj.chin;
+package space.conj.chin.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +10,13 @@ import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import java.net.CookieManager;
-import java.net.HttpCookie;
-import java.util.List;
-
+import space.conj.chin.R;
 import space.conj.chin.tools.RequestClient;
 
 /**
  * Created by hit-s on 2017/4/22.
  */
-public class LaunchActivity extends AppCompatActivity {
+public class Launch extends AppCompatActivity {
 
     private OkHttpClient client;
 
@@ -36,11 +33,11 @@ public class LaunchActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 if (RequestClient.hasCookieOf("chin.conj.space")) {
-                    Log.i("LaunchActivity", "cookie已存在，直接跳转任务页");
-                    startActivity(new Intent(LaunchActivity.this, ListTaskActivity.class));
+                    Log.i("Launch", "cookie已存在，直接跳转任务页");
+                    startActivity(new Intent(Launch.this, ListTask.class));
                 } else {
-                    Log.i("LaunchActivity", "cookie未存在，跳转登陆页");
-                    startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
+                    Log.i("Launch", "cookie未存在，跳转登陆页");
+                    startActivity(new Intent(Launch.this, Login.class));
                 }
                 finish();
             }

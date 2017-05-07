@@ -1,4 +1,4 @@
-package space.conj.chin;
+package space.conj.chin.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import com.google.common.base.Joiner;
 
+import space.conj.chin.R;
 import space.conj.chin.bean.Task;
 
 /**
  * Created by hit-s on 2017/4/30.
  */
-public class TaskDetailActivity extends AppCompatActivity {
+public class TaskDetail extends AppCompatActivity {
 
     private TextView taskId;
     private TextView taskName;

@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import space.conj.chin.LogActivity;
-import space.conj.chin.MachineActivity;
+import space.conj.chin.activity.ListLog;
+import space.conj.chin.activity.ListMachine;
 import space.conj.chin.R;
-import space.conj.chin.ListTaskActivity;
-import space.conj.chin.UserActivity;
+import space.conj.chin.activity.ListTask;
+import space.conj.chin.activity.ListUser;
 
 
 /**
@@ -35,7 +35,7 @@ public class Navigation extends LinearLayout {
         taskTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ListTaskActivity.class);
+                Intent intent = new Intent(getContext(), ListTask.class);
                 getContext().startActivity(intent);
             }
         });
@@ -43,7 +43,7 @@ public class Navigation extends LinearLayout {
         logTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LogActivity.class);
+                Intent intent = new Intent(getContext(), ListLog.class);
                 getContext().startActivity(intent);
             }
         });
@@ -51,7 +51,7 @@ public class Navigation extends LinearLayout {
         userTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), UserActivity.class);
+                Intent intent = new Intent(getContext(), ListUser.class);
                 getContext().startActivity(intent);
             }
         });
@@ -59,7 +59,7 @@ public class Navigation extends LinearLayout {
         machineTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MachineActivity.class);
+                Intent intent = new Intent(getContext(), ListMachine.class);
                 getContext().startActivity(intent);
             }
         });

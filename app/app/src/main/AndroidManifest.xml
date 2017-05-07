@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LaunchActivity"
+            android:name=".activity.Launch"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,22 +18,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.Login"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ListTaskActivity"
+            android:name=".activity.ListTask"
             android:launchMode="singleTask" />
         <activity
-            android:name=".LogActivity"
+            android:name=".activity.ListLog"
             android:launchMode="singleTask" />
         <activity
-            android:name=".UserActivity"
+            android:name=".activity.ListUser"
             android:launchMode="singleTask" />
         <activity
-            android:name=".MachineActivity"
+            android:name=".activity.ListMachine"
             android:launchMode="singleTask" />
         <activity
-            android:name=".TaskDetailActivity"
+            android:name=".activity.TaskDetail"
             android:launchMode="singleTask" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

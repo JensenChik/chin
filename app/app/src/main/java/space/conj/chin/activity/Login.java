@@ -1,4 +1,4 @@
-package space.conj.chin;
+package space.conj.chin.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,12 +23,13 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import space.conj.chin.R;
 import space.conj.chin.tools.RequestClient;
 
 /**
  * Created by hit-s on 2017/4/22.
  */
-public class LoginActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     private Button login;
     private EditText userName;
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                final ProgressDialog progressDialog = new ProgressDialog(Login.this);
                 progressDialog.setTitle("正在登陆中");
                 progressDialog.setMessage("耐心等待...");
                 progressDialog.show();
@@ -95,14 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.clear();
                             }
                             editor.apply();
-                            startActivity(new Intent(LoginActivity.this, ListTaskActivity.class));
+                            startActivity(new Intent(Login.this, ListTask.class));
                             progressDialog.dismiss();
                             finish();
                         } else {
                             Looper.prepare();
                             editor.clear();
                             editor.apply();
-                            Toast.makeText(LoginActivity.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "登陆账号密码有误", Toast.LENGTH_SHORT).show();
                             Looper.loop();
                         }
                     }
