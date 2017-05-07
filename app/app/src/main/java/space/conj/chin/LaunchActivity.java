@@ -35,7 +35,7 @@ public class LaunchActivity extends AppCompatActivity {
         Log.i("Home", "进入主页面");
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                if (RequestClient.hasCookieOf("chin.nazgrim.com")) {
+                if (RequestClient.hasCookieOf("chin.conj.space")) {
                     Log.i("LaunchActivity", "cookie已存在，直接跳转任务页");
                     startActivity(new Intent(LaunchActivity.this, ListTaskActivity.class));
                 } else {

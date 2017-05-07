@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 builder.add("user_name", userName.getText().toString());
                 builder.add("password", password.getText().toString());
                 final Request request = new Request.Builder()
-                        .url("http://chin.nazgrim.com/login")
+                        .url("http://chin.conj.space/login")
                         .post(builder.build())
                         .build();
                 client.newCall(request).enqueue(new Callback() {
@@ -86,8 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Response response) throws IOException {
-                        if (response.headers().names().contains("Set-Cookie")) {
-                            Log.i("LOGIN COOKIE", response.header("Set-Cookie"));
+                        if (RequestClient.hasCookieOf("chin.conj.space")) {
                             if (rememberPassword.isChecked()) {
                                 editor.putBoolean("remember_password", true);
                                 editor.putString("user_name", userName.getText().toString());

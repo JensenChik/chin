@@ -40,7 +40,7 @@ public class ListTaskActivity extends AppCompatActivity {
 
         OkHttpClient client = RequestClient.getInstance();
         Request request = new Request.Builder()
-                .url("http://chin.nazgrim.com/api/list_task")
+                .url("http://chin.conj.space/api/list_task")
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
