@@ -58,7 +58,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         createTime.setText(task.getCreateTime());
         command.setText(task.getCommand());
         priority.setText(String.valueOf(task.getPriority()));
-        machinePool.setText(joiner.join(task.getFatherTask()));
+        machinePool.setText(joiner.join(task.getMachinePool()));
         fatherTask.setText(joiner.join(task.getFatherTask()));
         childTask.setText(joiner.join(task.getChildTask()));
         valid.setText(String.valueOf(task.isValid()));
