@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.common.collect.Lists;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -29,6 +27,7 @@ public class ListTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
         taskListView = (ListView) findViewById(R.id.list_task);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -60,6 +59,5 @@ public class ListTask extends AppCompatActivity {
         });
 
     }
-
 
 }
