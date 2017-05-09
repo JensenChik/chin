@@ -281,4 +281,10 @@
             android:gravity="center"
             android:textSize="18sp" />
     </TableRow>
+
+    <ListView
+        android:id="@+id/list_instance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </TableLayout>

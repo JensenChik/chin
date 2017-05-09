@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.google.common.base.Joiner;
 
+import java.util.List;
+
 import space.conj.chin.R;
+import space.conj.chin.adapter.InstanceListAdapter;
+import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
+import space.conj.chin.bean.TaskInstance;
+import space.conj.chin.tools.NewThread;
+import space.conj.chin.tools.RequestClient;
 
 /**
  * Created by hit-s on 2017/4/30.
@@ -32,6 +40,9 @@ public class TaskDetail extends AppCompatActivity {
     private TextView scheduledType;
     private TextView scheduledTime;
     private Joiner joiner = Joiner.on("\n");
+
+    private ListView instanceListView;
+    private InstanceListAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,5 +78,21 @@ public class TaskDetail extends AppCompatActivity {
         rerunTimes.setText(String.valueOf(task.getRerunTimes()));
         scheduledType.setText(task.getScheduledType());
         scheduledTime.setText(task.getScheduledTime());
+
+        instanceListView = (ListView) findViewById(R.id.list_instance);
+
+        NewThread.run(this, "initInstanceListView", new Object[]{task.getId()});
+    }
+
+
+    private void initInstanceListView(Integer taskId) {
+        List<TaskInstance> taskInstance = RequestClient.getTaskInstanceOf(taskId);
+        adapter = new InstanceListAdapter(TaskDetail.this, R.layout.instance_item, taskInstance);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                instanceListView.setAdapter(adapter);
+            }
+        });
     }
 }
