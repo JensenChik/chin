@@ -1,9 +1,14 @@
 package space.conj.chin.bean;
 
+import com.google.common.base.Optional;
+
+import java.io.Serializable;
+import java.util.Map;
+
 /**
  * Created by hit-s on 2017/4/26.
  */
-public class TaskInstance {
+public class TaskInstance implements Serializable {
     private int id;
     private int taskId;
     private String version;
@@ -11,10 +16,24 @@ public class TaskInstance {
     private String pooledTime;
     private String beginTime;
     private String finishTime;
-    private short runCount;
+    private int runCount;
     private String status;
     private String log;
     private boolean notify;
+
+    public TaskInstance(Map<String, Object> json) {
+        id = (int) json.get("id");
+        taskId = (int) json.get("task_id");
+        version = (String) json.get("version");
+        executeMachine = (String) json.get("execute_machine");
+        pooledTime = (String) Optional.fromNullable(json.get("pooled_time")).or("");
+        beginTime = (String) Optional.fromNullable(json.get("begin_time")).or("");
+        finishTime = (String) Optional.fromNullable(json.get("finish_time")).or("");
+        runCount = (int) json.get("run_count");
+        status = (String) json.get("status");
+        log = (String) json.get("log");
+        notify = (boolean) json.get("notify");
+    }
 
     public int getId() {
         return id;
@@ -72,7 +91,7 @@ public class TaskInstance {
         this.finishTime = finishTime;
     }
 
-    public short getRunCount() {
+    public int getRunCount() {
         return runCount;
     }
 

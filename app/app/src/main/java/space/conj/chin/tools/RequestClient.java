@@ -1,16 +1,10 @@
 package space.conj.chin.tools;
 
-import android.content.Intent;
-import android.os.Looper;
-import android.widget.Toast;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -19,10 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import space.conj.chin.R;
-import space.conj.chin.activity.ListTask;
-import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
+import space.conj.chin.bean.TaskInstance;
 
 /**
  * Created by hit-s on 2017/4/24.
@@ -66,17 +58,36 @@ public class RequestClient {
         return hasCookieOf(domain);
     }
 
-    public static List<Task> getTaskList() throws IOException {
-        Request request = new Request.Builder().url(host + "api/list_task").build();
-        String response = client.newCall(request).execute().body().string();
-        Map<String, Object> responseJson = new ObjectMapper().readValue(response, HashMap.class);
+    private static Map<String, Object> getJson(String url) {
+        try {
+            Request request = new Request.Builder().url(url).build();
+            String response = client.newCall(request).execute().body().string();
+            return new ObjectMapper().readValue(response, HashMap.class);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static List<Task> getTaskList() {
+        Map<String, Object> json = getJson(host + "api/list_task");
+        assert json != null;
 
         List<Task> taskList = Lists.newArrayList();
-        for (Map<String, Object> metaJson : (List<Map>) responseJson.get("data")) {
+        for (Map<String, Object> metaJson : (List<Map>) json.get("data")) {
             taskList.add(new Task(metaJson));
         }
         return taskList;
     }
 
+    public static List<TaskInstance> getTaskInstanceOf(int taskId) {
+        Map<String, Object> json = getJson(host + "api/list_instance_of/" + taskId);
+        assert json != null;
+
+        List<TaskInstance> taskInstance = Lists.newArrayList();
+        for (Map<String, Object> instance : (List<Map>) json.get("data")) {
+            taskInstance.add(new TaskInstance(instance));
+        }
+        return taskInstance;
+    }
 
 }

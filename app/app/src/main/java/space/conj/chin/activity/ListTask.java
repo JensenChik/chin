@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.io.IOException;
 import java.util.List;
 
 import space.conj.chin.R;
@@ -46,18 +45,14 @@ public class ListTask extends AppCompatActivity {
     }
 
     private void initTaskListView() {
-        try {
-            taskList = RequestClient.getTaskList();
-            adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    taskListView.setAdapter(adapter);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        taskList = RequestClient.getTaskList();
+        adapter = new TaskListAdapter(ListTask.this, R.layout.task_item, taskList);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                taskListView.setAdapter(adapter);
+            }
+        });
     }
 
 }
