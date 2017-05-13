@@ -112,7 +112,10 @@ class TaskInstance(BaseModel):
         if isinstance(expected, str): expected = [expected]
         if isinstance(unexpected, str): unexpected = [unexpected]
         expected = [col for col in expected if col not in unexpected]
-        return dict((col, getattr(self, col)) for col in expected)
+        return dict(
+            (col_name, getattr(self, col_name)) if col_name not in ['pooled_time', 'begin_time', 'finish_time']
+            else (col_name, str(getattr(self, col_name))) for col_name in expected
+        )
 
 
 class User(UserMixin, BaseModel):
