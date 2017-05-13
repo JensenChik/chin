@@ -34,7 +34,7 @@ def api_list_instance_by(task_id):
     session.close()
     return json.dumps({
         "status": "success",
-        "data": [i.to_dict() for i in instance]
+        "data": [i.to_dict().pop('log') for i in instance]
     }, ensure_ascii=False)
 
 
