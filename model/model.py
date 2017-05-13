@@ -105,22 +105,14 @@ class TaskInstance(BaseModel):
     def __repr__(self):
         return '<TaskQueue %s>' % self.id
 
-    def to_dict(self, need_log=True):
-        dictionary = {
-            "id": self.id,
-            "task_id": self.task_id,
-            "version": self.version,
-            "execute_machine": self.execute_machine,
-            "pooled_time": self.pooled_time and str(self.pooled_time),
-            "begin_time": self.begin_time and str(self.begin_time),
-            "finish_time": self.finish_time and str(self.finish_time),
-            "run_count": self.run_count,
-            "status": self.status,
-            "notify": self.notify
-        }
-        if need_log:
-            dictionary["log"] = self.log
-        return dictionary
+    def to_dict(self, expected=None, unexpected=None):
+        expected = expected or ["id", "task_id", "version", "execute_machine", "pooled_time",
+                                "begin_time", "finish_time", "run_count", "status", "log", "notify"]
+        unexpected = unexpected or []
+        if isinstance(expected, str): expected = [expected]
+        if isinstance(unexpected, str): unexpected = [unexpected]
+        expected = [col for col in expected if col not in unexpected]
+        return dict((col, getattr(self, col)) for col in expected)
 
 
 class User(UserMixin, BaseModel):
