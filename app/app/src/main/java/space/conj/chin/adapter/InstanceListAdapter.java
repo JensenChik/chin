@@ -1,6 +1,7 @@
 package space.conj.chin.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,19 @@ public class InstanceListAdapter extends ArrayAdapter<TaskInstance> {
 
         version.setText(item.getVersion());
         finishTime.setText(item.getFinishTime());
+
+        switch (item.getStatus()){
+            case "success":
+                view.setBackgroundColor(Color.rgb(92, 184, 92));
+                break;
+            case "running":
+                view.setBackgroundColor(Color.rgb(240, 173, 78));
+                break;
+            case "failed":
+                view.setBackgroundColor(Color.rgb(217, 83, 79));
+                break;
+        }
+
         return view;
     }
 }
