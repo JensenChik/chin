@@ -105,8 +105,8 @@ class TaskInstance(BaseModel):
     def __repr__(self):
         return '<TaskQueue %s>' % self.id
 
-    def to_dict(self):
-        return {
+    def to_dict(self, need_log=True):
+        dictionary = {
             "id": self.id,
             "task_id": self.task_id,
             "version": self.version,
@@ -116,9 +116,11 @@ class TaskInstance(BaseModel):
             "finish_time": self.finish_time and str(self.finish_time),
             "run_count": self.run_count,
             "status": self.status,
-            "log": self.log,
             "notify": self.notify
         }
+        if need_log:
+            dictionary["log"] = self.log
+        return dictionary
 
 
 class User(UserMixin, BaseModel):
