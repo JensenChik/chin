@@ -36,15 +36,18 @@ public class InstanceListAdapter extends ArrayAdapter<TaskInstance> {
         version.setText(item.getVersion());
         finishTime.setText(item.getFinishTime());
 
-        switch (item.getStatus()){
+        switch (item.getStatus()) {
             case "success":
-                view.setBackgroundColor(Color.rgb(92, 184, 92));
+                version.setTextColor(Color.rgb(92, 184, 92));
+                finishTime.setTextColor(Color.rgb(92, 184, 92));
                 break;
             case "running":
-                view.setBackgroundColor(Color.rgb(240, 173, 78));
+                version.setTextColor(Color.rgb(240, 173, 78));
+                finishTime.setTextColor(Color.rgb(240, 173, 78));
                 break;
             case "failed":
-                view.setBackgroundColor(Color.rgb(217, 83, 79));
+                version.setTextColor(Color.rgb(217, 83, 79));
+                finishTime.setTextColor(Color.rgb(217, 83, 79));
                 break;
         }
 

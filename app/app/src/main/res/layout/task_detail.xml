@@ -284,6 +284,7 @@
 
     <ListView
         android:id="@+id/list_instance"
+        android:background="#EEEEEE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

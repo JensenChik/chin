@@ -13,13 +13,10 @@ import android.widget.TextView;
 
 import com.google.common.base.Joiner;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import space.conj.chin.R;
 import space.conj.chin.adapter.InstanceListAdapter;
-import space.conj.chin.adapter.TaskListAdapter;
 import space.conj.chin.bean.Task;
 import space.conj.chin.bean.TaskInstance;
 import space.conj.chin.tools.NewThread;
