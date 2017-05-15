@@ -35,6 +35,9 @@
         <activity
             android:name=".activity.TaskDetail"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InstanceDetail"
+            android:launchMode="singleTask" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

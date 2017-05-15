@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.google.common.base.Joiner;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import space.conj.chin.R;
@@ -43,6 +47,7 @@ public class TaskDetail extends AppCompatActivity {
 
     private ListView instanceListView;
     private InstanceListAdapter adapter;
+    private List<TaskInstance> instanceList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,12 +87,24 @@ public class TaskDetail extends AppCompatActivity {
         instanceListView = (ListView) findViewById(R.id.list_instance);
 
         NewThread.run(this, "initInstanceListView", new Object[]{task.getId()});
+
+        instanceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TaskInstance instance = instanceList.get(position);
+                Intent intent = new Intent(TaskDetail.this, InstanceDetail.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("instance", instance);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
 
     private void initInstanceListView(Integer taskId) {
-        List<TaskInstance> taskInstance = RequestClient.getTaskInstanceOf(taskId);
-        adapter = new InstanceListAdapter(TaskDetail.this, R.layout.instance_item, taskInstance);
+        instanceList = RequestClient.getTaskInstanceOf(taskId);
+        adapter = new InstanceListAdapter(TaskDetail.this, R.layout.instance_item, instanceList);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
