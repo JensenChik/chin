@@ -62,7 +62,7 @@ def api_task_detail():
 
 @admin.route('/api/instance_detail')
 @login_required
-def api_task_detail():
+def api_instance_detail():
     instance_id = int(request.args.get('id'))
     session = DBSession()
     instance = session.query(TaskInstance).filter_by(id=instance_id).first()
