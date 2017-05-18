@@ -2,7 +2,9 @@ package space.conj.chin.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
@@ -58,9 +60,15 @@ public class RequestClient {
         return hasCookieOf(domain);
     }
 
-    private static Map<String, Object> getJson(String url) {
+    private static Map<String, Object> getJson(String url, Map<String, String> args) {
         try {
-            Request request = new Request.Builder().url(url).build();
+            Request request;
+            Request.Builder builder = new Request.Builder();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
+            for (String key : args.keySet()) {
+                urlBuilder.addQueryParameter(key, args.get(key));
+            }
+            request = builder.url(urlBuilder.build()).build();
             String response = client.newCall(request).execute().body().string();
             return new ObjectMapper().readValue(response, HashMap.class);
         } catch (IOException e) {
@@ -69,7 +77,7 @@ public class RequestClient {
     }
 
     public static List<Task> getTaskList() {
-        Map<String, Object> json = getJson(host + "api/list_task");
+        Map<String, Object> json = getJson(host + "api/list_task", Maps.<String, String>newHashMap());
         assert json != null;
 
         List<Task> taskList = Lists.newArrayList();
@@ -79,8 +87,15 @@ public class RequestClient {
         return taskList;
     }
 
-    public static List<TaskInstance> getTaskInstanceOf(int taskId) {
-        Map<String, Object> json = getJson(host + "api/list_instance_of/" + taskId);
+    public static List<TaskInstance> getTaskInstance(Integer taskId) {
+        Map<String, Object> json;
+        if (taskId != null) {
+            HashMap<String, String> args = Maps.newHashMap();
+            args.put("task_id", String.valueOf(taskId));
+            json = getJson(host + "api/list_instance", args);
+        } else {
+            json = getJson(host + "api/list_instance", Maps.<String, String>newHashMap());
+        }
         assert json != null;
 
         List<TaskInstance> taskInstance = Lists.newArrayList();
