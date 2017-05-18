@@ -106,11 +106,10 @@ class TaskInstance(BaseModel):
         return '<TaskQueue %s>' % self.id
 
     def to_dict(self, expected=None, unexpected=None):
-        expected = expected or ["id", "task_id", "version", "execute_machine", "pooled_time",
-                                "begin_time", "finish_time", "run_count", "status", "log", "notify"]
-        unexpected = unexpected or []
-        if isinstance(expected, str): expected = [expected]
-        if isinstance(unexpected, str): unexpected = [unexpected]
+        expected = expected.split(',') if expected is not None else ["id", "task_id", "version", "execute_machine",
+                                                                     "pooled_time", "begin_time", "finish_time",
+                                                                     "run_count", "status", "log", "notify"]
+        unexpected = unexpected.split(',') if unexpected is not None else []
         expected = [col for col in expected if col not in unexpected]
         return dict(
             (col_name, getattr(self, col_name)) if col_name not in ['pooled_time', 'begin_time', 'finish_time']

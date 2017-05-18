@@ -24,6 +24,8 @@ def api_list_task():
 @login_required
 def api_list_instance():
     task_id = request.args.get('task_id')
+    expected = request.args.get('expected')
+    unexpected = request.args.get('unexpected')
     session = DBSession()
     if task_id is not None:
         instance = session.query(TaskInstance) \
@@ -44,7 +46,7 @@ def api_list_instance():
     session.close()
     return json.dumps({
         "status": "success",
-        "data": [i.to_dict(unexpected='log') for i in instance]
+        "data": [i.to_dict(expected=expected, unexpected=unexpected) for i in instance]
     }, ensure_ascii=False)
 
 
