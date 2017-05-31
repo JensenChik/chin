@@ -117,8 +117,8 @@ class TaskTracker:
                 task_instance.status = 'failed'
             task_instance.finish_time = datetime.now()
             task_instance.log = shell.get_log()
+            session.commit()  # 先提交到数据库再移出队列，避免bug: mysql丢失，而任务已经移出队列无法追踪状态
             self.running.remove(shell)
-        session.commit()
 
     # 反馈自身负载情况
     def health_feedback(self, session):
