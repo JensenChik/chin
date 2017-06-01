@@ -9,6 +9,9 @@ import ConfigParser
 import logging
 import traceback
 import psutil
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 
 class Shell:
