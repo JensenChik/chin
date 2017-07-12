@@ -1,114 +1,17 @@
-{% extends 'task/layout.html' %}
-{% block title %}
-    <h2>任务列表</h2>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="zh-CN">
 
-{% block content %}
-    <script>
-        document.getElementById("list_task").className = "active";
-    </script>
-    <div style="margin-top: 1%">
-        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
-               data-show-columns="true" data-show-toggle="true" id="table">
-            <thead>
-            <tr>
-                <th data-align="center" data-width="5%">任务ID</th>
-                <th data-align="center" data-width="20%">任务名</th>
-                <th data-align="center" data-width="5%">是否启用</th>
-                <th data-align="center" data-width="15%">机器池</th>
-                <th data-align="center" data-width="10%">调度格式</th>
-                <th data-align="center" data-width="5%">优先级</th>
-                <th data-align="center" data-width="10%">父任务</th>
-                <th data-align="center" data-width="10%">子任务</th>
-                <th data-align="center" data-width="5%">创建者</th>
-                <th data-align="center" data-width="5%">工具</th>
-            </tr>
-            </thead>
+<head>
+    <title>iView project</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <link rel="stylesheet" href="../../static/vue/main.7c2ef0c346a45cacdbf8.css">
+</head>
 
-            <tbody>
-            {% for task in tasks %}
-                <tr>
-                    <td>{{ task.id }}</td>
-                    <td title="python 'test.py'">{{ task.name }}</td>
-                    <td>
-                        {% if task.valid %}
-                            <input type="checkbox" disabled="disabled" checked>
-                        {% else %}
-                            <input type="checkbox" disabled="disabled">
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for machine in task.machine_pool %}
-                            {% if machine != '' %}
-                                <a href="#" class="btn btn-default btn-xs">{{ machine }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% if task.scheduled_type == 'day' %}
-                            <a href="#" class="btn btn-default btn-xs">D</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ task.hour | zfill }}:{{ task.minute | zfill }}
-                        {% elif task.scheduled_type == 'week' %}
-                            <a href="#" class="btn btn-default btn-xs">W {{ task.weekday }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ task.hour | zfill }}:{{ task.minute | zfill }}
-                        {% elif task.scheduled_type == 'month' %}
-                            <a href="#" class="btn btn-default btn-xs">M {{ task.day | zfill }}</a>&nbsp;&nbsp;&nbsp;
-                            &nbsp;{{ task.hour | zfill }}:{{ task.minute | zfill }}
-                        {% elif task.scheduled_type == 'once' %}
-                            {{ task.year }}-{{ task.month | zfill }}-{{ task.day | zfill }} {{ task.hour | zfill }}:
-                            {{ task.minute | zfill }}:00
-                        {% endif %}
+<body>
+<div id="app"></div>
+<script type="text/javascript" src="../../static/vue/vendors.7c2ef0c346a45cacdbf8.js"></script>
+<script type="text/javascript" src="../../static/vue/main.7c2ef0c346a45cacdbf8.js"></script>
+</body>
 
-                    </td>
-                    <td>{{ task.priority }}</td>
-                    <td>
-                        {% for father in task.father_task %}
-                            {% if father != '' %}
-                                <a class="btn btn-default btn-xs">{{ father }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for child in task.child_task %}
-                            {% if child != '' %}
-                                <a class="btn btn-default btn-xs">{{ child }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{{ task.user }}</td>
-                    <td>
-                        <div class="input-group-btn dropdown">
-                            <a href="/list_instance_log?task_id={{ task.id }}" class="btn btn-default btn-xs">查看日志</a>
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a onclick="run_at_once('{{ task.id }}')">立即执行</a></li>
-                                <li><a onclick="join_queue('{{ task.id }}')">加入当天队列</a></li>
-                                <li><a href="/modify_task?task_id={{ task.id }}">编辑</a></li>
-                                {% if task.valid %}
-                                    <li><a onclick="reverse_task_valid('{{ task.id }}', '{{ task.valid }}')">停用</a></li>
-                                {% else %}
-                                    <li><a onclick="reverse_task_valid('{{ task.id }}', '{{ task.valid }}')">启用</a></li>
-                                {% endif %}
-                                <li><a href="#">删除</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            $('.dropdown').on('shown.bs.dropdown', function () {
-                $('#table').bootstrapTable('scrollTo', 'bottom');
-                var diff_y = $(window).scrollTop() - $('#table').bootstrapTable('getScrollPosition');
-                $('body,html').animate({'scrollTop': diff_y}, 0);
-            });
-        });
-    </script>
-
-{% endblock %}
+</html>
