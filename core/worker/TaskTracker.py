@@ -101,7 +101,7 @@ class TaskTracker:
 
             # 在worker挂掉期间killing任务
             if not_in_running_list:
-                task_instance.status = False
+                task_instance.status = 'failed'
                 task_instance.log = 'worker宕机期间执行killing操作，任务不确定是否killing成功，请手动确认'
                 task_instance.finish_time = datetime.now()
         session.commit()
