@@ -1,0 +1,37 @@
+{% extends 'user/layout.html' %}
+
+{% block title %}
+    <h2>用户列表</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("list_user").className = "active";
+    </script>
+
+    <div style="margin-top: 1%">
+        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+               data-show-columns="true" data-show-toggle="true">
+            <thead>
+            <tr>
+                <th data-align="center">用户id</th>
+                <th data-align="center">用户名</th>
+                <th data-align="center">邮箱</th>
+                <th data-align="center">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><a class="btn btn-danger btn-xs">删除</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

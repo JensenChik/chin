@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+    <title>Chin</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/bootstrap/css/bootstrap-table.min.css" rel="stylesheet">
+    <script src="../../static/bootstrap/js/jquery.min.js"></script>
+    <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/bootstrap/js/bootstrap-table.min.js"></script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Chin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="nav-home"><a href="/">任务列表</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body style="margin:7% 5% 5% 5%">
+
+<div align="center" style="font-size: xx-large">
+    <img src="../../static/chin.png" style="width: 10%">&nbsp;&nbsp;<strong>登陆任务调度系统</strong>
+</div>
+<br>
+
+<div style="margin: 0 10% 0 10%">
+    <form action="/login" method="post">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" align="center">
+                <input type="text" name="user_name" class="form-control" placeholder="用户名">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1%">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" align="center">
+                <input type="password" name="password" class="form-control" placeholder="密码">
+            </div>
+        </div>
+        <div class="row" align="center" style="margin-top: 1%">
+            <button type="submit" class="btn btn-primary">登陆</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

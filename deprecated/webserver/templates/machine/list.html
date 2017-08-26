@@ -1,0 +1,40 @@
+{% extends 'machine/layout.html' %}
+
+{% block title %}
+    <h2>机器列表</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("list_machine").className = "active";
+    </script>
+    <div style="margin-top: 1%">
+        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+               data-show-columns="true" data-show-toggle="true">
+            <thead>
+            <tr>
+                <th data-align="center" data-width="10%">机器名</th>
+                <th data-align="center" data-width="10%">ip地址</th>
+                <th data-align="center" data-width="10%">mac地址</th>
+                <th data-align="center" data-width="5%">最后一次CPU使用率</th>
+                <th data-align="center" data-width="5%">最后一次内存使用率</th>
+                <th data-align="center" data-width="10%">最后一次心跳</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for machine in machines %}
+                <tr>
+                    <td>{{ machine.name }}</td>
+                    <td>{{ machine.ip or '' }}</td>
+                    <td>{{ machine.mac or '' }}</td>
+                    <td>{{ machine.cpu_load or '' }}</td>
+                    <td>{{ machine.men_load or '' }}</td>
+                    <td>{{ machine.update_time or '' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'machine/layout.html' %}
+
+{% block title %}
+    <h2>添加机器</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("new_machine").className = "active";
+    </script>
+    <div style="margin: 2% 10% 0 10%">
+        <form action="/new_machine" method="post">
+            <div class="row">
+                <div class="col-md-2" align="right">
+                    机器名
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="machine_name" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    ip地址
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="ip" class="form-control" placeholder="可选">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-2" align="right">
+                    mac地址
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="mac" class="form-control" placeholder="可选">
+                </div>
+            </div>
+
+            <div class="row" align="center" style="margin-top: 1%">
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

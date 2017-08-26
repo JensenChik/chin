@@ -1,0 +1,57 @@
+{% extends 'log/layout.html' %}
+
+{% block title %}
+    <h2>执行日志</h2>
+{% endblock %}
+
+{% block content %}
+    <script>
+        document.getElementById("list_execute_log").className = "active";
+    </script>
+    <div style="margin-top: 1%">
+        <table data-toggle="table" data-search="true" data-pagination="true" data-show-pagination-switch="true"
+               data-side-pagination="server" data-url="/get_log_by_page"
+               data-show-columns="true" data-show-toggle="true" id="table">
+            <thead>
+            <tr>
+                <th data-field="task_id" data-align="center" data-width="5%">任务ID</th>
+                <th data-field="version" data-align="center" data-width="10%">版本号</th>
+                <th data-field="name" data-align="center" data-width="20%">任务名</th>
+                <th data-field="execute_machine" data-align="center" data-width="5%">执行机器</th>
+                <th data-field="pooled_time" data-align="center" data-width="10%">入池时间</th>
+                <th data-field="begin_time" data-align="center" data-width="10%">开始时间</th>
+                <th data-field="finish_time" data-align="center" data-width="10%">结束时间</th>
+                <th data-field="run_count" data-align="center" data-width="5%">执行次数</th>
+                <th data-field="status" data-align="center" data-width="10%">状态</th>
+                <th data-field="action" data-align="center" data-width="5%">操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.dropdown').on('shown.bs.dropdown', function () {
+                $('#table').bootstrapTable('scrollTo', 'bottom');
+                var diff_y = $(window).scrollTop() - $('#table').bootstrapTable('getScrollPosition');
+                $('body,html').animate({'scrollTop': diff_y}, 0);
+            });
+        });
+    </script>
+
+    <div class="modal fade" id="log_detail" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" align="center">
+            <div class="modal-content" style="width: 100%" align="left">
+                <div class="modal-header">
+                    <h4 class="modal-title">日志详情</h4>
+                </div>
+                <div id="log_content" style="margin: 5% 5% 5% 5%"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

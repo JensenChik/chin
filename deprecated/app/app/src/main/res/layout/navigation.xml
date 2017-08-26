@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <Button
+        android:id="@+id/taskTab"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:drawableTop="@drawable/task"
+        android:text="任务" />
+
+    <Button
+        android:id="@+id/logTab"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:drawableTop="@drawable/log"
+        android:text="日志" />
+
+    <Button
+        android:id="@+id/userTab"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:drawableTop="@drawable/user"
+        android:text="用户" />
+
+    <Button
+        android:id="@+id/machineTab"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:drawableTop="@drawable/machine"
+        android:text="机器" />
+</LinearLayout>

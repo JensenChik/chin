@@ -1,0 +1,18 @@
+{% extends 'base/layout.html' %}
+
+{% block body %}
+    <script>
+        document.getElementById("log").className = "active";
+    </script>
+    {% block title %}{% endblock %}
+    <div class="row" style="margin-right: 0;">
+        <div class="col-md-12">
+            <ul id="myTab" class="nav nav-tabs">
+                <li id="list_execute_log"><a href="/list_execute_log">执行日志</a></li>
+                <li id="list_instance_log"><a href="/list_instance_log">任务实例</a></li>
+                <li id="list_action_log"><a href="/list_action_log">操作日志</a></li>
+            </ul>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+{% endblock %}
