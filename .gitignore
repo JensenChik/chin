@@ -94,3 +94,5 @@ ENV/
 chin.ini
 logs/*
 .tmp
+
+chin
