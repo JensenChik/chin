@@ -5,6 +5,7 @@ import (
     "os"
     "./core/scheduler"
     "./core/worker"
+    "./server"
 )
 
 func main() {
@@ -19,8 +20,9 @@ func main() {
     case "worker":
         fmt.Println("启动 worker")
         worker.Serve()
-    case "webserver":
-        fmt.Println("启动 web server管理后代")
+    case "server":
+        fmt.Println("启动 api 服务")
+        server.Serve()
     case "init":
         fmt.Println("初始化配置")
     default:
