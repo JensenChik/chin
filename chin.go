@@ -6,7 +6,16 @@ import (
     "./core/scheduler"
     "./core/worker"
     "./server"
+    "github.com/jinzhu/gorm"
+    _ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
+func init_db() {
+    fmt.Println("链接mysql")
+    db, _ := gorm.Open("mysql", "user:password@tcp(host:port)/dbname?charset=utf8&parseTime=True&loc=Local")
+    fmt.Println(db.HasTable("user"))
+    defer db.Close()
+}
 
 func main() {
     if len(os.Args) != 2 {
@@ -23,8 +32,9 @@ func main() {
     case "server":
         fmt.Println("启动 api 服务")
         server.Serve()
-    case "init":
-        fmt.Println("初始化配置")
+    case "init_db":
+        fmt.Println("初始化数据库")
+        init_db()
     default:
         fmt.Println("不支持启动命令: " + os.Args[1])
     }
