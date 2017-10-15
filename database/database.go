@@ -5,76 +5,8 @@ import (
     "../config"
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
-    "crypto/md5"
-    "encoding/hex"
-    "time"
     "math/rand"
 )
-
-type Task struct {
-    gorm.Model
-    Task_name       string
-    Command         string
-    Father_task     string `gorm:"type:text"`
-    Valid           bool
-    Machine_pool    string
-    Owner_id        int
-    Schedule_type   string
-    Schedule_format string
-}
-
-type Instance struct {
-    gorm.Model
-    Task_id int `gorm:"index"`
-    Status  string
-}
-
-type Log struct {
-    gorm.Model
-    Instance_id int `gorm:"index"`
-    Machine_id  int
-    Output      string
-}
-
-type Action struct {
-    gorm.Model
-    User_id int
-    Content string
-}
-
-type User struct {
-    gorm.Model
-    User_name string `gorm:"unique"`
-    Password  string
-    Email     string
-}
-
-type Machine struct {
-    gorm.Model
-    Machine_name string
-    IP           string `gorm:"size:15"`
-    MAC          string `gorm:"size:17"`
-    CPU_load     int
-    Memory_load  int
-    alive        bool
-}
-
-func to_md5(raw string) string {
-    ctx := md5.New()
-    ctx.Write([]byte(raw))
-    return hex.EncodeToString(ctx.Sum(nil))
-}
-
-func random_string(size int) string {
-    str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    bytes := []byte(str)
-    result := []byte{}
-    r := rand.New(rand.NewSource(time.Now().UnixNano()))
-    for i := 0; i < size; i++ {
-        result = append(result, bytes[r.Intn(len(bytes))])
-    }
-    return string(result)
-}
 
 func Init() {
 
