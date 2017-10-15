@@ -91,7 +91,7 @@ ENV/
 .ropeproject
 *.idea*
 *.iml
-chin.ini
+config/chin.json
 logs/*
 .tmp
 
