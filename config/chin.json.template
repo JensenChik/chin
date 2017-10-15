@@ -1,0 +1,24 @@
+{
+    "core": {
+        "sql_conn": "user:password@tcp(host:port)/dbname?charset=utf8&parseTime=True&loc=Local"
+    },
+    "server": {
+        "url": "127.0.0.1:6421"
+    },
+    "scheduler": {
+        "heart_beat": 5,
+        "smtp_host": "localhost",
+        "smtp_port": 25,
+        "smtp_user": "chin",
+        "smtp_password": "chin",
+        "smtp_mail_from": "chin@conj.space"
+    },
+    "worker": {
+        "name": "worker_1",
+        "heart_beat": 5
+    }
+}
+
+
+
+
