@@ -1,6 +1,9 @@
 {
     "core": {
         "sql_conn": "user:password@tcp(host:port)/dbname?charset=utf8&parseTime=True&loc=Local"
+        "root_name": "chin",
+        "root_passwd": "root",
+        "root_mail": "chin@conf.space"
     },
     "server": {
         "url": "127.0.0.1:6421"
@@ -18,7 +21,3 @@
         "heart_beat": 5
     }
 }
-
-
-
-

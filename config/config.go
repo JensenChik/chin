@@ -27,3 +27,6 @@ func load_config(filename string) (config) {
 
 var conf = load_config("config/chin.json")
 var SQL_CONN = conf.Core["sql_conn"]
+var ROOT_NAME = conf.Core["root_name"]
+var ROOT_PASSWD = conf.Core["root_passwd"]
+var ROOT_MAIL = conf.Core["root_mail"]
