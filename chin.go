@@ -9,8 +9,6 @@ import (
     "./database"
 )
 
-
-
 func main() {
     if len(os.Args) != 2 {
         fmt.Println("必须附带启动参数：scheduler / worker / webserver / init")
@@ -29,6 +27,8 @@ func main() {
         server.Serve()
     case "init_db":
         database.Init()
+    case "mock_db" :
+        database.Mock()
     default:
         fmt.Println("不支持启动命令: " + os.Args[1])
     }
