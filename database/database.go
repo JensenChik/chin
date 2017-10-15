@@ -38,8 +38,8 @@ type Log struct {
 
 type Action struct {
     gorm.Model
-    user_id int
-    content string
+    User_id int
+    Content string
 }
 
 type User struct {
@@ -123,6 +123,56 @@ func Mock() {
             Schedule_format:random_string(10),
         }
         db.Create(&task)
+    }
+
+    log.Print("开始 mock 表<instances>")
+    for i := 0; i < 1000; i++ {
+        instance := Instance{
+            Task_id:int(rand.Float32() * 100),
+            Status:random_string(5),
+        }
+        db.Create(&instance)
+    }
+
+    log.Print("开始 mock 表<logs>")
+    for i := 0; i < 10000; i++ {
+        log := Log{
+            Instance_id:int(rand.Float32() * 1000),
+            Machine_id:int(rand.Float32() * 10),
+            Output:random_string(100),
+        }
+        db.Create(&log)
+    }
+
+    log.Print("开始 mock 表<users>")
+    for i := 0; i < 10; i++ {
+        user := User{
+            User_name:random_string(10),
+            Password:to_md5(random_string(10)),
+            Email:random_string(5) + "@" + random_string(3) + ".com",
+        }
+        db.Create(&user)
+    }
+
+    log.Print("开始 mock 表<machines>")
+    for i := 0; i < 10; i++ {
+        machine := Machine{
+            Machine_name:random_string(10),
+            IP:random_string(10),
+            MAC:random_string(10),
+            CPU_load:int(rand.Float32() * 100),
+            Memory_load:int(rand.Float32() * 100),
+        }
+        db.Create(&machine)
+    }
+
+    log.Print("开始 mock 表<actions>")
+    for i := 0; i < 100; i++ {
+        action := Action{
+            User_id:int(rand.Float32() * 10),
+            Content:random_string(20),
+        }
+        db.Create(&action)
     }
 
     log.Print("mock 数据完毕")
