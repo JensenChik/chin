@@ -21,12 +21,12 @@ func Init() {
     defer db.Close()
     db.DropTableIfExists(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
     db.CreateTable(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
-    root_user := User{
-        User_name:config.ROOT_NAME,
-        Password:to_md5(config.ROOT_PASSWD),
+    rootUser := User{
+        UserName:config.ROOT_NAME,
+        Password:toMD5(config.ROOT_PASSWD),
         Email:config.ROOT_MAIL,
     }
-    db.Create(&root_user)
+    db.Create(&rootUser)
     log.Print("初始化数据表完毕")
 }
 
@@ -45,14 +45,14 @@ func Mock() {
     log.Print("开始 mock 表<tasks>")
     for i := 0; i < 100; i++ {
         task := Task{
-            Task_name:random_string(16),
-            Command:random_string(16),
-            Father_task:random_string(32),
+            TaskName:randomString(16),
+            Command:randomString(16),
+            FatherTask:randomString(32),
             Valid:rand.Float32() < 0.5,
-            Machine_pool:random_string(10),
-            Owner_id:int(rand.Float32() * 100),
-            Schedule_type:random_string(5),
-            Schedule_format:random_string(10),
+            MachinePool:randomString(10),
+            OwnerID:int(rand.Float32() * 100),
+            ScheduleType:randomString(5),
+            ScheduleFormat:randomString(10),
         }
         db.Create(&task)
     }
@@ -60,8 +60,8 @@ func Mock() {
     log.Print("开始 mock 表<instances>")
     for i := 0; i < 1000; i++ {
         instance := Instance{
-            Task_id:int(rand.Float32() * 100),
-            Status:random_string(5),
+            TaskID:int(rand.Float32() * 100),
+            Status:randomString(5),
         }
         db.Create(&instance)
     }
@@ -69,9 +69,9 @@ func Mock() {
     log.Print("开始 mock 表<logs>")
     for i := 0; i < 10000; i++ {
         log := Log{
-            Instance_id:int(rand.Float32() * 1000),
-            Machine_id:int(rand.Float32() * 10),
-            Output:random_string(100),
+            InstanceID:int(rand.Float32() * 1000),
+            MachineID:int(rand.Float32() * 10),
+            Output:randomString(100),
         }
         db.Create(&log)
     }
@@ -79,9 +79,9 @@ func Mock() {
     log.Print("开始 mock 表<users>")
     for i := 0; i < 10; i++ {
         user := User{
-            User_name:random_string(10),
-            Password:to_md5(random_string(10)),
-            Email:random_string(5) + "@" + random_string(3) + ".com",
+            UserName:randomString(10),
+            Password:toMD5(randomString(10)),
+            Email:randomString(5) + "@" + randomString(3) + ".com",
         }
         db.Create(&user)
     }
@@ -89,11 +89,11 @@ func Mock() {
     log.Print("开始 mock 表<machines>")
     for i := 0; i < 10; i++ {
         machine := Machine{
-            Machine_name:random_string(10),
-            IP:random_string(10),
-            MAC:random_string(10),
-            CPU_load:int(rand.Float32() * 100),
-            Memory_load:int(rand.Float32() * 100),
+            MachineName:randomString(10),
+            IP:randomString(10),
+            MAC:randomString(10),
+            CPULoad:int(rand.Float32() * 100),
+            MemoryLoad:int(rand.Float32() * 100),
         }
         db.Create(&machine)
     }
@@ -101,8 +101,8 @@ func Mock() {
     log.Print("开始 mock 表<actions>")
     for i := 0; i < 100; i++ {
         action := Action{
-            User_id:int(rand.Float32() * 10),
-            Content:random_string(20),
+            UserID:int(rand.Float32() * 10),
+            Content:randomString(20),
         }
         db.Create(&action)
     }

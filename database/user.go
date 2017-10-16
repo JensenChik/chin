@@ -4,7 +4,11 @@ import "github.com/jinzhu/gorm"
 
 type User struct {
     gorm.Model
-    User_name string `gorm:"unique"`
-    Password  string
-    Email     string
+    UserName string `gorm:"unique"`
+    Password string
+    Email    string
+}
+
+func ExistsUser(userName string, password string) bool {
+    return false
 }

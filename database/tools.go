@@ -7,13 +7,13 @@ import (
     "math/rand"
 )
 
-func to_md5(raw string) string {
+func toMD5(raw string) string {
     ctx := md5.New()
     ctx.Write([]byte(raw))
     return hex.EncodeToString(ctx.Sum(nil))
 }
 
-func random_string(size int) string {
+func randomString(size int) string {
     str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     bytes := []byte(str)
     result := []byte{}
