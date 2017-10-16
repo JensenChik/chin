@@ -2,30 +2,33 @@ package config
 
 import (
     "log"
-    "fmt"
     "io/ioutil"
     "encoding/json"
+    "os"
 )
 
 type config struct {
     Core map[string]string
 }
 
-func load_config(filename string) (config) {
+func loadConfig() (config) {
     var conf config
+    filename := "chin.json"
+    if _, err:= os.Stat(filename); os.IsNotExist(err){
+        os.Chdir("..")
+    }
+
     bytes, err := ioutil.ReadFile(filename)
     if err != nil {
-        fmt.Println("Read file:", err.Error())
-        log.Fatal("读取配置文件失败")
+        log.Fatal("读取配置文件失败: ", err.Error())
     }
     if err := json.Unmarshal(bytes, &conf); err != nil {
-        fmt.Println("unmarshal:", err.Error())
-        log.Fatal("解析配置文件失败")
+        log.Fatal("解析配置文件失败: ", err.Error())
     }
     return conf
 }
 
-var conf = load_config("config/chin.json")
+var conf = loadConfig()
 var SQL_CONN = conf.Core["sql_conn"]
 var ROOT_NAME = conf.Core["root_name"]
 var ROOT_PASSWD = conf.Core["root_passwd"]
