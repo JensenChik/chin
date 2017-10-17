@@ -8,15 +8,21 @@ import (
     "math/rand"
 )
 
+func ConnectDatabase() (*gorm.DB, error){
+    db, connectError := gorm.Open("mysql", config.SQL_CONN)
+    if connectError != nil {
+        log.Print("[Error] 无法连接mysql, ", connectError)
+    }
+    return db, connectError
+}
+
 func Init() {
 
     log.Print("初始化数据库")
     log.Print("连接 mysql ...")
-    db, err := gorm.Open("mysql", config.SQL_CONN)
-    if err != nil {
-        log.Fatal("连接 mysql 失败: ", err.Error())
-    } else {
-        log.Print("连接 mysql 成功")
+    db, err := ConnectDatabase()
+    if err != nil{
+        log.Fatal("mysql无法连接")
     }
     defer db.Close()
     db.DropTableIfExists(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
@@ -26,7 +32,8 @@ func Init() {
         Password:toMD5(config.ROOT_PASSWD),
         Email:config.ROOT_MAIL,
     }
-    db.Create(&rootUser)
+    ok := rootUser.DumpToMySQL()
+    log.Print(ok)
     log.Print("初始化数据表完毕")
 }
 
