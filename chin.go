@@ -1,35 +1,53 @@
 package main
 
 import (
-    "fmt"
     "os"
     "./core/scheduler"
     "./core/worker"
     "./server"
     "./database"
+    "flag"
+    "github.com/sdbaiguanghe/glog"
+    "log"
 )
 
+func setDebug(ok bool) {
+    flag.Lookup("logtostderr").Value.Set("true")
+}
+
 func main() {
-    if len(os.Args) != 2 {
-        fmt.Println("必须附带启动参数：scheduler / worker / webserver / init")
-        os.Exit(1)
+    flag.String("as", "", "执行命令: scheduler / worker / webserver / init_db / mock_db")
+    flag.Parse()
+    setDebug(true)
+    glog.SetLevelString("DEBUG")
+
+    if log_dir := flag.Lookup("log_dir").Value.String(); log_dir != "" {
+        log.Print("日志将保存到路径: ", log_dir)
+    } else {
+        log.Print("日志将保存到路径: ", os.TempDir())
+    }
+    defer glog.Flush()
+
+    as := flag.Lookup("as").Value.String()
+    if as == "" {
+        glog.Fatal("必须指定as参数")
     }
 
-    switch os.Args[1] {
+    switch as {
     case "scheduler":
-        fmt.Println("启动 scheduler")
+        glog.Info("启动 scheduler")
         scheduler.Serve()
     case "worker":
-        fmt.Println("启动 worker")
+        glog.Info("启动 worker")
         worker.Serve()
     case "server":
-        fmt.Println("启动 api 服务")
+        glog.Info("启动 api 服务")
         server.Serve()
     case "init_db":
         database.Init()
     case "mock_db" :
         database.Mock()
     default:
-        fmt.Println("不支持启动命令: " + os.Args[1])
+        glog.Fatal("不支持启动命令: " + os.Args[1])
     }
 }

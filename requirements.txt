@@ -1,2 +1,4 @@
 github.com/franela/goblin
 github.com/jinzhu/gorm
+github.com/gorilla/sessions
+github.com/sdbaiguanghe/glog
