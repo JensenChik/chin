@@ -2,7 +2,7 @@ package database
 
 import (
     "github.com/jinzhu/gorm"
-    "log"
+    "github.com/sdbaiguanghe/glog"
 )
 
 type User struct {
@@ -20,7 +20,7 @@ func (user User) DumpToMySQL() bool {
     }
     create := db.Create(&user)
     if create.Error != nil {
-        log.Print("[Error] 插入user记录失败, ", create.Error)
+        glog.Error("插入 user 记录失败, ", create.Error)
         return false
     } else {
         return true

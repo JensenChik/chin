@@ -1,28 +1,27 @@
 package database
 
 import (
-    "log"
     "../config"
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
     "math/rand"
+    "github.com/sdbaiguanghe/glog"
 )
 
-func ConnectDatabase() (*gorm.DB, error){
+func ConnectDatabase() (*gorm.DB, error) {
     db, connectError := gorm.Open("mysql", config.SQL_CONN)
     if connectError != nil {
-        log.Print("[Error] 无法连接mysql, ", connectError)
+        glog.Error("无法连接mysql, ", connectError)
     }
     return db, connectError
 }
 
 func Init() {
-
-    log.Print("初始化数据库")
-    log.Print("连接 mysql ...")
+    glog.Info("初始化数据库")
+    glog.Info("连接mysql")
     db, err := ConnectDatabase()
-    if err != nil{
-        log.Fatal("mysql无法连接")
+    if err != nil {
+        glog.Fatal("mysql无法链接", err.Error())
     }
     defer db.Close()
     db.DropTableIfExists(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
@@ -33,23 +32,25 @@ func Init() {
         Email:config.ROOT_MAIL,
     }
     ok := rootUser.DumpToMySQL()
-    log.Print(ok)
-    log.Print("初始化数据表完毕")
+    if ok {
+        glog.Info("初始化数据表完毕")
+    }
 }
 
 func Mock() {
     Init()
-    log.Print("开始mock 数据...")
-    log.Print("连接 mysql ...")
+    glog.Info("连接 mysql ...")
+    glog.Info("开始 mock 数据")
     db, err := gorm.Open("mysql", config.SQL_CONN)
     if err != nil {
-        log.Fatal("连接 mysql 失败: ", err.Error())
+        glog.Fatal("连接 mysql 失败: ", err.Error())
     } else {
-        log.Print("连接 mysql 成功")
+        glog.Info("连接 mysql 成功")
     }
     defer db.Close()
 
-    log.Print("开始 mock 表<tasks>")
+    glog.Info("开始 mock 表<tasks>")
+
     for i := 0; i < 100; i++ {
         task := Task{
             TaskName:randomString(16),
@@ -64,7 +65,7 @@ func Mock() {
         db.Create(&task)
     }
 
-    log.Print("开始 mock 表<instances>")
+    glog.Info("开始 mock 表<instances>")
     for i := 0; i < 1000; i++ {
         instance := Instance{
             TaskID:int(rand.Float32() * 100),
@@ -73,7 +74,7 @@ func Mock() {
         db.Create(&instance)
     }
 
-    log.Print("开始 mock 表<logs>")
+    glog.Info("开始 mock 表<logs>")
     for i := 0; i < 10000; i++ {
         log := Log{
             InstanceID:int(rand.Float32() * 1000),
@@ -83,7 +84,7 @@ func Mock() {
         db.Create(&log)
     }
 
-    log.Print("开始 mock 表<users>")
+    glog.Info("开始 mock 表<users>")
     for i := 0; i < 10; i++ {
         user := User{
             UserName:randomString(10),
@@ -93,7 +94,7 @@ func Mock() {
         db.Create(&user)
     }
 
-    log.Print("开始 mock 表<machines>")
+    glog.Info("开始 mock 表<machines>")
     for i := 0; i < 10; i++ {
         machine := Machine{
             MachineName:randomString(10),
@@ -105,7 +106,7 @@ func Mock() {
         db.Create(&machine)
     }
 
-    log.Print("开始 mock 表<actions>")
+    glog.Info("开始 mock 表<actions>")
     for i := 0; i < 100; i++ {
         action := Action{
             UserID:int(rand.Float32() * 10),
@@ -114,6 +115,6 @@ func Mock() {
         db.Create(&action)
     }
 
-    log.Print("mock 数据完毕")
+    glog.Info("mock 数据完毕")
 }
 

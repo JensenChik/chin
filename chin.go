@@ -48,6 +48,6 @@ func main() {
     case "mock_db" :
         database.Mock()
     default:
-        glog.Fatal("不支持启动命令: " + os.Args[1])
+        glog.Fatal("不支持启动命令: " + as)
     }
 }
