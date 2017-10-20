@@ -2,7 +2,6 @@ package database
 
 import (
     "github.com/jinzhu/gorm"
-    "github.com/sdbaiguanghe/glog"
 )
 
 type User struct {
@@ -12,20 +11,14 @@ type User struct {
     Email    string
 }
 
-func (user *User) DumpToMySQL() bool {
-    db, connectError := ConnectDatabase()
-    defer db.Close()
-    if connectError != nil {
-        return false
-    }
+func (user *User) BeforeSave(scope *gorm.Scope) error {
     user.Password = toMD5(user.Password)
-    create := db.Create(&user)
-    if create.Error != nil {
-        glog.Error("插入 user 记录失败, ", create.Error)
-        return false
-    } else {
-        return true
-    }
+    return nil
+}
+
+func (user *User) DumpToMySQL() bool {
+    ok := DumpToMySQL(user)
+    return ok
 }
 
 func ExistsUser(userName string, password string) bool {

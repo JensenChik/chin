@@ -6,7 +6,7 @@ import (
     "github.com/jinzhu/gorm"
 )
 
-func Test(t *testing.T) {
+func TestUser(t *testing.T) {
     g := Goblin(t)
     g.Describe("测试 ExistsUser@user.go", func() {
         g.Before(func() {
