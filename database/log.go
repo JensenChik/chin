@@ -2,34 +2,27 @@ package database
 
 import (
     "github.com/jinzhu/gorm"
-    "github.com/sdbaiguanghe/glog"
-    "log"
-    "time"
 )
 
 type Log struct {
     gorm.Model
     InstanceID int `gorm:"index"`
     MachineID  int
-    Output     string
+    Output     string `gorm:"type:longblob"`
+}
+
+func (log *Log) BeforeSave(scope *gorm.Scope) error {
+    log.Output = zip(log.Output)
+    return nil
+}
+
+func (log *Log) AfterFind(scope *gorm.Scope) error {
+    log.Output = unzip(log.Output)
+    return nil
 }
 
 func (log *Log) DumpToMySQL() bool {
-    db, connectError := ConnectDatabase()
-    defer db.Close()
-    if connectError != nil {
-        return false
-    }
-    log.Output = zip(log.Output)
-    create := db.Create(&log)
-    if create.Error != nil {
-        glog.Error("插入 log 记录失败, ", create.Error)
-        return false
-    } else {
-        return true
-    }
+    ok := DumpToMySQL(log)
+    return ok
 }
-
-
-
 
