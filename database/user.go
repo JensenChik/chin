@@ -12,12 +12,13 @@ type User struct {
     Email    string
 }
 
-func (user User) DumpToMySQL() bool {
+func (user *User) DumpToMySQL() bool {
     db, connectError := ConnectDatabase()
     defer db.Close()
     if connectError != nil {
         return false
     }
+    user.Password = toMD5(user.Password)
     create := db.Create(&user)
     if create.Error != nil {
         glog.Error("插入 user 记录失败, ", create.Error)

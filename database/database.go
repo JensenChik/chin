@@ -28,7 +28,7 @@ func Init() {
     db.CreateTable(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
     rootUser := User{
         UserName:config.ROOT_NAME,
-        Password:toMD5(config.ROOT_PASSWD),
+        Password:config.ROOT_PASSWD,
         Email:config.ROOT_MAIL,
     }
     ok := rootUser.DumpToMySQL()
@@ -88,7 +88,7 @@ func Mock() {
     for i := 0; i < 10; i++ {
         user := User{
             UserName:randomString(10),
-            Password:toMD5(randomString(10)),
+            Password:randomString(10),
             Email:randomString(5) + "@" + randomString(3) + ".com",
         }
         db.Create(&user)
