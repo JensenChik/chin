@@ -11,3 +11,8 @@ type Machine struct {
     MemoryLoad  int
     Alive       bool
 }
+
+func (machine *Machine) DumpToMySQL() bool {
+    ok := DumpToMySQL(machine)
+    return ok
+}

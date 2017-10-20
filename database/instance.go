@@ -7,3 +7,8 @@ type Instance struct {
     TaskID int `gorm:"index"`
     Status string
 }
+
+func (instance *Instance) DumpToMySQL() bool {
+    ok := DumpToMySQL(instance)
+    return ok
+}

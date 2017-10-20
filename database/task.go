@@ -13,3 +13,8 @@ type Task struct {
     ScheduleType   string
     ScheduleFormat string
 }
+
+func (task *Task) DumpToMySQL() bool {
+    ok := DumpToMySQL(task)
+    return ok
+}

@@ -7,3 +7,8 @@ type Action struct {
     UserID  int
     Content string
 }
+
+func (action *Action) DumpToMySQL() bool {
+    ok := DumpToMySQL(action)
+    return ok
+}
