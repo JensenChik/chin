@@ -6,13 +6,20 @@ import (
 
 type User struct {
     gorm.Model
-    UserName string `gorm:"unique"`
-    Password string
-    Email    string
+    UserName    string `gorm:"unique"`
+    Password    string
+    Email       string
+    tmpPassword string
 }
 
 func (user *User) BeforeSave(scope *gorm.Scope) error {
+    user.tmpPassword = user.Password
     user.Password = toMD5(user.Password)
+    return nil
+}
+
+func (user *User) AfterSave(scope *gorm.Scope) error {
+    user.Password = user.tmpPassword
     return nil
 }
 
