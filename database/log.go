@@ -21,8 +21,8 @@ func (log *Log) AfterFind(scope *gorm.Scope) error {
     return nil
 }
 
-func (log *Log) DumpToMySQL() bool {
-    ok := DumpToMySQL(log)
-    return ok
+func (log *Log) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(log)
+    return ok, err
 }
 

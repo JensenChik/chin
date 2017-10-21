@@ -16,9 +16,27 @@ func (user *User) BeforeSave(scope *gorm.Scope) error {
     return nil
 }
 
-func (user *User) DumpToMySQL() bool {
-    ok := DumpToMySQL(user)
-    return ok
+func (user *User) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(user)
+    return ok, err
+}
+
+func (user *User) LoadByWhere(filters ...interface{}) (*User, error) {
+    initUser, err := LoadByWhere(user, filters...)
+    if err != nil {
+        return nil, err
+    } else {
+        return initUser.(*User), nil
+    }
+}
+
+func (user *User) LoadByKey(key interface{}) (*User, error) {
+    initUser, err := LoadByKey(user, key)
+    if err != nil {
+        return nil, err
+    } else {
+        return initUser.(*User), nil
+    }
 }
 
 func ExistsUser(userName string, password string) bool {

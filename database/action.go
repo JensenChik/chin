@@ -8,7 +8,7 @@ type Action struct {
     Content string
 }
 
-func (action *Action) DumpToMySQL() bool {
-    ok := DumpToMySQL(action)
-    return ok
+func (action *Action) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(action)
+    return ok, err
 }

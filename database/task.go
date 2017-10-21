@@ -14,7 +14,7 @@ type Task struct {
     ScheduleFormat string
 }
 
-func (task *Task) DumpToMySQL() bool {
-    ok := DumpToMySQL(task)
-    return ok
+func (task *Task) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(task)
+    return ok, err
 }

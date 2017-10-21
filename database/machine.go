@@ -12,7 +12,7 @@ type Machine struct {
     Alive       bool
 }
 
-func (machine *Machine) DumpToMySQL() bool {
-    ok := DumpToMySQL(machine)
-    return ok
+func (machine *Machine) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(machine)
+    return ok, err
 }

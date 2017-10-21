@@ -31,7 +31,7 @@ func Init() {
         Password:config.ROOT_PASSWD,
         Email:config.ROOT_MAIL,
     }
-    ok := rootUser.DumpToMySQL()
+    ok, err:= rootUser.DumpToMySQL()
     if ok {
         glog.Info("初始化数据表完毕")
     }

@@ -43,7 +43,8 @@ func TestLog(t *testing.T) {
             var log_copy Log
             for _, log := range toBeAddLogs {
                 log_copy = log
-                ok := log_copy.DumpToMySQL()
+                ok, err := log_copy.DumpToMySQL()
+                g.Assert(err == nil).IsTrue()
                 g.Assert(ok).IsTrue()
                 expectedCount++
                 db.Table("logs").Count(&mysqlCount)

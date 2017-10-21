@@ -8,7 +8,7 @@ type Instance struct {
     Status string
 }
 
-func (instance *Instance) DumpToMySQL() bool {
-    ok := DumpToMySQL(instance)
-    return ok
+func (instance *Instance) DumpToMySQL() (bool, error) {
+    ok, err := DumpToMySQL(instance)
+    return ok, err
 }
