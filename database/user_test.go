@@ -9,6 +9,7 @@ import (
 
 func TestUser(t *testing.T) {
     g := Goblin(t)
+
     g.Describe("测试 ExistsUser@user.go", func() {
         g.Before(func() {
             Init()
@@ -124,7 +125,6 @@ func TestUser(t *testing.T) {
         })
 
         g.Xit("记录被正确更新", func() {
-        //g.It("记录被正确更新", func() {
             for _, user := range toBeAddUsers {
                 tmpUser = user
                 ok, err := user.DumpToMySQL()
@@ -228,3 +228,4 @@ func TestUser(t *testing.T) {
 
     })
 }
+
