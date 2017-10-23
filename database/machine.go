@@ -16,3 +16,21 @@ func (machine *Machine) DumpToMySQL() (bool, error) {
     ok, err := DumpToMySQL(machine)
     return ok, err
 }
+
+func (machine *Machine) LoadByWhere(filters ...interface{}) (*Machine, error) {
+    initMachine, err := LoadByWhere(machine, filters...)
+    if err != nil {
+        return nil, err
+    } else {
+        return initMachine.(*Machine), nil
+    }
+}
+
+func (machine *Machine) LoadByKey(key interface{}) (*Machine, error) {
+    initMachine, err := LoadByKey(machine, key)
+    if err != nil {
+        return nil, err
+    } else {
+        return initMachine.(*Machine), nil
+    }
+}

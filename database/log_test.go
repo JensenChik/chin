@@ -22,7 +22,7 @@ func TestLog(t *testing.T) {
         })
 
         g.BeforeEach(func() {
-            Init()
+            db.Exec("truncate table logs;")
             toBeAddLogs = []Log{
                 {InstanceID:1, MachineID:1, Output:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
                 {InstanceID:2, MachineID:2, Output:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},

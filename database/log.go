@@ -26,3 +26,21 @@ func (log *Log) DumpToMySQL() (bool, error) {
     return ok, err
 }
 
+func (log *Log) LoadByWhere(filters ...interface{}) (*Log, error) {
+    initLog, err := LoadByWhere(log, filters...)
+    if err != nil {
+        return nil, err
+    } else {
+        return initLog.(*Log), nil
+    }
+}
+
+func (log *Log) LoadByKey(key interface{}) (*Log, error) {
+    initLog, err := LoadByKey(log, key)
+    if err != nil {
+        return nil, err
+    } else {
+        return initLog.(*Log), nil
+    }
+}
+
