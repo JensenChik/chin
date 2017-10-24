@@ -29,7 +29,11 @@ func LoadByWhere(object interface{}, filters ...interface{}) (interface{}, error
         return false, errors.New("无法连接mysql")
     }
     var recordCount = 0
-    db.Model(object).Where(filters[0], filters[1:]...).Count(&recordCount)
+    checkCount := db.Model(object).Where(filters[0], filters[1:]...).Count(&recordCount)
+    if checkCount.Error != nil {
+        glog.Error("查询逻辑错误", checkCount.Error)
+        return nil, errors.New("查询逻辑错误")
+    }
     if recordCount > 1 {
         glog.Errorf("%T中满足条件的记录数为 %d 条而不是 1 条", object, recordCount)
         return nil, errors.New("存在多条满足条件的记录，无法实例化")
