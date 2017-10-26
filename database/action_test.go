@@ -89,7 +89,7 @@ func TestAction(t *testing.T) {
             defer db.Close()
         })
 
-        g.Xit("记录被正确更新", func() {
+        g.It("记录被正确更新", func() {
             g.Timeout(10 * time.Second)
             for _, action := range actions {
                 ok, err := action.DumpToMySQL()

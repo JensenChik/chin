@@ -79,7 +79,7 @@ func Mock() {
         log := Log{
             InstanceID:int(rand.Float32() * 1000),
             MachineID:int(rand.Float32() * 10),
-            Output:randomString(100),
+            StdOut:randomString(100),
         }
         db.Create(&log)
     }

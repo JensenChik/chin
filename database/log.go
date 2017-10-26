@@ -8,16 +8,21 @@ type Log struct {
     gorm.Model
     InstanceID int `gorm:"index"`
     MachineID  int
-    Output     string `gorm:"type:longblob"`
+    StdOut     string `gorm:"type:longblob"`
 }
 
 func (log *Log) BeforeSave(scope *gorm.Scope) error {
-    log.Output = zip(log.Output)
+    log.StdOut = zip(log.StdOut)
+    return nil
+}
+
+func (log *Log) AfterSave(scope *gorm.Scope) error {
+    log.StdOut = unzip(log.StdOut)
     return nil
 }
 
 func (log *Log) AfterFind(scope *gorm.Scope) error {
-    log.Output = unzip(log.Output)
+    log.StdOut = unzip(log.StdOut)
     return nil
 }
 
