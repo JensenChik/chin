@@ -1,10 +1,12 @@
-package server
+package task
 
 import (
     "net/http"
     "fmt"
+    "../auth"
 )
 
-func new_task(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "新建任务")
+func New(w http.ResponseWriter, r *http.Request) {
+    currentUser := auth.CurrentUser(r)
+    fmt.Fprint(w, "新建任务" + currentUser)
 }
