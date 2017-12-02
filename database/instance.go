@@ -1,11 +1,29 @@
 package database
 
-import "github.com/jinzhu/gorm"
+import (
+    "github.com/jinzhu/gorm"
+)
 
 type Instance struct {
     gorm.Model
-    TaskID int `gorm:"index"`
-    Status string
+    JobID     int `gorm:"index"`
+    MachineID int
+    StdOut    string `gorm:"type:longblob"`
+}
+
+func (instance *Instance) BeforeSave(scope *gorm.Scope) error {
+    instance.StdOut = zip(instance.StdOut)
+    return nil
+}
+
+func (instance *Instance) AfterSave(scope *gorm.Scope) error {
+    instance.StdOut = unzip(instance.StdOut)
+    return nil
+}
+
+func (instance *Instance) AfterFind(scope *gorm.Scope) error {
+    instance.StdOut = unzip(instance.StdOut)
+    return nil
 }
 
 func (instance *Instance) DumpToMySQL() (bool, error) {
@@ -30,3 +48,4 @@ func (instance *Instance) LoadByKey(key interface{}) (*Instance, error) {
         return initInstance.(*Instance), nil
     }
 }
+

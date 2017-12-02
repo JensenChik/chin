@@ -24,8 +24,8 @@ func Init() {
         glog.Fatal("mysql无法链接", err.Error())
     }
     defer db.Close()
-    db.DropTableIfExists(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
-    db.CreateTable(&Task{}, &Instance{}, &Log{}, &Action{}, &User{}, &Machine{})
+    db.DropTableIfExists(&Task{}, &Job{}, &Instance{}, &Operation{}, &User{}, &Machine{})
+    db.CreateTable(&Task{}, &Job{}, &Instance{}, &Operation{}, &User{}, &Machine{})
     rootUser := User{
         UserName:config.ROOT_NAME,
         Password:config.ROOT_PASSWD,
@@ -65,23 +65,23 @@ func Mock() {
         db.Create(&task)
     }
 
-    glog.Info("开始 mock 表<instances>")
+    glog.Info("开始 mock 表<jobs>")
     for i := 0; i < 1000; i++ {
-        instance := Instance{
+        job := Job{
             TaskID:int(rand.Float32() * 100),
             Status:randomString(5),
         }
-        db.Create(&instance)
+        db.Create(&job)
     }
 
-    glog.Info("开始 mock 表<logs>")
+    glog.Info("开始 mock 表<instances>")
     for i := 0; i < 10000; i++ {
-        log := Log{
-            InstanceID:int(rand.Float32() * 1000),
+        instance := Instance{
+            JobID:int(rand.Float32() * 1000),
             MachineID:int(rand.Float32() * 10),
             StdOut:randomString(100),
         }
-        db.Create(&log)
+        db.Create(&instance)
     }
 
     glog.Info("开始 mock 表<users>")
@@ -106,13 +106,13 @@ func Mock() {
         db.Create(&machine)
     }
 
-    glog.Info("开始 mock 表<actions>")
+    glog.Info("开始 mock 表<operations>")
     for i := 0; i < 100; i++ {
-        action := Action{
+        operation := Operation{
             UserID:int(rand.Float32() * 10),
             Content:randomString(20),
         }
-        db.Create(&action)
+        db.Create(&operation)
     }
 
     glog.Info("mock 数据完毕")
