@@ -5,6 +5,31 @@ import (
     "errors"
 )
 
+type query struct {
+    array interface{}
+}
+
+func Fill(array interface{}) *query {
+    return &query{array: array}
+}
+
+func (q *query) Where(filters ...interface{}) (bool, error) {
+    db, connectError := connectDatabase()
+    defer db.Close()
+    if connectError != nil {
+        glog.Error(connectError)
+        return false, errors.New("无法连接mysql")
+    }
+    load := db.Where(filters[0], filters[1:]...).Find(q.array)
+    if load.Error != nil {
+        glog.Errorf("查询 %T 记录失败, %s", q.array, load.Error)
+        return false, errors.New("查询失败")
+    } else {
+        return true, nil
+    }
+
+}
+
 func dumpToMysql(object interface{}) (bool, error) {
     db, connectError := connectDatabase()
     defer db.Close()
