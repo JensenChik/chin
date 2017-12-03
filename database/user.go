@@ -24,12 +24,12 @@ func (user *User) AfterSave(scope *gorm.Scope) error {
 }
 
 func (user *User) DumpToMySQL() (bool, error) {
-    ok, err := DumpToMySQL(user)
+    ok, err := dumpToMysql(user)
     return ok, err
 }
 
 func (user *User) LoadByWhere(filters ...interface{}) (*User, error) {
-    initUser, err := LoadByWhere(user, filters...)
+    initUser, err := loadByWhere(user, filters...)
     if err != nil {
         return nil, err
     } else {
@@ -38,7 +38,7 @@ func (user *User) LoadByWhere(filters ...interface{}) (*User, error) {
 }
 
 func (user *User) LoadByKey(key interface{}) (*User, error) {
-    initUser, err := LoadByKey(user, key)
+    initUser, err := loadByKey(user, key)
     if err != nil {
         return nil, err
     } else {

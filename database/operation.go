@@ -9,12 +9,12 @@ type Operation struct {
 }
 
 func (op *Operation) DumpToMySQL() (bool, error) {
-    ok, err := DumpToMySQL(op)
+    ok, err := dumpToMysql(op)
     return ok, err
 }
 
 func (op *Operation) LoadByWhere(filters ...interface{}) (*Operation, error) {
-    initOperation, err := LoadByWhere(op, filters...)
+    initOperation, err := loadByWhere(op, filters...)
     if err != nil {
         return nil, err
     } else {
@@ -23,7 +23,7 @@ func (op *Operation) LoadByWhere(filters ...interface{}) (*Operation, error) {
 }
 
 func (op *Operation) LoadByKey(key interface{}) (*Operation, error) {
-    initOperation, err := LoadByKey(op, key)
+    initOperation, err := loadByKey(op, key)
     if err != nil {
         return nil, err
     } else {

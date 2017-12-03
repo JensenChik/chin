@@ -27,12 +27,12 @@ func (instance *Instance) AfterFind(scope *gorm.Scope) error {
 }
 
 func (instance *Instance) DumpToMySQL() (bool, error) {
-    ok, err := DumpToMySQL(instance)
+    ok, err := dumpToMysql(instance)
     return ok, err
 }
 
 func (instance *Instance) LoadByWhere(filters ...interface{}) (*Instance, error) {
-    initInstance, err := LoadByWhere(instance, filters...)
+    initInstance, err := loadByWhere(instance, filters...)
     if err != nil {
         return nil, err
     } else {
@@ -41,7 +41,7 @@ func (instance *Instance) LoadByWhere(filters ...interface{}) (*Instance, error)
 }
 
 func (instance *Instance) LoadByKey(key interface{}) (*Instance, error) {
-    initInstance, err := LoadByKey(instance, key)
+    initInstance, err := loadByKey(instance, key)
     if err != nil {
         return nil, err
     } else {

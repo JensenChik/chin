@@ -13,12 +13,12 @@ type Machine struct {
 }
 
 func (machine *Machine) DumpToMySQL() (bool, error) {
-    ok, err := DumpToMySQL(machine)
+    ok, err := dumpToMysql(machine)
     return ok, err
 }
 
 func (machine *Machine) LoadByWhere(filters ...interface{}) (*Machine, error) {
-    initMachine, err := LoadByWhere(machine, filters...)
+    initMachine, err := loadByWhere(machine, filters...)
     if err != nil {
         return nil, err
     } else {
@@ -27,7 +27,7 @@ func (machine *Machine) LoadByWhere(filters ...interface{}) (*Machine, error) {
 }
 
 func (machine *Machine) LoadByKey(key interface{}) (*Machine, error) {
-    initMachine, err := LoadByKey(machine, key)
+    initMachine, err := loadByKey(machine, key)
     if err != nil {
         return nil, err
     } else {

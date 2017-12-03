@@ -5,7 +5,7 @@ import (
     "errors"
 )
 
-func DumpToMySQL(object interface{}) (bool, error) {
+func dumpToMysql(object interface{}) (bool, error) {
     db, connectError := ConnectDatabase()
     defer db.Close()
     if connectError != nil {
@@ -21,7 +21,7 @@ func DumpToMySQL(object interface{}) (bool, error) {
     }
 }
 
-func LoadByWhere(object interface{}, filters ...interface{}) (interface{}, error) {
+func loadByWhere(object interface{}, filters ...interface{}) (interface{}, error) {
     db, connectError := ConnectDatabase()
     defer db.Close()
     if connectError != nil {
@@ -51,7 +51,7 @@ func LoadByWhere(object interface{}, filters ...interface{}) (interface{}, error
     }
 }
 
-func LoadByKey(object interface{}, key interface{}) (interface{}, error) {
+func loadByKey(object interface{}, key interface{}) (interface{}, error) {
     db, connectError := ConnectDatabase()
     defer db.Close()
     if connectError != nil {

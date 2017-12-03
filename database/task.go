@@ -15,12 +15,12 @@ type Task struct {
 }
 
 func (task *Task) DumpToMySQL() (bool, error) {
-    ok, err := DumpToMySQL(task)
+    ok, err := dumpToMysql(task)
     return ok, err
 }
 
 func (task *Task) LoadByWhere(filters ...interface{}) (*Task, error) {
-    initTask, err := LoadByWhere(task, filters...)
+    initTask, err := loadByWhere(task, filters...)
     if err != nil {
         return nil, err
     } else {
@@ -29,7 +29,7 @@ func (task *Task) LoadByWhere(filters ...interface{}) (*Task, error) {
 }
 
 func (task *Task) LoadByKey(key interface{}) (*Task, error) {
-    initTask, err := LoadByKey(task, key)
+    initTask, err := loadByKey(task, key)
     if err != nil {
         return nil, err
     } else {
