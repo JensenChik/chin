@@ -6,7 +6,7 @@ import (
 )
 
 func dumpToMysql(object interface{}) (bool, error) {
-    db, connectError := ConnectDatabase()
+    db, connectError := connectDatabase()
     defer db.Close()
     if connectError != nil {
         glog.Error(connectError)
@@ -22,7 +22,7 @@ func dumpToMysql(object interface{}) (bool, error) {
 }
 
 func loadByWhere(object interface{}, filters ...interface{}) (interface{}, error) {
-    db, connectError := ConnectDatabase()
+    db, connectError := connectDatabase()
     defer db.Close()
     if connectError != nil {
         glog.Error(connectError)
@@ -52,7 +52,7 @@ func loadByWhere(object interface{}, filters ...interface{}) (interface{}, error
 }
 
 func loadByKey(object interface{}, key interface{}) (interface{}, error) {
-    db, connectError := ConnectDatabase()
+    db, connectError := connectDatabase()
     defer db.Close()
     if connectError != nil {
         glog.Error(connectError)

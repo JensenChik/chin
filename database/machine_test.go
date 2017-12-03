@@ -17,7 +17,7 @@ func TestMachine(t *testing.T) {
         var machines []Machine
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -78,7 +78,7 @@ func TestMachine(t *testing.T) {
         var machines []Machine
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -147,7 +147,7 @@ func TestMachine(t *testing.T) {
         var machines []Machine
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }

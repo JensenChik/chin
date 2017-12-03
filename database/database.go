@@ -8,7 +8,7 @@ import (
     "github.com/sdbaiguanghe/glog"
 )
 
-func ConnectDatabase() (*gorm.DB, error) {
+func connectDatabase() (*gorm.DB, error) {
     db, connectError := gorm.Open("mysql", config.SQL_CONN)
     if connectError != nil {
         glog.Error("无法连接mysql, ", connectError)
@@ -19,7 +19,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 func Init() {
     glog.Info("初始化数据库")
     glog.Info("连接mysql")
-    db, err := ConnectDatabase()
+    db, err := connectDatabase()
     if err != nil {
         glog.Fatal("mysql无法链接", err.Error())
     }

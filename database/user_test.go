@@ -15,7 +15,7 @@ func TestUser(t *testing.T) {
         var err error
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -29,13 +29,16 @@ func TestUser(t *testing.T) {
         })
 
         g.It("当存在该用户且密码匹配时返回true", func() {
-            g.Assert(ExistsUser("chin", "root")).IsTrue()
+            user := User{UserName:"chin", Password:"root"}
+            g.Assert(user.Exists()).IsTrue()
         })
         g.It("当存在该用户,但密码不匹配时返回false", func() {
-            g.Assert(ExistsUser("chin", "root+1s")).IsFalse()
+            user := User{UserName:"chin", Password:"chin+1s"}
+            g.Assert(user.Exists()).IsFalse()
         })
         g.It("当不存在该用户时应当返回false", func() {
-            g.Assert(ExistsUser("hahaha", "+1s")).IsFalse()
+            user := User{UserName:"hahaha", Password:"+1s"}
+            g.Assert(user.Exists()).IsFalse()
         })
 
     })
@@ -47,7 +50,7 @@ func TestUser(t *testing.T) {
         var mysqlCount int
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -136,7 +139,7 @@ func TestUser(t *testing.T) {
         var mysqlCount int
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -190,7 +193,7 @@ func TestUser(t *testing.T) {
         var users []User
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }

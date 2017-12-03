@@ -17,7 +17,7 @@ func TestTask(t *testing.T) {
         var tasks []Task
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -84,7 +84,7 @@ func TestTask(t *testing.T) {
         var tasks []Task
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -160,7 +160,7 @@ func TestTask(t *testing.T) {
         var tasks []Task
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }

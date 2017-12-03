@@ -17,7 +17,7 @@ func TestInstance(t *testing.T) {
         var instances []Instance
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -73,7 +73,7 @@ func TestInstance(t *testing.T) {
         var instances []Instance
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -131,7 +131,7 @@ func TestInstance(t *testing.T) {
         var instances []Instance
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }

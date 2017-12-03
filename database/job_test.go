@@ -17,7 +17,7 @@ func TestJob(t *testing.T) {
         var jobs []Job
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -70,7 +70,7 @@ func TestJob(t *testing.T) {
         var jobs []Job
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
@@ -122,7 +122,7 @@ func TestJob(t *testing.T) {
         var jobs []Job
 
         g.Before(func() {
-            db, err = ConnectDatabase()
+            db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }

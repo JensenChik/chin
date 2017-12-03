@@ -46,11 +46,11 @@ func (user *User) LoadByKey(key interface{}) (*User, error) {
     }
 }
 
-func ExistsUser(userName string, password string) bool {
-    md5Passwd := toMD5(password)
-    db, _ := ConnectDatabase()
-    defer db.Close()
-    user := User{}
-    db.Where("user_name =?", userName).First(&user)
-    return user.Password == md5Passwd
+func (user *User) Exists() bool {
+    userInDB, err := new(User).LoadByWhere("user_name = ?", user.UserName)
+    if err != nil {
+        return false
+    } else {
+        return userInDB.Password == toMD5(user.Password)
+    }
 }
