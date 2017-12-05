@@ -323,4 +323,39 @@ func TestTask(t *testing.T) {
 
     })
 
+    g.Describe("测试NoJobToday", func() {
+        var db *gorm.DB
+        var err error
+        var task Task
+        g.BeforeEach(func() {
+            db, err = connectDatabase()
+            if err != nil {
+                g.Fail("连接mysql错误")
+            }
+            db.Exec("truncate table jobs;")
+            db.Exec("truncate table tasks;")
+
+        })
+
+        g.After(func() {
+            defer db.Close()
+        })
+
+        g.It("正确地判断是否存在该task当天的job", func() {
+            taskID := randomInt(100)
+            for i := 0; i < int(taskID); i++ {
+                task = Task{}
+                task.DumpToMySQL()
+            }
+            job := Job{TaskID:taskID}
+            job.CreatedAt = time.Now().AddDate(0, 0, -1)
+            job.DumpToMySQL()
+            g.Assert(task.NoJobToday()).IsTrue()
+            job = Job{TaskID:taskID}
+            job.DumpToMySQL()
+            g.Assert(task.NoJobToday()).IsFalse()
+        })
+
+    })
+
 }

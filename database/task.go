@@ -54,10 +54,11 @@ func (task *Task) ShouldScheduleToday() (bool) {
     return scheduleToday
 }
 
-func (task *Task) NoJobToday() (bool){
+func (task *Task) NoJobToday() (bool) {
+    today := time.Now().Format("2006-01-02")
     jobs := []Job{}
-    Fill(&jobs).Where("task_id = ? and create_at > ", task.ID, )
-    return false
+    Fill(&jobs).Where("task_id = ? and date(created_at) = ? ", task.ID, today)
+    return len(jobs) == 0
 }
 
 func (task *Task) DumpToMySQL() (bool, error) {
