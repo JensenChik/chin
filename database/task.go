@@ -4,7 +4,6 @@ import (
     "github.com/jinzhu/gorm"
     "strings"
     "time"
-    "strconv"
 )
 
 type Task struct {
@@ -44,7 +43,7 @@ func (task *Task) ShouldScheduleToday() (bool) {
         scheduleToday = WEEKDAY_MAPPING[time.Now().Weekday().String()] ==
             strings.Split(task.ScheduleFormat, SPACE)[WEEKDAY_IDX]
     case "month": // 0 0000-00-02 15:04:05
-        scheduleToday = strconv.Itoa(time.Now().Day()) == strings.Split(
+        scheduleToday = time.Now().Format("02") == strings.Split(
             strings.Split(task.ScheduleFormat, SPACE)[DATE_IDX],
             DASH,
         )[DAY_IDX]
