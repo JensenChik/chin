@@ -292,8 +292,34 @@ func TestTask(t *testing.T) {
             g.Assert(task.ShouldScheduleToday()).IsFalse()
         })
 
-        g.It("月调度")
-        g.It("单次调度")
+        g.It("月调度", func() {
+            task = Task{
+                ScheduleType:"month",
+                ScheduleFormat:"0 0000-00-" + today.Format("02") + " 15:04:05",
+            }
+            g.Assert(task.ShouldScheduleToday()).IsTrue()
+            task.ScheduleFormat = "0 0000-00-" + yesterday.Format("02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleFormat = "0 0000-00-" + tomorrow.Format("02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleFormat = "0 0000-00-" + theDayAfterTomorrow.Format("02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+
+        })
+
+        g.It("单次调度", func() {
+            task = Task{
+                ScheduleType:"month",
+                ScheduleFormat:"0 " + today.Format("2006-01-02") + " 15:04:05",
+            }
+            g.Assert(task.ShouldScheduleToday()).IsTrue()
+            task.ScheduleFormat = "0 " + yesterday.Format("2006-01-02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleFormat = "0 " + tomorrow.Format("2006-01-02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleFormat = "0 " + theDayAfterTomorrow.Format("2006-01-02") + " 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+        })
 
     })
 
