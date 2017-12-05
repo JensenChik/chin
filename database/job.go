@@ -4,8 +4,8 @@ import "github.com/jinzhu/gorm"
 
 type Job struct {
     gorm.Model
-    TaskID    int `gorm:"index"`
-    MachineID int `gorm:"index"`
+    TaskID    uint `gorm:"index"`
+    MachineID uint `gorm:"index"`
     Status    string
     Notified  bool
 }

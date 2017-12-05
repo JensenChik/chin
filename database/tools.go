@@ -43,7 +43,7 @@ func randomString(size int) string {
     return string(result)
 }
 
-func randomInt(upbound int) int {
+func randomInt(upbound int) uint {
     r := rand.New(rand.NewSource(time.Now().UnixNano()))
-    return r.Intn(upbound)
+    return uint(r.Intn(upbound))
 }

@@ -5,6 +5,8 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "github.com/sdbaiguanghe/glog"
+    "strconv"
 )
 
 func TestTask(t *testing.T) {
@@ -248,4 +250,51 @@ func TestTask(t *testing.T) {
         })
 
     })
+
+    g.Describe("测试ScheduleToday", func() {
+        var task Task
+        WEEKDAY_MAPPING := map[string]int{
+            "Any": 0,
+            "Monday":1,
+            "Tuesday":2,
+            "Wednesday":3,
+            "Thursday":4,
+            "Friday":5,
+            "Saturday":6,
+            "Sunday":7,
+        }
+        today := time.Now()
+        yesterday := today.AddDate(0, 0, -1)
+        tomorrow := today.AddDate(0, 0, 1)
+        theDayAfterTomorrow := today.AddDate(0, 0, 2)
+
+        g.It("日调度", func() {
+            task = Task{ScheduleType:"day"}
+            glog.Error(time.Now().Weekday())
+            g.Assert(task.ShouldScheduleToday()).IsTrue()
+        })
+
+        g.It("周调度", func() {
+            todayWeekday := WEEKDAY_MAPPING[today.Weekday().String()]
+            yesterdayWeekday := WEEKDAY_MAPPING[yesterday.Weekday().String()]
+            tomorrowWeekday := WEEKDAY_MAPPING[tomorrow.Weekday().String()]
+            theDayAfterTomorrowWeekday := WEEKDAY_MAPPING[theDayAfterTomorrow.Weekday().String()]
+            task = Task{
+                ScheduleType:"week",
+                ScheduleFormat: strconv.Itoa(todayWeekday) + " 0000-00-00 15:04:05",
+            }
+            g.Assert(task.ShouldScheduleToday()).IsTrue()
+            task.ScheduleType = strconv.Itoa(yesterdayWeekday) + " 0000-00-00 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleType = strconv.Itoa(tomorrowWeekday) + " 0000-00-00 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            task.ScheduleType = strconv.Itoa(theDayAfterTomorrowWeekday) + " 0000-00-00 15:04:05"
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+        })
+
+        g.It("月调度")
+        g.It("单次调度")
+
+    })
+
 }

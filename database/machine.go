@@ -7,8 +7,8 @@ type Machine struct {
     MachineName string
     IP          string `gorm:"size:15"`
     MAC         string `gorm:"size:17"`
-    CPULoad     int
-    MemoryLoad  int
+    CPULoad     uint
+    MemoryLoad  uint
     Alive       bool
 }
 

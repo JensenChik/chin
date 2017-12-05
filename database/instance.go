@@ -6,8 +6,8 @@ import (
 
 type Instance struct {
     gorm.Model
-    JobID     int `gorm:"index"`
-    MachineID int
+    JobID     uint `gorm:"index"`
+    MachineID uint
     StdOut    string `gorm:"type:longblob"`
 }
 

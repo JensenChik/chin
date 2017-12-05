@@ -31,7 +31,7 @@ func Init() {
         Password:config.ROOT_PASSWD,
         Email:config.ROOT_MAIL,
     }
-    ok, err:= rootUser.DumpToMySQL()
+    ok, err := rootUser.DumpToMySQL()
     if ok {
         glog.Info("初始化数据表完毕")
     }
@@ -58,7 +58,7 @@ func Mock() {
             FatherTask:randomString(32),
             Valid:rand.Float32() < 0.5,
             MachinePool:randomString(10),
-            OwnerID:int(rand.Float32() * 100),
+            OwnerID:randomInt(100),
             ScheduleType:randomString(5),
             ScheduleFormat:randomString(10),
         }
@@ -68,7 +68,7 @@ func Mock() {
     glog.Info("开始 mock 表<jobs>")
     for i := 0; i < 1000; i++ {
         job := Job{
-            TaskID:int(rand.Float32() * 100),
+            TaskID:randomInt(100),
             Status:randomString(5),
         }
         db.Create(&job)
@@ -77,8 +77,8 @@ func Mock() {
     glog.Info("开始 mock 表<instances>")
     for i := 0; i < 10000; i++ {
         instance := Instance{
-            JobID:int(rand.Float32() * 1000),
-            MachineID:int(rand.Float32() * 10),
+            JobID:randomInt(1000),
+            MachineID:randomInt(10),
             StdOut:randomString(100),
         }
         db.Create(&instance)
@@ -100,8 +100,8 @@ func Mock() {
             MachineName:randomString(10),
             IP:randomString(10),
             MAC:randomString(10),
-            CPULoad:int(rand.Float32() * 100),
-            MemoryLoad:int(rand.Float32() * 100),
+            CPULoad:randomInt(100),
+            MemoryLoad:randomInt(100),
         }
         db.Create(&machine)
     }
@@ -109,7 +109,7 @@ func Mock() {
     glog.Info("开始 mock 表<operations>")
     for i := 0; i < 100; i++ {
         operation := Operation{
-            UserID:int(rand.Float32() * 10),
+            UserID:randomInt(10),
             Content:randomString(20),
         }
         db.Create(&operation)

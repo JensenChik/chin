@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Operation struct {
     gorm.Model
-    UserID  int
+    UserID  uint
     Content string
 }
 
