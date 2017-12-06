@@ -3,8 +3,9 @@ package config
 import (
     "io/ioutil"
     "encoding/json"
-    "os"
     "github.com/sdbaiguanghe/glog"
+    "path/filepath"
+    "runtime"
 )
 
 type config struct {
@@ -13,10 +14,9 @@ type config struct {
 
 func loadConfig() (config) {
     var conf config
-    filename := "chin.json"
-    if _, err := os.Stat(filename); os.IsNotExist(err) {
-        os.Chdir("..")
-    }
+    _, thisFileAbsName, _, _ := runtime.Caller(0)
+    config_path, _ := filepath.Abs(filepath.Dir(thisFileAbsName))
+    filename := filepath.Join(config_path, "..", "chin.json")
 
     bytes, err := ioutil.ReadFile(filename)
     if err != nil {
