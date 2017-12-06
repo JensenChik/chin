@@ -19,6 +19,9 @@ type Task struct {
 }
 
 func (task *Task) ShouldScheduleToday() (bool) {
+    if !task.Valid {
+        return false
+    }
     WEEKDAY_MAPPING := map[string]string{
         "Any": "0",
         "Monday":"1",

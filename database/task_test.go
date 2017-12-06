@@ -5,7 +5,6 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
-    "github.com/sdbaiguanghe/glog"
     "strconv"
 )
 
@@ -268,10 +267,16 @@ func TestTask(t *testing.T) {
         tomorrow := today.AddDate(0, 0, 1)
         theDayAfterTomorrow := today.AddDate(0, 0, 2)
 
+        g.It("不调度", func() {
+            task = Task{Valid:false}
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+        })
+
         g.It("日调度", func() {
-            task = Task{ScheduleType:"day"}
-            glog.Error(time.Now().Weekday())
+            task = Task{ScheduleType:"day", Valid:true}
             g.Assert(task.ShouldScheduleToday()).IsTrue()
+            task.Valid = false
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
         })
 
         g.It("周调度", func() {
@@ -280,28 +285,46 @@ func TestTask(t *testing.T) {
             tomorrowWeekday := WEEKDAY_MAPPING[tomorrow.Weekday().String()]
             theDayAfterTomorrowWeekday := WEEKDAY_MAPPING[theDayAfterTomorrow.Weekday().String()]
             task = Task{
+                Valid:true,
                 ScheduleType:"week",
                 ScheduleFormat: strconv.Itoa(todayWeekday) + " 0000-00-00 15:04:05",
             }
             g.Assert(task.ShouldScheduleToday()).IsTrue()
+
+            task.Valid = false
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+
+            task.Valid = true
+
             task.ScheduleType = strconv.Itoa(yesterdayWeekday) + " 0000-00-00 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleType = strconv.Itoa(tomorrowWeekday) + " 0000-00-00 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleType = strconv.Itoa(theDayAfterTomorrowWeekday) + " 0000-00-00 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
         })
 
         g.It("月调度", func() {
             task = Task{
+                Valid:true,
                 ScheduleType:"month",
                 ScheduleFormat:"0 0000-00-" + today.Format("02") + " 15:04:05",
             }
             g.Assert(task.ShouldScheduleToday()).IsTrue()
+
+            task.Valid = false
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+
+            task.Valid = true
+
             task.ScheduleFormat = "0 0000-00-" + yesterday.Format("02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleFormat = "0 0000-00-" + tomorrow.Format("02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleFormat = "0 0000-00-" + theDayAfterTomorrow.Format("02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
 
@@ -309,14 +332,23 @@ func TestTask(t *testing.T) {
 
         g.It("单次调度", func() {
             task = Task{
+                Valid:true,
                 ScheduleType:"month",
                 ScheduleFormat:"0 " + today.Format("2006-01-02") + " 15:04:05",
             }
             g.Assert(task.ShouldScheduleToday()).IsTrue()
+
+            task.Valid = false
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+
+            task.Valid = true
+
             task.ScheduleFormat = "0 " + yesterday.Format("2006-01-02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleFormat = "0 " + tomorrow.Format("2006-01-02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
+
             task.ScheduleFormat = "0 " + theDayAfterTomorrow.Format("2006-01-02") + " 15:04:05"
             g.Assert(task.ShouldScheduleToday()).IsFalse()
         })
