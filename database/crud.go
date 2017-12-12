@@ -9,6 +9,15 @@ type query struct {
     array interface{}
 }
 
+func Truncate(tableName string) {
+    db, err := connectDatabase()
+    defer db.Close()
+    if err != nil {
+        glog.Error("连接mysql错误: ", err)
+    }
+    db.Exec("truncate table " + tableName)
+}
+
 func Fill(array interface{}) *query {
     return &query{array: array}
 }
