@@ -36,6 +36,8 @@ func TestCRUD(t *testing.T) {
             }
         })
 
+        g.It("Truncate测试")
+
         g.It("通过单个where条件过滤", func() {
             Fill(&jobs).Where("id <= ?", 10)
             g.Assert(len(jobs)).Equal(10)

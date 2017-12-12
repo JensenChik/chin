@@ -21,7 +21,7 @@ func TestOperation(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table operations;")
+            Truncate("operations")
             operations = []Operation{
                 {UserID:randomInt(10000), Content:randomString(20)},
                 {UserID:randomInt(10000), Content:randomString(20)},
@@ -74,7 +74,7 @@ func TestOperation(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table operations;")
+            Truncate("operations")
             operations = []Operation{
                 {UserID:randomInt(10000), Content:randomString(20)},
                 {UserID:randomInt(10000), Content:randomString(20)},
@@ -126,7 +126,7 @@ func TestOperation(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table operations;")
+            Truncate("operations")
             operations = []Operation{
                 {UserID:randomInt(10000), Content:randomString(20)},
                 {UserID:randomInt(10000), Content:randomString(20)},

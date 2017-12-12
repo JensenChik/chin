@@ -19,12 +19,12 @@ func TestUser(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table users;")
+            Truncate("users")
             ok, _ := (&User{UserName:"chin", Password:"root"}).DumpToMySQL()
             g.Assert(ok).IsTrue()
         })
         g.After(func() {
-            db.Exec("truncate table users;")
+            Truncate("users")
             defer db.Close()
         })
 
@@ -63,11 +63,11 @@ func TestUser(t *testing.T) {
                 {UserName:"C", Password:"3", Email:"C@3"},
                 {UserName:"D", Password:"4", Email:"C@3"},
             }
-            db.Exec("truncate table users;")
+            Truncate("users")
         })
 
         g.After(func() {
-            db.Exec("truncate table users;")
+            Truncate("users")
             defer db.Close()
         })
 
@@ -143,7 +143,7 @@ func TestUser(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table users;")
+            Truncate("users")
             users = []User{
                 {UserName:"A", Password:"1", Email:"A@1"},
                 {UserName:"B", Password:"2", Email:"B@2"},
@@ -153,7 +153,7 @@ func TestUser(t *testing.T) {
         })
 
         g.After(func() {
-            db.Exec("truncate table users;")
+            Truncate("users")
             defer db.Close()
         })
 
@@ -197,7 +197,7 @@ func TestUser(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table users;")
+            Truncate("users")
             users = []User{
                 {UserName:"A", Password:"1", Email:"A@1"},
                 {UserName:"B", Password:"2", Email:"B@2"},
@@ -213,7 +213,7 @@ func TestUser(t *testing.T) {
         })
 
         g.After(func() {
-            db.Exec("truncate table users;")
+            Truncate("users")
             defer db.Close()
         })
 

@@ -21,7 +21,7 @@ func TestJob(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table jobs;")
+            Truncate("jobs")
             jobs = []Job{
                 {TaskID:randomInt(10000), Status:randomString(20)},
                 {TaskID:randomInt(10000), Status:randomString(20)},
@@ -74,7 +74,7 @@ func TestJob(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table jobs;")
+            Truncate("jobs")
             jobs = []Job{
                 {TaskID:randomInt(10000), Status:randomString(20)},
                 {TaskID:randomInt(10000), Status:randomString(20)},
@@ -126,7 +126,7 @@ func TestJob(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table jobs;")
+            Truncate("jobs")
             jobs = []Job{
                 {TaskID:randomInt(10000), Status:randomString(20)},
                 {TaskID:randomInt(10000), Status:randomString(20)},
@@ -188,6 +188,10 @@ func TestJob(t *testing.T) {
             g.Assert(newJob == nil).IsTrue()
             g.Assert(err.Error()).Equal("不存在满足条件的记录，无法实例化")
         })
+
+    })
+
+    g.Describe("测试 job 是否 ready", func() {
 
     })
 }

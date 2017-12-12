@@ -22,7 +22,7 @@ func TestTask(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table tasks;")
+            Truncate("tasks")
             tasks = []Task{
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
@@ -89,7 +89,7 @@ func TestTask(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table tasks;")
+            Truncate("tasks")
             tasks = []Task{
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
@@ -165,7 +165,7 @@ func TestTask(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table tasks;")
+            Truncate("tasks")
             tasks = []Task{
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
                 {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
@@ -364,9 +364,8 @@ func TestTask(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table jobs;")
-            db.Exec("truncate table tasks;")
-
+            Truncate("jobs")
+            Truncate("tasks")
         })
 
         g.After(func() {

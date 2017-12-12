@@ -21,7 +21,7 @@ func TestMachine(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table machines;")
+            Truncate("machines")
             machines = []Machine{
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
@@ -82,7 +82,7 @@ func TestMachine(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table machines;")
+            Truncate("machines")
             machines = []Machine{
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
@@ -151,7 +151,7 @@ func TestMachine(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table machines;")
+            Truncate("machines")
             machines = []Machine{
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
                 {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},

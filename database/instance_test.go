@@ -17,11 +17,11 @@ func TestInstance(t *testing.T) {
         var instances []Instance
 
         g.Before(func() {
+            Truncate("instances")
             db, err = connectDatabase()
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table instances;")
             instances = []Instance{
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
@@ -77,7 +77,7 @@ func TestInstance(t *testing.T) {
             if err != nil {
                 g.Fail("连接mysql错误")
             }
-            db.Exec("truncate table instances;")
+            Truncate("instances")
             instances = []Instance{
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
@@ -126,16 +126,10 @@ func TestInstance(t *testing.T) {
     })
 
     g.Describe("测试 instances 数据加载", func() {
-        var db *gorm.DB
-        var err error
         var instances []Instance
 
         g.Before(func() {
-            db, err = connectDatabase()
-            if err != nil {
-                g.Fail("连接mysql错误")
-            }
-            db.Exec("truncate table instances;")
+            Truncate("instances")
             instances = []Instance{
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
                 {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
@@ -150,10 +144,6 @@ func TestInstance(t *testing.T) {
                 g.Assert(ok).IsTrue()
                 g.Assert(err == nil).IsTrue()
             }
-        })
-
-        g.After(func() {
-            defer db.Close()
         })
 
         g.It("记录通过where条件被正确加载", func() {
