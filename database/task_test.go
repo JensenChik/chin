@@ -250,7 +250,7 @@ func TestTask(t *testing.T) {
 
     })
 
-    g.Describe("测试ScheduleToday", func() {
+    g.Describe("测试 ScheduleToday", func() {
         var task Task
         WEEKDAY_MAPPING := map[string]int{
             "Any": 0,
@@ -355,10 +355,10 @@ func TestTask(t *testing.T) {
 
     })
 
-    g.Describe("测试NoJobToday", func() {
+    g.Describe("测试 NoJobToday", func() {
         var db *gorm.DB
         var err error
-        var task Task
+        var task *Task
         g.BeforeEach(func() {
             db, err = connectDatabase()
             if err != nil {
@@ -372,10 +372,10 @@ func TestTask(t *testing.T) {
             defer db.Close()
         })
 
-        g.It("正确地判断是否存在该task当天的job", func() {
+        g.It("正确地判断是否 NoJobToday", func() {
             taskID := randomInt(100)
             for i := 0; i < int(taskID); i++ {
-                task = Task{}
+                task = new(Task)
                 task.DumpToMySQL()
             }
             job := Job{TaskID:taskID}
@@ -385,6 +385,48 @@ func TestTask(t *testing.T) {
             job = Job{TaskID:taskID}
             job.DumpToMySQL()
             g.Assert(task.NoJobToday()).IsFalse()
+        })
+
+    })
+
+    g.Describe("测试 SuccessToday", func() {
+        g.It("若当天不应调度则直接返回false", func() {
+            task := Task{
+                Valid: false,
+                ScheduleType:"once",
+                ScheduleFormat:"0 " + time.Now().AddDate(0, 0, -1).Format("2006-01-02") + " 00:10:00",
+            }
+            g.Assert(task.ShouldScheduleToday()).IsFalse()
+            g.Assert(task.SuccessToday()).IsFalse()
+        })
+
+        g.It("若当天对应的 job 状态不为 success 则返回false", func() {
+            task := Task{
+                Valid:true,
+                ScheduleType:"once",
+                ScheduleFormat:"0 " + time.Now().Format("2006-01-02") + " 00:10:00",
+            }
+            g.Assert(task.ShouldScheduleToday()).IsTrue()
+            g.Assert(task.NoJobToday()).IsTrue()
+            task.CreateJob()
+            g.Assert(task.NoJobToday()).IsFalse()
+            job := new(Job)
+            job.LoadByWhere("task_id = ?", task.ID)
+
+            job.Status = "pooling"
+            job.DumpToMySQL()
+            g.Assert(task.SuccessToday()).IsFalse()
+
+            job.Status = "failed"
+            job.DumpToMySQL()
+            g.Assert(task.SuccessToday()).IsFalse()
+
+            job.Status = "success"
+            job.DumpToMySQL()
+            g.Assert(task.SuccessToday()).IsTrue()
+
+
+
         })
 
     })
