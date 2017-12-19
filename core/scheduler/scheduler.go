@@ -1,40 +1,15 @@
 package scheduler
 
-import "fmt"
-
-func makePooling() {
-
-}
-
-func makeWaiting() {
-
-}
-
-func makeRunning() {
-
-}
-
-func makeKilling() {
-
-}
-
-func makeSucceed() {
-
-}
-
-func makeFailed() {
-
-}
-
-func makeNotified() {
-
-}
-
-func makeFinish() {
-
-}
+import (
+    "time"
+    "github.com/sdbaiguanghe/glog"
+)
 
 func Serve() {
-    fmt.Println("调度器开始工作")
-
+    glog.Info("调度器开始工作")
+    go taskTracker()
+    go jobTracker()
+    for {
+        time.Sleep(time.Second)
+    }
 }

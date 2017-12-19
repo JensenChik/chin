@@ -25,7 +25,8 @@ func TestTaskTracker(t *testing.T) {
             database.Fill(&jobs).Where("task_id = ?", task.ID)
             g.Assert(len(jobs)).Equal(0)
 
-            newJobFor(task)
+            task.CreateJob()
+
             database.Fill(&jobs).Where("task_id = ?", task.ID)
             g.Assert(len(jobs)).Equal(1)
 
@@ -33,28 +34,28 @@ func TestTaskTracker(t *testing.T) {
 
         g.It("模拟TaskTracker启动时的跨天", func() {
             var date string
-            equal, currentDate := currentDateCompare(date)
-            g.Assert(equal).IsFalse()
+            current := currentDate()
+            g.Assert(current == date).IsFalse()
             g.Assert(currentDate).Equal(time.Now().Format("2006-01-02"))
-            date = currentDate
-            equal, currentDate = currentDateCompare(date)
-            g.Assert(equal).IsTrue()
-            g.Assert(currentDate == "").IsTrue()
+            date = current
+            current = currentDate()
+            g.Assert(current == date).IsTrue()
+            g.Assert(current == "").IsTrue()
         })
 
         g.It("模拟TaskTracker例行调度的跨天", func() {
             var date = time.Now().AddDate(0, 0, -1).Format("2006-01-02")
-            equal, currentDate := currentDateCompare(date)
-            g.Assert(equal).IsFalse()
+            current := currentDate()
+            g.Assert(current == date).IsFalse()
 
-            date = currentDate
+            date = current
 
-            equal, currentDate = currentDateCompare(date)
-            g.Assert(equal).IsTrue()
+            current = currentDate()
+            g.Assert(current == date).IsTrue()
 
             date = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
-            equal, currentDate = currentDateCompare(date)
-            g.Assert(equal).IsFalse()
+            current = currentDate()
+            g.Assert(date == current).IsFalse()
 
         })
 
