@@ -60,7 +60,7 @@ func TestShell(t *testing.T) {
         })
 
         g.It("任务被杀死", func() {
-            sh := Shell{Command:"sleep 10"}
+            sh := Shell{Command:"echo kill; sleep 10"}
             sh.Run()
             time.Sleep(1 * time.Second)
             g.Assert(sh.Finish).IsFalse()
@@ -68,7 +68,7 @@ func TestShell(t *testing.T) {
             time.Sleep(1 * time.Second)
             g.Assert(sh.Finish).IsTrue()
             g.Assert(sh.Success).IsFalse()
-            time.Sleep(1 * time.Second)
+            g.Assert(sh.Output).Equal("kill\n")
         })
     })
 

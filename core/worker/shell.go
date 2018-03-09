@@ -3,7 +3,8 @@ package worker
 import (
     "os/exec"
     "github.com/sdbaiguanghe/glog"
-    "io/ioutil"
+    "bufio"
+    "io"
 )
 
 type Shell struct {
@@ -21,12 +22,25 @@ func (sh *Shell) Run() {
         stdoutPipe, _ := sh.terminal.StdoutPipe()
         stderrPipe, _ := sh.terminal.StderrPipe()
         sh.terminal.Start()
-        stdout, _ := ioutil.ReadAll(stdoutPipe)
-        stderr, _ := ioutil.ReadAll(stderrPipe)
+        stdoutReader := bufio.NewReader(stdoutPipe)
+        stderrReader := bufio.NewReader(stderrPipe)
+        for {
+            line, err := stdoutReader.ReadString('\n')
+            if err != nil || err == io.EOF {
+                break
+            }
+            sh.Output += line
+        }
+        for {
+            line, err := stderrReader.ReadString('\n')
+            if err != nil || err == io.EOF {
+                break
+            }
+            sh.Output += line
+        }
         sh.terminal.Wait()
         sh.Finish = true
         sh.Success = sh.terminal.ProcessState.Success()
-        sh.Output = string(stdout) + string(stderr)
     }
     go fork()
 }
@@ -36,7 +50,6 @@ func (sh *Shell) Kill() error {
     if err != nil {
         glog.Error("kill任务失败", err.Error())
     }
-    sh.Output = "任务被手动杀死，当前系统无法保留过程输出"
     sh.Finish = true
     sh.Success = false
     return err
