@@ -8,6 +8,7 @@ import (
     "os"
     "net"
     "github.com/sdbaiguanghe/glog"
+    "reflect"
 )
 
 type sysStat struct {
@@ -21,15 +22,17 @@ type sysStat struct {
     Load15      float64 // 15分钟平均负载
 
                         // /proc/meminfo
-    Total       uint64  // 内存总量
+
+
+    MemTotal       uint64  // 内存总量
+    MemFree        uint64  // 未使用内存总量
+    MemActive      uint64  // 最近经常被使用的内存大小总量
+    MemInactive    uint64  // 最近不是经常使用的内存
+    MemBuffer     uint64  // 临时存储原始磁盘块的总量
+    MemCache      uint64  // 用作缓存内存的物理内存总量
     Available   uint64  // 可使用内存总量
     Used        uint64  // 已使用内存总量
     UsedPercent float64 // 已使用百分比
-    Free        uint64  // 未使用内存总量
-    Active      uint64  // 最近经常被使用的内存大小总量
-    Inactive    uint64  // 最近不是经常使用的内存
-    Buffers     uint64  // 临时存储原始磁盘块的总量
-    Cached      uint64  // 用作缓存内存的物理内存总量
     Wired       uint64  // 联动内存总量(mac os || BSD)
     Shared      uint64  // 多个进程共享的内存总量
 
@@ -273,43 +276,27 @@ func (stat *sysStat) getNetIOCountersAll(n []netIOCountersStat) error {
     return nil
 }
 
-func (stat *sysStat) virtualMemory() error {
-    filename := "/proc/meminfo"
-    lines := readLines(filename)
-
+func (stat *sysStat) virtualMemory() {
+    lines := readLines("/proc/meminfo")
     for _, line := range lines {
-        fields := strings.Split(line, ":")
-        if len(fields) != 2 {
-            continue
-        }
-        key := strings.TrimSpace(fields[0])
-        value := strings.TrimSpace(fields[1])
-        value = strings.Replace(value, " kB", "", -1)
-
-        t, err := strconv.ParseUint(value, 10, 64)
-        if err != nil {
-            return err
-        }
-        switch key {
-        case "MemTotal":
-            stat.Total = t * 1000
-        case "MemFree":
-            stat.Free = t * 1000
-        case "Buffers":
-            stat.Buffers = t * 1000
-        case "Cached":
-            stat.Cached = t * 1000
-        case "Active":
-            stat.Active = t * 1000
-        case "Inactive":
-            stat.Inactive = t * 1000
+        kv := strings.Split(line, ":")
+        fieldName, hit := map[string]string{
+            "MemTotal": "MemTotal",
+            "MemFree": "MemFree",
+            "Buffers": "MemBuffer",
+            "Cached": "MemCache",
+            "Active": "MemActive",
+            "Inactive": "MemInactive",
+        }[strings.TrimSpace(kv[0])]
+        if hit {
+            value, _ := strconv.ParseUint(strings.Replace(strings.TrimSpace(kv[1]), " kB", "", -1), 10, 64)
+            value /= 1000
+            reflect.ValueOf(stat).Elem().FieldByName(fieldName).SetUint(value)
         }
     }
-    stat.Available = stat.Free + stat.Buffers + stat.Cached
-    stat.Used = stat.Total - stat.Free
-    stat.UsedPercent = float64(stat.Total - stat.Available) / float64(stat.Total) * 100.0
-
-    return nil
+    stat.Available = stat.MemFree + stat.MemBuffer + stat.MemCache
+    stat.Used = stat.MemTotal - stat.MemFree
+    stat.UsedPercent = float64(stat.MemTotal - stat.Available) / float64(stat.MemTotal) * 100.0
 }
 
 func (stat *sysStat) loadAvg() {
