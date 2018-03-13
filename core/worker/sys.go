@@ -6,7 +6,6 @@ import (
     "io/ioutil"
     "bufio"
     "os"
-    "errors"
     "net"
     "github.com/sdbaiguanghe/glog"
 )
@@ -66,15 +65,14 @@ func getSysStat() *sysStat {
     return stat
 }
 
-func readLinesOffsetN(filename string, offset uint, n int) ([]string, error) {
+func readLinesBetween(filename string, offset uint, n int) []string {
     f, err := os.Open(filename)
     if err != nil {
-        return []string{""}, err
+        glog.Fatal(err, "读取文件失败")
     }
     defer f.Close()
 
-    var ret []string
-
+    var lines []string
     r := bufio.NewReader(f)
     for i := 0; i < n + int(offset) || n < 0; i++ {
         line, err := r.ReadString('\n')
@@ -84,14 +82,14 @@ func readLinesOffsetN(filename string, offset uint, n int) ([]string, error) {
         if i < int(offset) {
             continue
         }
-        ret = append(ret, strings.Trim(line, "\n"))
+        lines = append(lines, strings.Trim(line, "\n"))
     }
 
-    return ret, nil
+    return lines
 }
 
-func readLines(filename string) ([]string, error) {
-    return readLinesOffsetN(filename, 0, -1)
+func readLines(filename string) []string {
+    return readLinesBetween(filename, 0, -1)
 }
 
 func getLocalIP() string {
@@ -115,26 +113,20 @@ func getMacAddress() string {
     if err != nil {
         glog.Fatal(err, "该机器没有 eth0 网卡，无法获取MAC地址")
     }
-    return eth0.HardwareAddr
+    return eth0.HardwareAddr.String()
 }
 
-func (stat *sysStat) cpuTimes() error {
+func (stat *sysStat) cpuTimes() {
     filename := "/proc/stat"
-    var lines = []string{}
-    lines, _ = readLinesOffsetN(filename, 0, 1)
-
-    err := stat.parseStatLine(lines[0])
-    if err != nil {
-        return err
-    }
-    return nil
+    lines := readLinesBetween(filename, 0, 1)
+    stat.parseStatLine(lines[0])
 }
 
 func (stat *sysStat) parseStatLine(line string) error {
     fields := strings.Fields(line)
 
     if strings.HasPrefix(fields[0], "cpu") == false {
-        return errors.New("not contain cpu")
+        glog.Fatal("not contain cpu")
     }
 
     cpu := fields[0]
@@ -224,11 +216,7 @@ type netIOCountersStat struct {
 
 func (stat *sysStat) netIOCounters() error {
     filename := "/proc/net/dev"
-    lines, err := readLines(filename)
-    if err != nil {
-        return err
-    }
-
+    lines := readLines(filename)
     statlen := len(lines) - 1
 
     all := make([]netIOCountersStat, 0, statlen)
@@ -287,7 +275,7 @@ func (stat *sysStat) getNetIOCountersAll(n []netIOCountersStat) error {
 
 func (stat *sysStat) virtualMemory() error {
     filename := "/proc/meminfo"
-    lines, _ := readLines(filename)
+    lines := readLines(filename)
 
     for _, line := range lines {
         fields := strings.Split(line, ":")
@@ -324,31 +312,10 @@ func (stat *sysStat) virtualMemory() error {
     return nil
 }
 
-func (stat *sysStat) loadAvg() error {
-    filename := "/proc/loadavg"
-    line, err := ioutil.ReadFile(filename)
-    if err != nil {
-        return err
-    }
-
+func (stat *sysStat) loadAvg() {
+    line, _ := ioutil.ReadFile("/proc/loadavg")
     values := strings.Fields(string(line))
-
-    load1, err := strconv.ParseFloat(values[0], 64)
-    if err != nil {
-        return err
-    }
-    load5, err := strconv.ParseFloat(values[1], 64)
-    if err != nil {
-        return err
-    }
-    load15, err := strconv.ParseFloat(values[2], 64)
-    if err != nil {
-        return err
-    }
-
-    stat.Load1 = load1
-    stat.Load5 = load5
-    stat.Load15 = load15
-
-    return nil
+    stat.Load1, _ = strconv.ParseFloat(values[0], 64)
+    stat.Load5, _ = strconv.ParseFloat(values[1], 64)
+    stat.Load15, _ = strconv.ParseFloat(values[2], 64)
 }
