@@ -3,6 +3,7 @@ package worker
 import (
     "testing"
     . "github.com/franela/goblin"
+    "strings"
 )
 
 func TestSys(t *testing.T) {
@@ -12,6 +13,13 @@ func TestSys(t *testing.T) {
         var stat *sysStat
         g.BeforeEach(func() {
             stat = new(sysStat)
+        })
+
+        g.It("系统信息", func() {
+            stat.sysInfo()
+            g.Assert(len(stat.OS) > 0).IsTrue()
+            g.Assert(len(stat.HostName) > 0).IsTrue()
+            g.Assert(len(strings.Split(stat.MACAddress, `:`))).Equal(6)
         })
 
         g.It("机器负载", func() {
@@ -34,8 +42,9 @@ func TestSys(t *testing.T) {
             g.Assert(stat.MemUsedPercent > 0 && stat.MemUsedPercent < 100).IsTrue()
         })
 
-        g.It("网络流量", func() {
+        g.It("网络", func() {
             stat.network()
+            g.Assert(len(strings.Split(stat.IP, `.`))).Equal(4)
             g.Assert(stat.NetSendByte > 0).IsTrue()
             g.Assert(stat.NetSendPack > 0).IsTrue()
             g.Assert(stat.NetRecvByte > 0).IsTrue()

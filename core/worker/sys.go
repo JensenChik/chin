@@ -12,8 +12,8 @@ import (
 )
 
 type sysStat struct {
+    OS             string
     HostName       string  // 机器名
-    IP             string  // IP地址
     MACAddress     string  // MAC地址
 
     Load1          float64 // 1分钟平均负载
@@ -30,6 +30,7 @@ type sysStat struct {
     MemUsed        uint64  // 已使用内存总量
     MemUsedPercent float64 // 已使用百分比
 
+    IP             string  // IP地址
     NetSendByte    uint64  // 发送字节数
     NetSendPack    uint64  // 发送包数
     NetRecvByte    uint64  // 接受字节数
@@ -71,6 +72,10 @@ func readLines(filename string) []string {
     return readLinesBetween(filename, 0, -1)
 }
 
+func firstLineOf(filename string) string {
+    return strings.TrimSpace(readLinesBetween(filename, 0, 1)[0])
+}
+
 func str2uint(str string) uint64 {
     value, err := strconv.ParseUint(str, 10, 64)
     if err != nil {
@@ -79,28 +84,10 @@ func str2uint(str string) uint64 {
     return value
 }
 
-func getLocalIP() string {
-    addresses, err := net.InterfaceAddrs()
-    if err != nil {
-        glog.Fatal(err, "获取机器 IP 失败")
-    }
-    for _, address := range addresses {
-        if IPNet, ok := address.(*net.IPNet); ok && !IPNet.IP.IsLoopback() {
-            if IPNet.IP.To4() != nil {
-                return IPNet.IP.String()
-            }
-
-        }
-    }
-    return "loaclhost"
-}
-
-func getMacAddress() string {
-    eth0, err := net.InterfaceByName("eth0")
-    if err != nil {
-        glog.Fatal(err, "该机器没有 eth0 网卡，无法获取MAC地址")
-    }
-    return eth0.HardwareAddr.String()
+func (stat *sysStat)sysInfo() {
+    stat.OS = strings.TrimSpace(strings.Split(firstLineOf("/etc/issue"), `\`)[0])
+    stat.HostName = firstLineOf("/proc/sys/kernel/hostname")
+    stat.MACAddress = firstLineOf("/sys/class/net/eth0/address")
 }
 
 func (stat *sysStat) loadAvg() {
@@ -134,6 +121,12 @@ func (stat *sysStat) virtualMemory() {
 }
 
 func (stat *sysStat) network() {
+    addresses, _ := net.InterfaceAddrs()
+    for _, address := range addresses {
+        if IPNet, ok := address.(*net.IPNet); ok && !IPNet.IP.IsLoopback() && IPNet.IP.To4() != nil {
+            stat.IP = IPNet.IP.String()
+        }
+    }
     for _, line := range readLines("/proc/net/dev")[2:] {
         values := strings.Fields(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
         stat.NetRecvByte += str2uint(values[0]) / 1000000
