@@ -3,7 +3,6 @@ package worker
 import (
     "testing"
     . "github.com/franela/goblin"
-    "github.com/sdbaiguanghe/glog"
 )
 
 func TestSys(t *testing.T) {
@@ -15,7 +14,7 @@ func TestSys(t *testing.T) {
             stat = new(sysStat)
         })
 
-        g.It("load1, load5, load15应为浮点数", func() {
+        g.It("机器负载", func() {
             stat.loadAvg()
             g.Assert(stat.Load1 > 0 && stat.Load1 < 1).IsTrue()
             g.Assert(stat.Load5 > 0 && stat.Load5 < 1).IsTrue()
@@ -24,9 +23,26 @@ func TestSys(t *testing.T) {
 
         g.It("虚拟内存", func() {
             stat.virtualMemory()
-            glog.Error(stat.MemTotal)
-
+            g.Assert(stat.MemActive > 0).IsTrue()
+            g.Assert(stat.MemAvailable > 0).IsTrue()
+            g.Assert(stat.MemBuffer > 0).IsTrue()
+            g.Assert(stat.MemCache > 0).IsTrue()
+            g.Assert(stat.MemFree > 0).IsTrue()
+            g.Assert(stat.MemInactive > 0).IsTrue()
+            g.Assert(stat.MemTotal > 0).IsTrue()
+            g.Assert(stat.MemUsed > 0).IsTrue()
+            g.Assert(stat.MemUsedPercent > 0 && stat.MemUsedPercent < 100).IsTrue()
         })
+
+        g.It("网络流量", func() {
+            stat.network()
+            g.Assert(stat.NetSendByte > 0).IsTrue()
+            g.Assert(stat.NetSendPack > 0).IsTrue()
+            g.Assert(stat.NetRecvByte > 0).IsTrue()
+            g.Assert(stat.NetRecvPack > 0).IsTrue()
+        })
+
+
     })
 
 }
