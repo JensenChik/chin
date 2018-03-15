@@ -1,7 +1,14 @@
 package worker
 
-import "fmt"
+import (
+    "github.com/sdbaiguanghe/glog"
+    "time"
+)
 
-func Serve(){
-    fmt.Println("worker开始工作")
+func Serve() {
+    glog.Error("worker开始工作")
+    go instanceTracker()
+    for {
+        time.Sleep(time.Second)
+    }
 }

@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-    "../../database"
+    "../../model"
     "github.com/sdbaiguanghe/glog"
     "time"
 )
@@ -9,8 +9,8 @@ import (
 func jobTracker() {
     glog.Info("job tracker 开始工作")
     for {
-        jobs := []database.Job{}
-        database.Fill(jobs).Where("date(created_at) = ?", time.Now().Format("2016-01-02"))
+        jobs := []model.Job{}
+        model.Fill(jobs).Where("date(created_at) = ?", time.Now().Format("2016-01-02"))
         for _, job := range jobs {
             if job.GetReady() {
                 job.CreateInstance()

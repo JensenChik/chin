@@ -1,4 +1,4 @@
-package database
+package model
 
 import "github.com/jinzhu/gorm"
 
@@ -7,8 +7,8 @@ type Machine struct {
     MachineName string
     IP          string `gorm:"size:15"`
     MAC         string `gorm:"size:17"`
-    CPULoad     uint
-    MemoryLoad  uint
+    CPULoad     float64
+    MemoryLoad  float64
     Alive       bool
 }
 

@@ -4,7 +4,7 @@ import (
     "fmt"
     "net/http"
     "github.com/gorilla/sessions"
-    "../../database"
+    "../../model"
     "../../config"
     "github.com/sdbaiguanghe/glog"
 )
@@ -15,7 +15,8 @@ var sessionName = "sess"
 func Login(w http.ResponseWriter, r *http.Request) {
     var userName = r.PostFormValue("user_name")
     var password = r.PostFormValue("password")
-    if database.ExistsUser(userName, password) {
+    user := model.User{UserName:userName, Password:password}
+    if user.Exists() {
         glog.Debug("用户存在")
         session, err := store.Get(r, sessionName)
         if err != nil {

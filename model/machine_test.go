@@ -1,10 +1,11 @@
-package database
+package model
 
 import (
     "testing"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "math"
 )
 
 func TestMachine(t *testing.T) {
@@ -23,12 +24,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
             }
 
         })
@@ -55,8 +56,8 @@ func TestMachine(t *testing.T) {
                 g.Assert(err == nil)
                 g.Assert(newMachine.IP).Equal(machine.IP)
                 g.Assert(newMachine.MAC).Equal(machine.MAC)
-                g.Assert(newMachine.CPULoad).Equal(machine.CPULoad)
-                g.Assert(newMachine.MemoryLoad).Equal(machine.MemoryLoad)
+                g.Assert(math.Abs(newMachine.CPULoad - machine.CPULoad) < 1e-6).IsTrue()
+                g.Assert(math.Abs(newMachine.MemoryLoad - machine.MemoryLoad) < 1e-6).IsTrue()
                 g.Assert(newMachine.Alive).Equal(machine.Alive)
 
                 newMachine, err = new(Machine).LoadByKey(id + 1)
@@ -84,12 +85,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
             }
         })
 
@@ -114,8 +115,8 @@ func TestMachine(t *testing.T) {
                 newMachineName := randomString(10)
                 newIP := randomString(10)
                 newMAC := randomString(17)
-                newCPULoad := randomInt(100)
-                newMemoryLoad := randomInt(100)
+                newCPULoad := randomFloat()
+                newMemoryLoad := randomFloat()
                 newAlive := !machine.Alive
 
                 machine.MachineName = newMachineName
@@ -131,8 +132,8 @@ func TestMachine(t *testing.T) {
                 g.Assert(newMachine.MachineName).Equal(newMachineName)
                 g.Assert(newMachine.IP).Equal(newIP)
                 g.Assert(newMachine.MAC).Equal(newMAC)
-                g.Assert(newMachine.CPULoad).Equal(newCPULoad)
-                g.Assert(newMachine.MemoryLoad).Equal(newMemoryLoad)
+                g.Assert(math.Abs(newMachine.CPULoad - machine.CPULoad) < 1e-6).IsTrue()
+                g.Assert(math.Abs(newMachine.MemoryLoad - machine.MemoryLoad) < 1e-6).IsTrue()
                 g.Assert(newMachine.Alive).Equal(newAlive)
                 g.Assert(newMachine.UpdatedAt.Sub(oldUpdateTime).Seconds() > 0).IsTrue()
                 g.Assert(newMachine.CreatedAt.Format("2006-01-02 15:04:05")).Equal(oldCreateTime.Format("2006-01-02 15:04:05"))
@@ -153,12 +154,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomInt(10000), MemoryLoad:randomInt(10000), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
             }
 
             for _, machine := range machines {
@@ -179,8 +180,8 @@ func TestMachine(t *testing.T) {
                 g.Assert(newMachine.MachineName).Equal(machine.MachineName)
                 g.Assert(newMachine.IP).Equal(machine.IP)
                 g.Assert(newMachine.MAC).Equal(machine.MAC)
-                g.Assert(newMachine.CPULoad).Equal(machine.CPULoad)
-                g.Assert(newMachine.MemoryLoad).Equal(machine.MemoryLoad)
+                g.Assert(math.Abs(newMachine.CPULoad - machine.CPULoad) < 1e-6).IsTrue()
+                g.Assert(math.Abs(newMachine.MemoryLoad - machine.MemoryLoad) < 1e-6).IsTrue()
                 g.Assert(newMachine.Alive).Equal(machine.Alive)
             }
         })
@@ -192,8 +193,8 @@ func TestMachine(t *testing.T) {
                 g.Assert(newMachine.MachineName).Equal(machine.MachineName)
                 g.Assert(newMachine.IP).Equal(machine.IP)
                 g.Assert(newMachine.MAC).Equal(machine.MAC)
-                g.Assert(newMachine.CPULoad).Equal(machine.CPULoad)
-                g.Assert(newMachine.MemoryLoad).Equal(machine.MemoryLoad)
+                g.Assert(math.Abs(newMachine.CPULoad - machine.CPULoad) < 1e-6).IsTrue()
+                g.Assert(math.Abs(newMachine.MemoryLoad - machine.MemoryLoad) < 1e-6).IsTrue()
                 g.Assert(newMachine.Alive).Equal(machine.Alive)
             }
         })
@@ -201,8 +202,8 @@ func TestMachine(t *testing.T) {
         g.It("记录通过多个where条件被正确加载", func() {
             for id, machine := range machines {
                 newMachine, err := new(Machine).LoadByWhere(
-                    "id = ? and machine_name = ? and ip = ? and mac = ? and cpu_load = ? and memory_load = ? and alive = ?",
-                    id + 1, machine.MachineName, machine.IP, machine.MAC, machine.CPULoad, machine.MemoryLoad, machine.Alive,
+                    "id = ? and machine_name = ? and ip = ? and mac = ? and alive = ?",
+                    id + 1, machine.MachineName, machine.IP, machine.MAC,  machine.Alive,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newMachine.MachineName).Equal(machine.MachineName)

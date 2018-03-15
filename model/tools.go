@@ -1,4 +1,4 @@
-package database
+package model
 
 import (
     "time"
@@ -46,4 +46,9 @@ func randomString(size int) string {
 func randomInt(upbound int) uint {
     r := rand.New(rand.NewSource(time.Now().UnixNano()))
     return uint(r.Intn(upbound))
+}
+
+func randomFloat() float64 {
+    r := rand.New(rand.NewSource(time.Now().UnixNano()))
+    return r.Float64()
 }

@@ -2,7 +2,7 @@ package scheduler
 
 import (
     "testing"
-    "../../database"
+    "../../model"
     . "github.com/franela/goblin"
     "time"
 )
@@ -13,21 +13,21 @@ func TestTaskTracker(t *testing.T) {
     g.Describe("task tracker 单元测试", func() {
 
         g.BeforeEach(func() {
-            database.Truncate("tasks")
-            database.Truncate("jobs")
+            model.Truncate("tasks")
+            model.Truncate("jobs")
         })
 
         g.It("为task新建一个job", func() {
-            task := database.Task{}
+            task := model.Task{}
             task.DumpToMySQL()
 
-            jobs := []database.Job{}
-            database.Fill(&jobs).Where("task_id = ?", task.ID)
+            jobs := []model.Job{}
+            model.Fill(&jobs).Where("task_id = ?", task.ID)
             g.Assert(len(jobs)).Equal(0)
 
             task.CreateJob()
 
-            database.Fill(&jobs).Where("task_id = ?", task.ID)
+            model.Fill(&jobs).Where("task_id = ?", task.ID)
             g.Assert(len(jobs)).Equal(1)
 
         })
@@ -61,25 +61,25 @@ func TestTaskTracker(t *testing.T) {
 
         g.It("模拟taskTracker启动", func() {
             g.Timeout(10 * time.Second)
-            var task database.Task
-            task = database.Task{Valid:false}
+            var task model.Task
+            task = model.Task{Valid:false}
             task.DumpToMySQL()
 
-            task = database.Task{
+            task = model.Task{
                 Valid:true,
                 ScheduleType:"once",
                 ScheduleFormat:"0 " + time.Now().Format("2006-01-02") + " 11:00:00",
             }
             task.DumpToMySQL()
 
-            task = database.Task{
+            task = model.Task{
                 Valid:true,
                 ScheduleType:"once",
                 ScheduleFormat:"0 " + time.Now().AddDate(0, 0, -1).Format("2006-01-02") + " 11:00:00",
             }
             task.DumpToMySQL()
 
-            task = database.Task{
+            task = model.Task{
                 Valid:true,
                 ScheduleType: "day",
                 ScheduleFormat:"0 0000-00-00 11:00:00",
@@ -88,8 +88,8 @@ func TestTaskTracker(t *testing.T) {
 
             go taskTracker()
             time.Sleep(2 * time.Second)
-            jobs := []database.Job{}
-            database.Fill(&jobs).Where("true")
+            jobs := []model.Job{}
+            model.Fill(&jobs).Where("true")
 
             g.Assert(len(jobs)).Equal(2)
             g.Assert(jobs[0].TaskID).Equal(uint(2))

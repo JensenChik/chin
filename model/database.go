@@ -1,4 +1,4 @@
-package database
+package model
 
 import (
     "../config"
@@ -100,8 +100,8 @@ func Mock() {
             MachineName:randomString(10),
             IP:randomString(10),
             MAC:randomString(10),
-            CPULoad:randomInt(100),
-            MemoryLoad:randomInt(100),
+            CPULoad:randomFloat(),
+            MemoryLoad:randomFloat(),
         }
         db.Create(&machine)
     }

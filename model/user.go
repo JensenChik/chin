@@ -1,7 +1,8 @@
-package database
+package model
 
 import (
     "github.com/jinzhu/gorm"
+    "github.com/sdbaiguanghe/glog"
 )
 
 type User struct {
@@ -53,4 +54,10 @@ func (user *User) Exists() bool {
     } else {
         return userInDB.Password == toMD5(user.Password)
     }
+}
+
+func (user *User) SendMail(message string) bool {
+    glog.Error(user.Email)
+    glog.Error(message)
+    return false
 }

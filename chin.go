@@ -5,7 +5,7 @@ import (
     "./core/scheduler"
     "./core/worker"
     "./server"
-    "./database"
+    "./model"
     "flag"
     "github.com/sdbaiguanghe/glog"
     "log"
@@ -44,9 +44,9 @@ func main() {
         glog.Info("启动 api 服务")
         server.Serve()
     case "init_db":
-        database.Init()
+        model.Init()
     case "mock_db" :
-        database.Mock()
+        model.Mock()
     default:
         glog.Fatal("不支持启动命令: " + as)
     }
