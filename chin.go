@@ -4,7 +4,7 @@ import (
     "os"
     "./core/scheduler"
     "./core/worker"
-    "./server"
+    "./backend"
     "./model"
     "flag"
     "github.com/sdbaiguanghe/glog"
@@ -42,7 +42,7 @@ func main() {
         worker.Serve()
     case "server":
         glog.Info("启动 api 服务")
-        server.Serve()
+        backend.Serve()
     case "init_db":
         model.Init()
     case "mock_db" :

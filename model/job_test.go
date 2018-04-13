@@ -5,6 +5,7 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "../tools/random"
 )
 
 func TestJob(t *testing.T) {
@@ -23,12 +24,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
             }
 
         })
@@ -76,12 +77,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
             }
         })
 
@@ -103,7 +104,7 @@ func TestJob(t *testing.T) {
                 oldCreateTime := job.CreatedAt
 
                 time.Sleep(time.Second)
-                newStatus := randomString(3)
+                newStatus := random.String(3)
                 job.Status = newStatus
                 job.DumpToMySQL()
 
@@ -128,12 +129,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
-                {TaskID:randomInt(10000), Status:randomString(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID:random.Int(10000), Status:random.String(20)},
             }
 
             for _, job := range jobs {
@@ -176,8 +177,8 @@ func TestJob(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Job{TaskID:12580, Status:randomString(20)}).DumpToMySQL()
-            (&Job{TaskID:12580, Status:randomString(20)}).DumpToMySQL()
+            (&Job{TaskID:12580, Status:random.String(20)}).DumpToMySQL()
+            (&Job{TaskID:12580, Status:random.String(20)}).DumpToMySQL()
             job, err := new(Job).LoadByWhere("task_id = ?", 12580)
             g.Assert(job == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")

@@ -6,6 +6,7 @@ import (
     "github.com/jinzhu/gorm"
     "time"
     "strconv"
+    "../tools/random"
 )
 
 func TestTask(t *testing.T) {
@@ -24,13 +25,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
             }
 
         })
@@ -91,13 +92,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
             }
         })
 
@@ -119,14 +120,14 @@ func TestTask(t *testing.T) {
                 oldCreateTime := task.CreatedAt
 
                 time.Sleep(time.Second)
-                newTaskName := randomString(20)
-                newCommand := randomString(20)
-                newFatherTask := randomString(20)
+                newTaskName := random.String(20)
+                newCommand := random.String(20)
+                newFatherTask := random.String(20)
                 newValid := !task.Valid
-                newMachinePool := randomString(20)
-                newOwnerID := randomInt(1000)
-                newScheduleType := randomString(10)
-                newScheduleFormat := randomString(20)
+                newMachinePool := random.String(20)
+                newOwnerID := random.Int(1000)
+                newScheduleType := random.String(10)
+                newScheduleFormat := random.String(20)
                 task.TaskName = newTaskName
                 task.Command = newCommand
                 task.FatherTask = newFatherTask
@@ -167,13 +168,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
-                {TaskName:randomString(20), Command:randomString(10), FatherTask:randomString(10), Valid:randomInt(1) == 0, MachinePool:randomString(10), OwnerID:randomInt(1000), ScheduleType:randomString(10), ScheduleFormat:randomString(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
+                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000), ScheduleType:random.String(10), ScheduleFormat:random.String(10)},
             }
             for _, task := range tasks {
                 ok, err := task.DumpToMySQL()
@@ -373,7 +374,7 @@ func TestTask(t *testing.T) {
         })
 
         g.It("正确地判断是否 NoJobToday", func() {
-            taskID := randomInt(100)
+            taskID := random.Int(100)
             for i := 0; i < int(taskID); i++ {
                 task = new(Task)
                 task.DumpToMySQL()

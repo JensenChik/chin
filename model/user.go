@@ -3,6 +3,7 @@ package model
 import (
     "github.com/jinzhu/gorm"
     "github.com/sdbaiguanghe/glog"
+    "../tools/secure"
 )
 
 type User struct {
@@ -15,7 +16,7 @@ type User struct {
 
 func (user *User) BeforeSave(scope *gorm.Scope) error {
     user.tmpPassword = user.Password
-    user.Password = toMD5(user.Password)
+    user.Password = secure.MD5(user.Password)
     return nil
 }
 
@@ -52,7 +53,7 @@ func (user *User) Exists() bool {
     if err != nil {
         return false
     } else {
-        return userInDB.Password == toMD5(user.Password)
+        return userInDB.Password == secure.MD5(user.Password)
     }
 }
 

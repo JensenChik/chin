@@ -4,6 +4,7 @@ import (
     "testing"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
+    "../tools/random"
 )
 
 func TestCRUD(t *testing.T) {
@@ -20,16 +21,16 @@ func TestCRUD(t *testing.T) {
             }
             db.Exec("truncate table jobs;")
             jobs = []Job{
-                {TaskID:100, Status:randomString(20)},
-                {TaskID:200, Status:randomString(20)},
-                {TaskID:300, Status:randomString(20)},
-                {TaskID:400, Status:randomString(20)},
-                {TaskID:500, Status:randomString(20)},
-                {TaskID:600, Status:randomString(20)},
-                {TaskID:700, Status:randomString(20)},
-                {TaskID:800, Status:randomString(20)},
-                {TaskID:900, Status:randomString(20)},
-                {TaskID:1000, Status:randomString(20)},
+                {TaskID:100, Status:random.String(20)},
+                {TaskID:200, Status:random.String(20)},
+                {TaskID:300, Status:random.String(20)},
+                {TaskID:400, Status:random.String(20)},
+                {TaskID:500, Status:random.String(20)},
+                {TaskID:600, Status:random.String(20)},
+                {TaskID:700, Status:random.String(20)},
+                {TaskID:800, Status:random.String(20)},
+                {TaskID:900, Status:random.String(20)},
+                {TaskID:1000, Status:random.String(20)},
             }
             for _, job := range jobs {
                 job.DumpToMySQL()

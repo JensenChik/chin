@@ -5,6 +5,8 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "../tools/random"
+    "../tools/secure"
 )
 
 func TestUser(t *testing.T) {
@@ -97,7 +99,7 @@ func TestUser(t *testing.T) {
 
                 newUser, err := new(User).LoadByWhere("user_name =?", user.UserName)
                 g.Assert(err == nil)
-                g.Assert(newUser.Password).Equal(toMD5(user.Password))
+                g.Assert(newUser.Password).Equal(secure.MD5(user.Password))
             }
         })
 
@@ -110,8 +112,8 @@ func TestUser(t *testing.T) {
                 db.Model(new(User)).Where("user_name = ?", user.UserName).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
-                randomPasswd := randomString(10)
-                randomEmail := randomString(10)
+                randomPasswd := random.String(10)
+                randomEmail := random.String(10)
                 ok, err = (&User{
                     UserName: user.UserName,
                     Password: randomPasswd,
@@ -124,8 +126,8 @@ func TestUser(t *testing.T) {
                 g.Assert(mysqlCount).Equal(1)
 
                 newUser, err := new(User).LoadByWhere("user_name = ?", user.UserName)
-                g.Assert(newUser.Password != toMD5(randomPasswd)).IsTrue()
-                g.Assert(newUser.Password).Equal(toMD5(user.Password))
+                g.Assert(newUser.Password != secure.MD5(randomPasswd)).IsTrue()
+                g.Assert(newUser.Password).Equal(secure.MD5(user.Password))
                 g.Assert(newUser.Email != randomEmail).IsTrue()
                 g.Assert(newUser.Email).Equal(user.Email)
             }
@@ -171,14 +173,14 @@ func TestUser(t *testing.T) {
                 oldCreateTime := user.CreatedAt
 
                 time.Sleep(2 * time.Second)
-                newPasswd := randomString(30)
-                newEmail := randomString(30)
+                newPasswd := random.String(30)
+                newEmail := random.String(30)
                 user.Password = newPasswd
                 user.Email = newEmail
                 user.DumpToMySQL()
 
                 newUser, _ := new(User).LoadByWhere("user_name = ?", user.UserName)
-                g.Assert(newUser.Password).Equal(toMD5(newPasswd))
+                g.Assert(newUser.Password).Equal(secure.MD5(newPasswd))
                 g.Assert(newUser.Email).Equal(newEmail)
                 g.Assert(newUser.UpdatedAt.Sub(oldUpdateTime).Seconds() > 0).IsTrue()
                 g.Assert(newUser.CreatedAt.Format("2006-01-02 15:04:05")).Equal(oldCreateTime.Format("2006-01-02 15:04:05"))
@@ -222,7 +224,7 @@ func TestUser(t *testing.T) {
                 newUser, err := new(User).LoadByWhere("user_name = ?", user.UserName)
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newUser.UserName).Equal(user.UserName)
-                g.Assert(newUser.Password).Equal(toMD5(user.Password))
+                g.Assert(newUser.Password).Equal(secure.MD5(user.Password))
                 g.Assert(newUser.Email).Equal(user.Email)
             }
         })
@@ -232,7 +234,7 @@ func TestUser(t *testing.T) {
                 newUser, err := new(User).LoadByKey(id + 1)
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newUser.UserName).Equal(user.UserName)
-                g.Assert(newUser.Password).Equal(toMD5(user.Password))
+                g.Assert(newUser.Password).Equal(secure.MD5(user.Password))
                 g.Assert(newUser.Email).Equal(user.Email)
             }
         })
@@ -245,7 +247,7 @@ func TestUser(t *testing.T) {
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newUser.UserName).Equal(user.UserName)
-                g.Assert(newUser.Password).Equal(toMD5(user.Password))
+                g.Assert(newUser.Password).Equal(secure.MD5(user.Password))
                 g.Assert(newUser.Email).Equal(user.Email)
             }
         })

@@ -6,6 +6,7 @@ import (
     "os/exec"
     "io"
     "bufio"
+    "../tools/compress"
 )
 
 type Shell struct {
@@ -74,17 +75,17 @@ func (Instance *Instance) CreateAndRunShell() {
 
 
 func (instance *Instance) BeforeSave(scope *gorm.Scope) error {
-    instance.StdOut = zip(instance.StdOut)
+    instance.StdOut = compress.Zip(instance.StdOut)
     return nil
 }
 
 func (instance *Instance) AfterSave(scope *gorm.Scope) error {
-    instance.StdOut = unzip(instance.StdOut)
+    instance.StdOut = compress.Unzip(instance.StdOut)
     return nil
 }
 
 func (instance *Instance) AfterFind(scope *gorm.Scope) error {
-    instance.StdOut = unzip(instance.StdOut)
+    instance.StdOut = compress.Unzip(instance.StdOut)
     return nil
 }
 

@@ -4,11 +4,10 @@ import (
     "strconv"
     "strings"
     "io/ioutil"
-    "bufio"
-    "os"
     "net"
-    "github.com/sdbaiguanghe/glog"
     "reflect"
+    "../../tools/file"
+    "../../tools/number"
 )
 
 type sysStat struct {
@@ -45,49 +44,10 @@ func getSysStat() *sysStat {
     return stat
 }
 
-func readLinesBetween(filename string, offset uint, n int) []string {
-    f, err := os.Open(filename)
-    if err != nil {
-        glog.Fatal(err, "读取文件失败")
-    }
-    defer f.Close()
-
-    var lines []string
-    r := bufio.NewReader(f)
-    for i := 0; i < n + int(offset) || n < 0; i++ {
-        line, err := r.ReadString('\n')
-        if err != nil {
-            break
-        }
-        if i < int(offset) {
-            continue
-        }
-        lines = append(lines, strings.Trim(line, "\n"))
-    }
-
-    return lines
-}
-
-func readLines(filename string) []string {
-    return readLinesBetween(filename, 0, -1)
-}
-
-func firstLineOf(filename string) string {
-    return strings.TrimSpace(readLinesBetween(filename, 0, 1)[0])
-}
-
-func str2uint(str string) uint64 {
-    value, err := strconv.ParseUint(str, 10, 64)
-    if err != nil {
-        value = 0
-    }
-    return value
-}
-
 func (stat *sysStat)sysInfo() {
-    stat.OS = strings.TrimSpace(strings.Split(firstLineOf("/etc/issue"), `\`)[0])
-    stat.HostName = firstLineOf("/proc/sys/kernel/hostname")
-    stat.MACAddress = firstLineOf("/sys/class/net/eth0/address")
+    stat.OS = strings.TrimSpace(strings.Split(file.FirstLineOf("/etc/issue"), `\`)[0])
+    stat.HostName = file.FirstLineOf("/proc/sys/kernel/hostname")
+    stat.MACAddress = file.FirstLineOf("/sys/class/net/eth0/address")
 }
 
 func (stat *sysStat) loadAvg() {
@@ -99,7 +59,7 @@ func (stat *sysStat) loadAvg() {
 }
 
 func (stat *sysStat) virtualMemory() {
-    lines := readLines("/proc/meminfo")
+    lines := file.ReadLines("/proc/meminfo")
     for _, line := range lines {
         kv := strings.Split(line, ":")
         fieldName, hit := map[string]string{
@@ -111,7 +71,7 @@ func (stat *sysStat) virtualMemory() {
             "Inactive": "MemInactive",
         }[strings.TrimSpace(kv[0])]
         if hit {
-            value := str2uint(strings.Replace(strings.TrimSpace(kv[1]), " kB", "", -1)) / 1000
+            value := number.Uint(strings.Replace(strings.TrimSpace(kv[1]), " kB", "", -1)) / 1000
             reflect.ValueOf(stat).Elem().FieldByName(fieldName).SetUint(value)
         }
     }
@@ -127,12 +87,12 @@ func (stat *sysStat) network() {
             stat.IP = IPNet.IP.String()
         }
     }
-    for _, line := range readLines("/proc/net/dev")[2:] {
+    for _, line := range file.ReadLines("/proc/net/dev")[2:] {
         values := strings.Fields(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
-        stat.NetRecvByte += str2uint(values[0]) / 1000000
-        stat.NetRecvPack += str2uint(values[1])
-        stat.NetSendByte += str2uint(values[8]) / 1000000
-        stat.NetSendPack += str2uint(values[9])
+        stat.NetRecvByte += number.Uint(values[0]) / 1000000
+        stat.NetRecvPack += number.Uint(values[1])
+        stat.NetSendByte += number.Uint(values[8]) / 1000000
+        stat.NetSendPack += number.Uint(values[9])
     }
 }
 

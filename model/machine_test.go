@@ -6,6 +6,7 @@ import (
     "github.com/jinzhu/gorm"
     "time"
     "math"
+    "../tools/random"
 )
 
 func TestMachine(t *testing.T) {
@@ -24,12 +25,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
             }
 
         })
@@ -85,12 +86,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
             }
         })
 
@@ -112,11 +113,11 @@ func TestMachine(t *testing.T) {
                 oldCreateTime := machine.CreatedAt
 
                 time.Sleep(time.Second)
-                newMachineName := randomString(10)
-                newIP := randomString(10)
-                newMAC := randomString(17)
-                newCPULoad := randomFloat()
-                newMemoryLoad := randomFloat()
+                newMachineName := random.String(10)
+                newIP := random.String(10)
+                newMAC := random.String(17)
+                newCPULoad := random.Float()
+                newMemoryLoad := random.Float()
                 newAlive := !machine.Alive
 
                 machine.MachineName = newMachineName
@@ -154,12 +155,12 @@ func TestMachine(t *testing.T) {
             }
             Truncate("machines")
             machines = []Machine{
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
-                {CPULoad:randomFloat(), MemoryLoad:randomFloat(), MachineName:randomString(20), IP:randomString(12), MAC:randomString(10), Alive:randomInt(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
+                {CPULoad:random.Float(), MemoryLoad:random.Float(), MachineName:random.String(20), IP:random.String(12), MAC:random.String(10), Alive:random.Int(1) == 1},
             }
 
             for _, machine := range machines {

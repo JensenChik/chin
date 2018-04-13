@@ -5,6 +5,7 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "../tools/random"
 )
 
 func TestOperation(t *testing.T) {
@@ -23,12 +24,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
             }
 
         })
@@ -76,12 +77,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
             }
         })
 
@@ -103,7 +104,7 @@ func TestOperation(t *testing.T) {
                 oldCreateTime := operation.CreatedAt
 
                 time.Sleep(time.Second)
-                newContent := randomString(3)
+                newContent := random.String(3)
                 operation.Content = newContent
                 operation.DumpToMySQL()
 
@@ -128,12 +129,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
-                {UserID:randomInt(10000), Content:randomString(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID:random.Int(10000), Content:random.String(20)},
             }
 
             for _, operation := range operations {
@@ -176,8 +177,8 @@ func TestOperation(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Operation{UserID:12580, Content:randomString(20)}).DumpToMySQL()
-            (&Operation{UserID:12580, Content:randomString(20)}).DumpToMySQL()
+            (&Operation{UserID:12580, Content:random.String(20)}).DumpToMySQL()
+            (&Operation{UserID:12580, Content:random.String(20)}).DumpToMySQL()
             operation, err := new(Operation).LoadByWhere("user_id = ?", 12580)
             g.Assert(operation == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")

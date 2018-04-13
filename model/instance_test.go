@@ -5,6 +5,7 @@ import (
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
     "time"
+    "../tools/random"
 )
 
 func TestInstance(t *testing.T) {
@@ -23,12 +24,12 @@ func TestInstance(t *testing.T) {
                 g.Fail("连接mysql错误")
             }
             instances = []Instance{
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
             }
 
         })
@@ -79,12 +80,12 @@ func TestInstance(t *testing.T) {
             }
             Truncate("instances")
             instances = []Instance{
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
             }
         })
 
@@ -106,9 +107,9 @@ func TestInstance(t *testing.T) {
                 oldCreateTime := instance.CreatedAt
 
                 time.Sleep(time.Second)
-                newInstanceID := randomInt(1000)
-                newMachineID := randomInt(1000)
-                newStdOut := randomString(100)
+                newInstanceID := random.Int(1000)
+                newMachineID := random.Int(1000)
+                newStdOut := random.String(100)
                 instance.JobID = newInstanceID
                 instance.MachineID = newMachineID
                 instance.StdOut = newStdOut
@@ -131,12 +132,12 @@ func TestInstance(t *testing.T) {
         g.Before(func() {
             Truncate("instances")
             instances = []Instance{
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:randomInt(10000), MachineID:randomInt(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
             }
 
             for _, instance := range instances {
