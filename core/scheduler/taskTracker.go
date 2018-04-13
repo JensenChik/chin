@@ -2,19 +2,16 @@ package scheduler
 
 import (
     "../../model"
+    "../../tools/datetime"
     "time"
     "github.com/sdbaiguanghe/glog"
 )
-
-func currentDate() (string) {
-    return time.Now().Format("2006-01-02")
-}
 
 func taskTracker() {
     glog.Info("task tracker 服务启动")
     date := ""
     for {
-        if dt := currentDate(); date != dt {
+        if dt := datetime.Today(); date != dt {
             date = dt
             tasks := []model.Task{}
             model.Fill(&tasks).Where("deleted_at is null ")
