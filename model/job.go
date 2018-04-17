@@ -3,8 +3,6 @@ package model
 import (
     "github.com/jinzhu/gorm"
     "github.com/tidwall/gjson"
-    "time"
-    "strings"
 )
 
 type Job struct {
@@ -16,32 +14,12 @@ type Job struct {
 }
 
 func (job *Job) GetReady() bool {
-    // 状态是否为pooling
     if job.Status != "pooling" {
         return false
     }
-
     task := new(Task)
     task.LoadByKey(job.TaskID)
-
-    // 调度时间是否到达
-    FORMAT := "15:04:05"
-    scheduledTime, _ := time.Parse(FORMAT, strings.Split(task.ScheduleFormat, " ")[2])
-    nowTime, _ := time.Parse(FORMAT, time.Now().Format(FORMAT))
-    if scheduledTime.Sub(nowTime) > 0 {
-        return false
-    }
-
-    // 父任务是否执行完毕
-    fatherTasks := gjson.Parse(task.FatherTask).Array()
-    for _, taskID := range fatherTasks {
-        fatherTask := new(Task)
-        fatherTask.LoadByKey(taskID.Uint())
-        if !fatherTask.SuccessToday() {
-            return false
-        }
-    }
-    return true
+    return task.ShouldScheduleNow()
 }
 
 func (job *Job) CreateInstance() {

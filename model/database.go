@@ -60,8 +60,6 @@ func Mock() {
             Valid:rand.Float32() < 0.5,
             MachinePool:random.String(10),
             OwnerID:random.Int(100),
-            ScheduleType:random.String(5),
-            ScheduleFormat:random.String(10),
         }
         db.Create(&task)
     }

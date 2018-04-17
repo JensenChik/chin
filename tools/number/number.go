@@ -20,3 +20,20 @@ func str2uint(str string) uint64 {
     return value
 }
 
+func Int(v interface{}) int {
+    switch v.(type) {
+    case string:
+        return str2int(v.(string))
+    }
+    return 0
+}
+
+func str2int(str string) int {
+    value, err := strconv.Atoi(str)
+    if err != nil {
+        value = 0
+    }
+    return value
+}
+
+

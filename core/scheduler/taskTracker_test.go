@@ -3,6 +3,7 @@ package scheduler
 import (
     "testing"
     "../../model"
+    "../../tools/datetime"
     . "github.com/franela/goblin"
     "time"
 )
@@ -34,27 +35,27 @@ func TestTaskTracker(t *testing.T) {
 
         g.It("模拟TaskTracker启动时的跨天", func() {
             var date string
-            current := currentDate()
+            current := datetime.Today()
             g.Assert(current == date).IsFalse()
-            g.Assert(currentDate).Equal(time.Now().Format("2006-01-02"))
+            g.Assert(current).Equal(time.Now().Format("2006-01-02"))
             date = current
-            current = currentDate()
+            current = datetime.Today()
             g.Assert(current == date).IsTrue()
             g.Assert(current == "").IsTrue()
         })
 
         g.It("模拟TaskTracker例行调度的跨天", func() {
             var date = time.Now().AddDate(0, 0, -1).Format("2006-01-02")
-            current := currentDate()
+            current := datetime.Today()
             g.Assert(current == date).IsFalse()
 
             date = current
 
-            current = currentDate()
+            current = datetime.Today()
             g.Assert(current == date).IsTrue()
 
             date = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
-            current = currentDate()
+            current = datetime.Today()
             g.Assert(date == current).IsFalse()
 
         })

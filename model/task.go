@@ -2,67 +2,85 @@ package model
 
 import (
     "github.com/jinzhu/gorm"
-    "strings"
     "time"
+    "fmt"
+    "strings"
+    "../tools/datetime"
+    "../tools/number"
+    "github.com/tidwall/gjson"
+    "strconv"
 )
+
+type scheduleFormat struct {
+    period  string
+    weekday int
+    year    int
+    month   int
+    day     int
+    hour    int
+    minute  int
+    second  int
+}
 
 type Task struct {
     gorm.Model
-    TaskName       string
-    Command        string
-    FatherTask     string `gorm:"type:text"`
-    NotifyList     string `gorm:"type:text"`
-    Valid          bool
-    MachinePool    string
-    OwnerID        uint
-    RetryTimes     uint
-    ScheduleType   string
-    ScheduleFormat string // <%u %Y-%m-%d %H:%M:%S>
+    TaskName    string
+    Command     string
+    FatherTask  string `gorm:"type:text"`
+    NotifyList  string `gorm:"type:text"`
+    Valid       bool
+    MachinePool string
+    OwnerID     uint
+    RetryTimes  uint
+    Schedule    string
+    schedule    scheduleFormat `gorm:"-"`
 }
 
-func (task *Task) ShouldScheduleToday() (bool) {
+func (task *Task) ShouldScheduleToday() bool {
     if !task.Valid {
         return false
     }
-    WEEKDAY_MAPPING := map[string]string{
-        "Any": "0",
-        "Monday":"1",
-        "Tuesday":"2",
-        "Wednesday":"3",
-        "Thursday":"4",
-        "Friday":"5",
-        "Saturday":"6",
-        "Sunday":"7",
-    }
-    WEEKDAY_IDX := 0
-    DATE_IDX := 1
-    DAY_IDX := 2
-    SPACE := " "
-    DASH := "-"
     scheduleToday := false
-
-    switch task.ScheduleType {
-    case "day": // 0 0000-00-00 15:04:05
+    now := time.Now()
+    switch task.schedule.period {
+    case "day":
         scheduleToday = true
-    case "week": // 1 0000-00-00 15:04:05
-        scheduleToday = WEEKDAY_MAPPING[time.Now().Weekday().String()] ==
-            strings.Split(task.ScheduleFormat, SPACE)[WEEKDAY_IDX]
-    case "month": // 0 0000-00-02 15:04:05
-        scheduleToday = time.Now().Format("02") == strings.Split(
-            strings.Split(task.ScheduleFormat, SPACE)[DATE_IDX],
-            DASH,
-        )[DAY_IDX]
-    case "once": // 0 2006-01-02 15:04:05
-        scheduleToday = time.Now().Format("2006-01-02") ==
-            strings.Split(task.ScheduleFormat, SPACE)[DATE_IDX]
+    case "week":
+        scheduleToday = task.schedule.weekday == int(now.Weekday())
+    case "month":
+        scheduleToday = task.schedule.day == now.Day()
+    case "once":
+        scheduleToday = task.schedule.year == now.Year() && task.schedule.month == int(now.Month())
     }
     return scheduleToday
 }
 
+func (task *Task) ReachScheduleClock() bool {
+    now := time.Now()
+    return now.Hour() > task.schedule.hour &&
+        now.Minute() > task.schedule.minute &&
+        now.Second() > task.schedule.second
+}
+
+func (task *Task) FatherTasksAllDone() bool {
+    fatherTasks := gjson.Parse(task.FatherTask).Array()
+    for _, taskID := range fatherTasks {
+        fatherTask := new(Task)
+        fatherTask.LoadByKey(taskID.Uint())
+        if !fatherTask.SuccessToday() {
+            return false
+        }
+    }
+    return true
+}
+
+func (task *Task) ShouldScheduleNow() bool {
+    return task.ShouldScheduleToday() && task.ReachScheduleClock() && task.FatherTasksAllDone()
+}
+
 func (task *Task) NoJobToday() (bool) {
-    today := time.Now().Format("2006-01-02")
     jobs := []Job{}
-    Fill(&jobs).Where("task_id = ? and date(created_at) = ? ", task.ID, today)
+    Fill(&jobs).Where("task_id = ? and date(created_at) = ? ", task.ID, datetime.Today())
     return len(jobs) == 0
 }
 
@@ -74,12 +92,11 @@ func (task *Task) CreateJob() {
 }
 
 func (task *Task) SuccessToday() bool {
-    if !task.ShouldScheduleToday() || task.NoJobToday() {
+    if !task.ShouldScheduleNow() || task.NoJobToday() {
         return false
     }
-    today := time.Now().Format("2006-01-02")
     job := new(Job)
-    job.LoadByWhere("task_id = ? and date(created_at) = ? ", task.ID, today)
+    job.LoadByWhere("task_id = ? and date(created_at) = ? ", task.ID, datetime.Today())
     return job.Status == "success"
 }
 
@@ -105,3 +122,30 @@ func (task *Task) LoadByKey(key interface{}) (*Task, error) {
         return initTask.(*Task), nil
     }
 }
+
+func (task *Task) BeforeSave(scope *gorm.Scope) error {
+    task.Schedule = fmt.Sprintf("%s %d %d-%d-%d %d:%d:%d", task.schedule.period, task.schedule.weekday,
+        task.schedule.year, task.schedule.month, task.schedule.day,
+        task.schedule.hour, task.schedule.minute, task.schedule.second,
+    )
+    return nil
+}
+
+func (task *Task) AfterSave(scope *gorm.Scope) error {
+    values := strings.Fields(task.Schedule)
+    period, weekday, date, clock := values[0], number.Int(values[1]), strings.Split(values[2], '-'), strings.Split(values[3], ':')
+    year, month, day := number.Int(date[0]), number.Int(date[1]), number.Int(date[2])
+    hour, minute, second := number.Int(clock[0]), number.Int(clock[1]), number.Int(clock[2])
+    task.schedule = scheduleFormat{
+        period: period,
+        weekday:weekday,
+        year: year,
+        month: month,
+        day:day,
+        hour: hour,
+        minute: minute,
+        second:second,
+    }
+    return nil
+}
+

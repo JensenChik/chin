@@ -3,3 +3,4 @@ github.com/jinzhu/gorm
 github.com/gorilla/sessions
 github.com/sdbaiguanghe/glog
 github.com/tidwall/gjson
+github.com/golang/tools/cmd/goimports
