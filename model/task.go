@@ -1,14 +1,14 @@
 package model
 
 import (
-    "github.com/jinzhu/gorm"
-    "time"
     "fmt"
     "strings"
+    "time"
+
     "../tools/datetime"
     "../tools/number"
+    "github.com/jinzhu/gorm"
     "github.com/tidwall/gjson"
-    "strconv"
 )
 
 type scheduleFormat struct {
@@ -78,7 +78,7 @@ func (task *Task) ShouldScheduleNow() bool {
     return task.ShouldScheduleToday() && task.ReachScheduleClock() && task.FatherTasksAllDone()
 }
 
-func (task *Task) NoJobToday() (bool) {
+func (task *Task) NoJobToday() bool {
     jobs := []Job{}
     Fill(&jobs).Where("task_id = ? and date(created_at) = ? ", task.ID, datetime.Today())
     return len(jobs) == 0
@@ -137,15 +137,14 @@ func (task *Task) AfterSave(scope *gorm.Scope) error {
     year, month, day := number.Int(date[0]), number.Int(date[1]), number.Int(date[2])
     hour, minute, second := number.Int(clock[0]), number.Int(clock[1]), number.Int(clock[2])
     task.schedule = scheduleFormat{
-        period: period,
-        weekday:weekday,
-        year: year,
-        month: month,
-        day:day,
-        hour: hour,
-        minute: minute,
-        second:second,
+        period:  period,
+        weekday: weekday,
+        year:    year,
+        month:   month,
+        day:     day,
+        hour:    hour,
+        minute:  minute,
+        second:  second,
     }
     return nil
 }
-
