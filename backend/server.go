@@ -2,8 +2,9 @@ package backend
 
 import (
     "fmt"
-    "net/http"
     "log"
+    "net/http"
+
     "./auth"
     "./task"
 )
@@ -15,4 +16,3 @@ func Serve() {
     http.HandleFunc("/new_task", task.New)
     log.Fatal(http.ListenAndServe("localhost:6421", nil))
 }
-

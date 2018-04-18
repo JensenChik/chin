@@ -1,8 +1,8 @@
 package random
 
 import (
-    "time"
     "math/rand"
+    "time"
 )
 
 func String(size int) string {

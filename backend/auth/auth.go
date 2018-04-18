@@ -3,9 +3,10 @@ package auth
 import (
     "fmt"
     "net/http"
-    "github.com/gorilla/sessions"
-    "../../model"
+
     "../../config"
+    "../../model"
+    "github.com/gorilla/sessions"
     "github.com/sdbaiguanghe/glog"
 )
 
@@ -15,7 +16,7 @@ var sessionName = "sess"
 func Login(w http.ResponseWriter, r *http.Request) {
     var userName = r.PostFormValue("user_name")
     var password = r.PostFormValue("password")
-    user := model.User{UserName:userName, Password:password}
+    user := model.User{UserName: userName, Password: password}
     if user.Exists() {
         glog.Debug("用户存在")
         session, err := store.Get(r, sessionName)
@@ -24,10 +25,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
         }
         session.Values["user_name"] = userName
         session.Save(r, w)
-        fmt.Fprint(w, "用户存在收到登陆请求:" + userName + "@" + password)
+        fmt.Fprint(w, "用户存在收到登陆请求:"+userName+"@"+password)
     } else {
         //报异常
-        fmt.Fprint(w, "用户不存在收到登陆请求:" + userName + "@" + password)
+        fmt.Fprint(w, "用户不存在收到登陆请求:"+userName+"@"+password)
     }
 
 }
@@ -49,6 +50,3 @@ func Logout(w http.ResponseWriter, r *http.Request) {
     glog.Debug("请求登出")
     fmt.Fprint(w, "请求登出")
 }
-
-
-

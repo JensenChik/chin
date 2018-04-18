@@ -2,6 +2,7 @@ package secure
 
 import (
     "testing"
+
     . "github.com/franela/goblin"
 )
 

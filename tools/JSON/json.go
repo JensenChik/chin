@@ -1,9 +1,9 @@
 package JSON
 
-func Parse()  {
+func Parse() {
 
 }
 
-func Stringfy()  {
+func Stringfy() {
 
 }

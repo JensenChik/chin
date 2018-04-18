@@ -1,12 +1,13 @@
 package model
 
 import (
+    "bufio"
+    "io"
+    "os/exec"
+
+    "../tools/compress"
     "github.com/jinzhu/gorm"
     "github.com/sdbaiguanghe/glog"
-    "os/exec"
-    "io"
-    "bufio"
-    "../tools/compress"
 )
 
 type Shell struct {
@@ -73,7 +74,6 @@ func (Instance *Instance) CreateAndRunShell() {
 
 }
 
-
 func (instance *Instance) BeforeSave(scope *gorm.Scope) error {
     instance.StdOut = compress.Zip(instance.StdOut)
     return nil
@@ -111,4 +111,3 @@ func (instance *Instance) LoadByKey(key interface{}) (*Instance, error) {
         return initInstance.(*Instance), nil
     }
 }
-

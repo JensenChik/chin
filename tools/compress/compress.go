@@ -21,5 +21,3 @@ func Unzip(raw string) string {
     io.Copy(&buffer, r)
     return buffer.String()
 }
-
-

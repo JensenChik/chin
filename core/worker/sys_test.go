@@ -1,9 +1,10 @@
 package worker
 
 import (
-    "testing"
-    . "github.com/franela/goblin"
     "strings"
+    "testing"
+
+    . "github.com/franela/goblin"
 )
 
 func TestSys(t *testing.T) {
@@ -50,7 +51,6 @@ func TestSys(t *testing.T) {
             g.Assert(stat.NetRecvByte > 0).IsTrue()
             g.Assert(stat.NetRecvPack > 0).IsTrue()
         })
-
 
     })
 

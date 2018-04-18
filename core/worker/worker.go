@@ -1,8 +1,9 @@
 package worker
 
 import (
-    "github.com/sdbaiguanghe/glog"
     "time"
+
+    "github.com/sdbaiguanghe/glog"
 )
 
 func Serve() {

@@ -2,10 +2,11 @@ package model
 
 import (
     "testing"
+    "time"
+
+    "../tools/random"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
-    "time"
-    "../tools/random"
 )
 
 func TestOperation(t *testing.T) {
@@ -24,12 +25,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
             }
 
         })
@@ -49,7 +50,7 @@ func TestOperation(t *testing.T) {
                 db.Table("operations").Count(&mysqlCount)
                 g.Assert(expectedCount).Equal(mysqlCount)
 
-                db.Model(new(Operation)).Where("id = ?", id + 1).Count(&mysqlCount)
+                db.Model(new(Operation)).Where("id = ?", id+1).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
                 newOperation, err := new(Operation).LoadByWhere("user_id =?", operation.UserID)
@@ -77,12 +78,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
             }
         })
 
@@ -129,12 +130,12 @@ func TestOperation(t *testing.T) {
             }
             Truncate("operations")
             operations = []Operation{
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
-                {UserID:random.Int(10000), Content:random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
+                {UserID: random.Int(10000), Content: random.String(20)},
             }
 
             for _, operation := range operations {
@@ -169,7 +170,7 @@ func TestOperation(t *testing.T) {
             for id, operation := range operations {
                 newOperation, err := new(Operation).LoadByWhere(
                     "id = ? and user_id = ?",
-                    id + 1, operation.UserID,
+                    id+1, operation.UserID,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newOperation.Content).Equal(operation.Content)
@@ -177,8 +178,8 @@ func TestOperation(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Operation{UserID:12580, Content:random.String(20)}).DumpToMySQL()
-            (&Operation{UserID:12580, Content:random.String(20)}).DumpToMySQL()
+            (&Operation{UserID: 12580, Content: random.String(20)}).DumpToMySQL()
+            (&Operation{UserID: 12580, Content: random.String(20)}).DumpToMySQL()
             operation, err := new(Operation).LoadByWhere("user_id = ?", 12580)
             g.Assert(operation == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")

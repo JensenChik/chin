@@ -1,10 +1,11 @@
 package worker
 
 import (
-    "os/exec"
-    "github.com/sdbaiguanghe/glog"
     "bufio"
     "io"
+    "os/exec"
+
+    "github.com/sdbaiguanghe/glog"
 )
 
 type Shell struct {
@@ -54,5 +55,3 @@ func (sh *Shell) Kill() error {
     sh.Success = false
     return err
 }
-
-

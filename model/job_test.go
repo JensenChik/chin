@@ -2,10 +2,11 @@ package model
 
 import (
     "testing"
+    "time"
+
+    "../tools/random"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
-    "time"
-    "../tools/random"
 )
 
 func TestJob(t *testing.T) {
@@ -24,12 +25,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
             }
 
         })
@@ -49,7 +50,7 @@ func TestJob(t *testing.T) {
                 db.Table("jobs").Count(&mysqlCount)
                 g.Assert(expectedCount).Equal(mysqlCount)
 
-                db.Model(new(Job)).Where("id = ?", id + 1).Count(&mysqlCount)
+                db.Model(new(Job)).Where("id = ?", id+1).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
                 job, err := new(Job).LoadByWhere("task_id =?", job.TaskID)
@@ -77,12 +78,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
             }
         })
 
@@ -129,12 +130,12 @@ func TestJob(t *testing.T) {
             }
             Truncate("jobs")
             jobs = []Job{
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
-                {TaskID:random.Int(10000), Status:random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
+                {TaskID: random.Int(10000), Status: random.String(20)},
             }
 
             for _, job := range jobs {
@@ -169,7 +170,7 @@ func TestJob(t *testing.T) {
             for id, job := range jobs {
                 newJob, err := new(Job).LoadByWhere(
                     "id = ? and task_id = ?",
-                    id + 1, job.TaskID,
+                    id+1, job.TaskID,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newJob.Status).Equal(job.Status)
@@ -177,8 +178,8 @@ func TestJob(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Job{TaskID:12580, Status:random.String(20)}).DumpToMySQL()
-            (&Job{TaskID:12580, Status:random.String(20)}).DumpToMySQL()
+            (&Job{TaskID: 12580, Status: random.String(20)}).DumpToMySQL()
+            (&Job{TaskID: 12580, Status: random.String(20)}).DumpToMySQL()
             job, err := new(Job).LoadByWhere("task_id = ?", 12580)
             g.Assert(job == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")

@@ -1,14 +1,15 @@
 package main
 
 import (
+    "flag"
+    "log"
     "os"
+
+    "./backend"
     "./core/scheduler"
     "./core/worker"
-    "./backend"
     "./model"
-    "flag"
     "github.com/sdbaiguanghe/glog"
-    "log"
 )
 
 func setDebug(ok bool) {
@@ -45,7 +46,7 @@ func main() {
         backend.Serve()
     case "init_db":
         model.Init()
-    case "mock_db" :
+    case "mock_db":
         model.Mock()
     default:
         glog.Fatal("不支持启动命令: " + as)

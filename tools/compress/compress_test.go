@@ -2,6 +2,7 @@ package compress
 
 import (
     "testing"
+
     . "github.com/franela/goblin"
 )
 
@@ -45,6 +46,5 @@ func TestCompress(t *testing.T) {
         })
 
     })
-
 
 }

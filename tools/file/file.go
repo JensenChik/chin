@@ -1,10 +1,11 @@
 package file
 
 import (
-    "strings"
-    "os"
-    "github.com/sdbaiguanghe/glog"
     "bufio"
+    "os"
+    "strings"
+
+    "github.com/sdbaiguanghe/glog"
 )
 
 func ReadLinesBetween(filename string, offset uint, n int) []string {
@@ -16,7 +17,7 @@ func ReadLinesBetween(filename string, offset uint, n int) []string {
 
     var lines []string
     r := bufio.NewReader(f)
-    for i := 0; i < n + int(offset) || n < 0; i++ {
+    for i := 0; i < n+int(offset) || n < 0; i++ {
         line, err := r.ReadString('\n')
         if err != nil {
             break

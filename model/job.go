@@ -25,10 +25,10 @@ func (job *Job) GetReady() bool {
 func (job *Job) CreateInstance() {
     machines := []Machine{}
     Fill(machines).Where("alive = ", true)
-    machineID := machines[0].ID  // 分配机器 todo: 负载均衡
+    machineID := machines[0].ID // 分配机器 todo: 负载均衡
     instance := Instance{
-        JobID:job.ID,
-        MachineID:machineID,
+        JobID:     job.ID,
+        MachineID: machineID,
     }
     instance.DumpToMySQL()
     job.Status = "waiting"

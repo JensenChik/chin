@@ -1,12 +1,13 @@
 package model
 
 import (
+    "math/rand"
+
     "../config"
+    "../tools/random"
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
-    "math/rand"
     "github.com/sdbaiguanghe/glog"
-    "../tools/random"
 )
 
 func connectDatabase() (*gorm.DB, error) {
@@ -28,9 +29,9 @@ func Init() {
     db.DropTableIfExists(&Task{}, &Job{}, &Instance{}, &Operation{}, &User{}, &Machine{})
     db.CreateTable(&Task{}, &Job{}, &Instance{}, &Operation{}, &User{}, &Machine{})
     rootUser := User{
-        UserName:config.ROOT_NAME,
-        Password:config.ROOT_PASSWD,
-        Email:config.ROOT_MAIL,
+        UserName: config.ROOT_NAME,
+        Password: config.ROOT_PASSWD,
+        Email:    config.ROOT_MAIL,
     }
     ok, err := rootUser.DumpToMySQL()
     if ok {
@@ -54,12 +55,12 @@ func Mock() {
 
     for i := 0; i < 100; i++ {
         task := Task{
-            TaskName:random.String(16),
-            Command:random.String(16),
-            FatherTask:random.String(32),
-            Valid:rand.Float32() < 0.5,
-            MachinePool:random.String(10),
-            OwnerID:random.Int(100),
+            TaskName:    random.String(16),
+            Command:     random.String(16),
+            FatherTask:  random.String(32),
+            Valid:       rand.Float32() < 0.5,
+            MachinePool: random.String(10),
+            OwnerID:     random.Int(100),
         }
         db.Create(&task)
     }
@@ -67,8 +68,8 @@ func Mock() {
     glog.Info("开始 mock 表<jobs>")
     for i := 0; i < 1000; i++ {
         job := Job{
-            TaskID:random.Int(100),
-            Status:random.String(5),
+            TaskID: random.Int(100),
+            Status: random.String(5),
         }
         db.Create(&job)
     }
@@ -76,9 +77,9 @@ func Mock() {
     glog.Info("开始 mock 表<instances>")
     for i := 0; i < 10000; i++ {
         instance := Instance{
-            JobID:random.Int(1000),
-            MachineID:random.Int(10),
-            StdOut:random.String(100),
+            JobID:     random.Int(1000),
+            MachineID: random.Int(10),
+            StdOut:    random.String(100),
         }
         db.Create(&instance)
     }
@@ -86,9 +87,9 @@ func Mock() {
     glog.Info("开始 mock 表<users>")
     for i := 0; i < 10; i++ {
         user := User{
-            UserName:random.String(10),
-            Password:random.String(10),
-            Email:random.String(5) + "@" + random.String(3) + ".com",
+            UserName: random.String(10),
+            Password: random.String(10),
+            Email:    random.String(5) + "@" + random.String(3) + ".com",
         }
         db.Create(&user)
     }
@@ -96,11 +97,11 @@ func Mock() {
     glog.Info("开始 mock 表<machines>")
     for i := 0; i < 10; i++ {
         machine := Machine{
-            MachineName:random.String(10),
-            IP:random.String(10),
-            MAC:random.String(10),
-            CPULoad:random.Float(),
-            MemoryLoad:random.Float(),
+            MachineName: random.String(10),
+            IP:          random.String(10),
+            MAC:         random.String(10),
+            CPULoad:     random.Float(),
+            MemoryLoad:  random.Float(),
         }
         db.Create(&machine)
     }
@@ -108,12 +109,11 @@ func Mock() {
     glog.Info("开始 mock 表<operations>")
     for i := 0; i < 100; i++ {
         operation := Operation{
-            UserID:random.Int(10),
-            Content:random.String(20),
+            UserID:  random.Int(10),
+            Content: random.String(20),
         }
         db.Create(&operation)
     }
 
     glog.Info("mock 数据完毕")
 }
-

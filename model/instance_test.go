@@ -2,10 +2,11 @@ package model
 
 import (
     "testing"
+    "time"
+
+    "../tools/random"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
-    "time"
-    "../tools/random"
 )
 
 func TestInstance(t *testing.T) {
@@ -24,12 +25,12 @@ func TestInstance(t *testing.T) {
                 g.Fail("连接mysql错误")
             }
             instances = []Instance{
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ccccccccccccccccccccccccccccccccccc"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ddddddddddddddddddddddddddddddddddd"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "fffffffffffffffffffffffffffffffffff"},
             }
 
         })
@@ -49,10 +50,10 @@ func TestInstance(t *testing.T) {
                 db.Table("instances").Count(&mysqlCount)
                 g.Assert(expectedCount).Equal(mysqlCount)
 
-                db.Model(new(Instance)).Where("id = ?", id + 1).Count(&mysqlCount)
+                db.Model(new(Instance)).Where("id = ?", id+1).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
-                newInstance, err := new(Instance).LoadByWhere("id =?", id + 1)
+                newInstance, err := new(Instance).LoadByWhere("id =?", id+1)
                 g.Assert(err == nil)
                 g.Assert(newInstance.JobID).Equal(instance.JobID)
                 g.Assert(newInstance.MachineID).Equal(instance.MachineID)
@@ -80,12 +81,12 @@ func TestInstance(t *testing.T) {
             }
             Truncate("instances")
             instances = []Instance{
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ccccccccccccccccccccccccccccccccccc"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ddddddddddddddddddddddddddddddddddd"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "fffffffffffffffffffffffffffffffffff"},
             }
         })
 
@@ -100,7 +101,7 @@ func TestInstance(t *testing.T) {
                 g.Assert(err == nil).IsTrue()
                 g.Assert(ok).IsTrue()
 
-                db.Model(new(Instance)).Where("id = ?", id + 1).Count(&mysqlCount)
+                db.Model(new(Instance)).Where("id = ?", id+1).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
                 oldUpdateTime := instance.UpdatedAt
@@ -115,7 +116,7 @@ func TestInstance(t *testing.T) {
                 instance.StdOut = newStdOut
                 instance.DumpToMySQL()
 
-                newInstance, _ := new(Instance).LoadByWhere("id = ?", id + 1)
+                newInstance, _ := new(Instance).LoadByWhere("id = ?", id+1)
                 g.Assert(newInstance.JobID).Equal(newInstanceID)
                 g.Assert(newInstance.MachineID).Equal(newMachineID)
                 g.Assert(newInstance.StdOut).Equal(newStdOut)
@@ -132,12 +133,12 @@ func TestInstance(t *testing.T) {
         g.Before(func() {
             Truncate("instances")
             instances = []Instance{
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ccccccccccccccccccccccccccccccccccc"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"ddddddddddddddddddddddddddddddddddd"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
-                {JobID:random.Int(10000), MachineID:random.Int(1000), StdOut:"fffffffffffffffffffffffffffffffffff"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ccccccccccccccccccccccccccccccccccc"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "ddddddddddddddddddddddddddddddddddd"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+                {JobID: random.Int(10000), MachineID: random.Int(1000), StdOut: "fffffffffffffffffffffffffffffffffff"},
             }
 
             for _, instance := range instances {
@@ -149,7 +150,7 @@ func TestInstance(t *testing.T) {
 
         g.It("记录通过where条件被正确加载", func() {
             for id, instance := range instances {
-                newInstance, err := new(Instance).LoadByWhere("id = ?", id + 1)
+                newInstance, err := new(Instance).LoadByWhere("id = ?", id+1)
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newInstance.JobID).Equal(instance.JobID)
                 g.Assert(newInstance.MachineID).Equal(instance.MachineID)
@@ -171,7 +172,7 @@ func TestInstance(t *testing.T) {
             for id, instance := range instances {
                 newInstance, err := new(Instance).LoadByWhere(
                     "id = ? and job_id = ? and machine_id = ?",
-                    id + 1, instance.JobID, instance.MachineID,
+                    id+1, instance.JobID, instance.MachineID,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newInstance.JobID).Equal(instance.JobID)
@@ -181,8 +182,8 @@ func TestInstance(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Instance{JobID:12580}).DumpToMySQL()
-            (&Instance{JobID:12580}).DumpToMySQL()
+            (&Instance{JobID: 12580}).DumpToMySQL()
+            (&Instance{JobID: 12580}).DumpToMySQL()
             instance, err := new(Instance).LoadByWhere("job_id = ?", 12580)
             g.Assert(instance == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")

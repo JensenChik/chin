@@ -2,10 +2,11 @@ package scheduler
 
 import (
     "testing"
+    "time"
+
     "../../model"
     "../../tools/datetime"
     . "github.com/franela/goblin"
-    "time"
 )
 
 func TestTaskTracker(t *testing.T) {
@@ -63,27 +64,27 @@ func TestTaskTracker(t *testing.T) {
         g.It("模拟taskTracker启动", func() {
             g.Timeout(10 * time.Second)
             var task model.Task
-            task = model.Task{Valid:false}
+            task = model.Task{Valid: false}
             task.DumpToMySQL()
 
             task = model.Task{
-                Valid:true,
-                ScheduleType:"once",
-                ScheduleFormat:"0 " + time.Now().Format("2006-01-02") + " 11:00:00",
+                Valid:          true,
+                ScheduleType:   "once",
+                ScheduleFormat: "0 " + time.Now().Format("2006-01-02") + " 11:00:00",
             }
             task.DumpToMySQL()
 
             task = model.Task{
-                Valid:true,
-                ScheduleType:"once",
-                ScheduleFormat:"0 " + time.Now().AddDate(0, 0, -1).Format("2006-01-02") + " 11:00:00",
+                Valid:          true,
+                ScheduleType:   "once",
+                ScheduleFormat: "0 " + time.Now().AddDate(0, 0, -1).Format("2006-01-02") + " 11:00:00",
             }
             task.DumpToMySQL()
 
             task = model.Task{
-                Valid:true,
-                ScheduleType: "day",
-                ScheduleFormat:"0 0000-00-00 11:00:00",
+                Valid:          true,
+                ScheduleType:   "day",
+                ScheduleFormat: "0 0000-00-00 11:00:00",
             }
             task.DumpToMySQL()
 
@@ -100,4 +101,3 @@ func TestTaskTracker(t *testing.T) {
 
     })
 }
-

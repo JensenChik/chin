@@ -2,9 +2,10 @@ package scheduler
 
 import (
     "testing"
+    "time"
+
     . "github.com/franela/goblin"
     "github.com/sdbaiguanghe/glog"
-    "time"
 )
 
 func TestJobTracker(t *testing.T) {
@@ -17,8 +18,5 @@ func TestJobTracker(t *testing.T) {
         glog.Error(t)
         glog.Error(s.Sub(t) > 0)
 
-
-
     })
 }
-

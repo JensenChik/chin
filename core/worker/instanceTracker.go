@@ -1,9 +1,10 @@
 package worker
 
 import (
-    "github.com/sdbaiguanghe/glog"
-    "../../model"
     "time"
+
+    "../../model"
+    "github.com/sdbaiguanghe/glog"
 )
 
 func registerMachineIfNotExists(stat *sysStat) uint {
@@ -11,11 +12,11 @@ func registerMachineIfNotExists(stat *sysStat) uint {
     if machine == nil {
         newMachine := model.Machine{
             MachineName: stat.HostName,
-            IP: stat.IP,
-            MAC: stat.MACAddress,
-            CPULoad:stat.Load5,
-            MemoryLoad:stat.MemUsedPercent,
-            Alive: true,
+            IP:          stat.IP,
+            MAC:         stat.MACAddress,
+            CPULoad:     stat.Load5,
+            MemoryLoad:  stat.MemUsedPercent,
+            Alive:       true,
         }
         newMachine.DumpToMySQL()
     }

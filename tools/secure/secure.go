@@ -10,6 +10,3 @@ func MD5(raw string) string {
     ctx.Write([]byte(raw))
     return hex.EncodeToString(ctx.Sum(nil))
 }
-
-
-

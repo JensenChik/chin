@@ -2,10 +2,11 @@ package model
 
 import (
     "testing"
+    "time"
+
+    "../tools/random"
     . "github.com/franela/goblin"
     "github.com/jinzhu/gorm"
-    "time"
-    "../tools/random"
 )
 
 func TestTask(t *testing.T) {
@@ -24,13 +25,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
             }
 
         })
@@ -50,7 +51,7 @@ func TestTask(t *testing.T) {
                 db.Table("tasks").Count(&mysqlCount)
                 g.Assert(expectedCount).Equal(mysqlCount)
 
-                db.Model(new(Task)).Where("id = ?", id + 1).Count(&mysqlCount)
+                db.Model(new(Task)).Where("id = ?", id+1).Count(&mysqlCount)
                 g.Assert(mysqlCount).Equal(1)
 
                 newTask, err := new(Task).LoadByWhere("task_name =?", task.TaskName)
@@ -89,13 +90,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
             }
         })
 
@@ -131,7 +132,7 @@ func TestTask(t *testing.T) {
                 task.OwnerID = newOwnerID
                 task.DumpToMySQL()
 
-                newTask, err := new(Task).LoadByWhere("id = ?", id + 1)
+                newTask, err := new(Task).LoadByWhere("id = ?", id+1)
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newTask.TaskName).Equal(task.TaskName)
                 g.Assert(newTask.Command).Equal(task.Command)
@@ -160,13 +161,13 @@ func TestTask(t *testing.T) {
             }
             Truncate("tasks")
             tasks = []Task{
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
-                {TaskName:random.String(20), Command:random.String(10), FatherTask:random.String(10), Valid:random.Int(1) == 0, MachinePool:random.String(10), OwnerID:random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
+                {TaskName: random.String(20), Command: random.String(10), FatherTask: random.String(10), Valid: random.Int(1) == 0, MachinePool: random.String(10), OwnerID: random.Int(1000)},
             }
             for _, task := range tasks {
                 ok, err := task.DumpToMySQL()
@@ -211,7 +212,7 @@ func TestTask(t *testing.T) {
             for id, task := range tasks {
                 newTask, err := new(Task).LoadByWhere(
                     "id = ? and task_name = ? and command = ? and father_task = ? and valid = ? and machine_pool = ? and owner_id = ?",
-                    id + 1, task.TaskName, task.Command, task.FatherTask, task.Valid, task.MachinePool, task.OwnerID,
+                    id+1, task.TaskName, task.Command, task.FatherTask, task.Valid, task.MachinePool, task.OwnerID,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newTask.TaskName).Equal(task.TaskName)
@@ -225,8 +226,8 @@ func TestTask(t *testing.T) {
         })
 
         g.It("当存在多于一条记录满足where条件时无法实例化，返回异常且对象为nil", func() {
-            (&Task{TaskName:"dup_task"}).DumpToMySQL()
-            (&Task{TaskName:"dup_task"}).DumpToMySQL()
+            (&Task{TaskName: "dup_task"}).DumpToMySQL()
+            (&Task{TaskName: "dup_task"}).DumpToMySQL()
             task, err := new(Task).LoadByWhere("task_name = ?", "dup_task")
             g.Assert(task == nil).IsTrue()
             g.Assert(err.Error()).Equal("存在多条满足条件的记录，无法实例化")
@@ -368,11 +369,11 @@ func TestTask(t *testing.T) {
                 task = new(Task)
                 task.DumpToMySQL()
             }
-            job := Job{TaskID:taskID}
+            job := Job{TaskID: taskID}
             job.CreatedAt = time.Now().AddDate(0, 0, -1)
             job.DumpToMySQL()
             g.Assert(task.NoJobToday()).IsTrue()
-            job = Job{TaskID:taskID}
+            job = Job{TaskID: taskID}
             job.DumpToMySQL()
             g.Assert(task.NoJobToday()).IsFalse()
         })

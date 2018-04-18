@@ -1,9 +1,9 @@
 package model
 
 import (
+    "../tools/secure"
     "github.com/jinzhu/gorm"
     "github.com/sdbaiguanghe/glog"
-    "../tools/secure"
 )
 
 type User struct {

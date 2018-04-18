@@ -35,5 +35,3 @@ func str2int(str string) int {
     }
     return value
 }
-
-

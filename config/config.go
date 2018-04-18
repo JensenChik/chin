@@ -1,18 +1,19 @@
 package config
 
 import (
-    "io/ioutil"
     "encoding/json"
-    "github.com/sdbaiguanghe/glog"
+    "io/ioutil"
     "path/filepath"
     "runtime"
+
+    "github.com/sdbaiguanghe/glog"
 )
 
 type config struct {
     Core map[string]string
 }
 
-func loadConfig() (config) {
+func loadConfig() config {
     var conf config
     _, thisFileAbsName, _, _ := runtime.Caller(0)
     config_path, _ := filepath.Abs(filepath.Dir(thisFileAbsName))

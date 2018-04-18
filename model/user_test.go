@@ -2,11 +2,12 @@ package model
 
 import (
     "testing"
-    . "github.com/franela/goblin"
-    "github.com/jinzhu/gorm"
     "time"
+
     "../tools/random"
     "../tools/secure"
+    . "github.com/franela/goblin"
+    "github.com/jinzhu/gorm"
 )
 
 func TestUser(t *testing.T) {
@@ -22,7 +23,7 @@ func TestUser(t *testing.T) {
                 g.Fail("连接mysql错误")
             }
             Truncate("users")
-            ok, _ := (&User{UserName:"chin", Password:"root"}).DumpToMySQL()
+            ok, _ := (&User{UserName: "chin", Password: "root"}).DumpToMySQL()
             g.Assert(ok).IsTrue()
         })
         g.After(func() {
@@ -31,15 +32,15 @@ func TestUser(t *testing.T) {
         })
 
         g.It("当存在该用户且密码匹配时返回true", func() {
-            user := User{UserName:"chin", Password:"root"}
+            user := User{UserName: "chin", Password: "root"}
             g.Assert(user.Exists()).IsTrue()
         })
         g.It("当存在该用户,但密码不匹配时返回false", func() {
-            user := User{UserName:"chin", Password:"chin+1s"}
+            user := User{UserName: "chin", Password: "chin+1s"}
             g.Assert(user.Exists()).IsFalse()
         })
         g.It("当不存在该用户时应当返回false", func() {
-            user := User{UserName:"hahaha", Password:"+1s"}
+            user := User{UserName: "hahaha", Password: "+1s"}
             g.Assert(user.Exists()).IsFalse()
         })
 
@@ -60,10 +61,10 @@ func TestUser(t *testing.T) {
 
         g.BeforeEach(func() {
             toBeAddUsers = []User{
-                {UserName:"A", Password:"1", Email:"A@1"},
-                {UserName:"B", Password:"2", Email:"B@2"},
-                {UserName:"C", Password:"3", Email:"C@3"},
-                {UserName:"D", Password:"4", Email:"C@3"},
+                {UserName: "A", Password: "1", Email: "A@1"},
+                {UserName: "B", Password: "2", Email: "B@2"},
+                {UserName: "C", Password: "3", Email: "C@3"},
+                {UserName: "D", Password: "4", Email: "C@3"},
             }
             Truncate("users")
         })
@@ -117,7 +118,7 @@ func TestUser(t *testing.T) {
                 ok, err = (&User{
                     UserName: user.UserName,
                     Password: randomPasswd,
-                    Email: randomEmail,
+                    Email:    randomEmail,
                 }).DumpToMySQL()
                 g.Assert(ok).IsFalse()
                 g.Assert(err != nil).IsTrue()
@@ -147,10 +148,10 @@ func TestUser(t *testing.T) {
             }
             Truncate("users")
             users = []User{
-                {UserName:"A", Password:"1", Email:"A@1"},
-                {UserName:"B", Password:"2", Email:"B@2"},
-                {UserName:"C", Password:"3", Email:"C@3"},
-                {UserName:"D", Password:"4", Email:"D@4"},
+                {UserName: "A", Password: "1", Email: "A@1"},
+                {UserName: "B", Password: "2", Email: "B@2"},
+                {UserName: "C", Password: "3", Email: "C@3"},
+                {UserName: "D", Password: "4", Email: "D@4"},
             }
         })
 
@@ -201,10 +202,10 @@ func TestUser(t *testing.T) {
             }
             Truncate("users")
             users = []User{
-                {UserName:"A", Password:"1", Email:"A@1"},
-                {UserName:"B", Password:"2", Email:"B@2"},
-                {UserName:"C", Password:"3", Email:"C@3"},
-                {UserName:"D", Password:"4", Email:"C@3"},
+                {UserName: "A", Password: "1", Email: "A@1"},
+                {UserName: "B", Password: "2", Email: "B@2"},
+                {UserName: "C", Password: "3", Email: "C@3"},
+                {UserName: "D", Password: "4", Email: "C@3"},
             }
 
             for _, user := range users {
@@ -243,7 +244,7 @@ func TestUser(t *testing.T) {
             for id, user := range users {
                 newUser, err := new(User).LoadByWhere(
                     "id = ? and user_name = ? and email = ?",
-                    id + 1, user.UserName, user.Email,
+                    id+1, user.UserName, user.Email,
                 )
                 g.Assert(err == nil).IsTrue()
                 g.Assert(newUser.UserName).Equal(user.UserName)
@@ -266,4 +267,3 @@ func TestUser(t *testing.T) {
 
     })
 }
-

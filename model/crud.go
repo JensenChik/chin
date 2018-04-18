@@ -1,8 +1,9 @@
 package model
 
 import (
-    "github.com/sdbaiguanghe/glog"
     "errors"
+
+    "github.com/sdbaiguanghe/glog"
 )
 
 type query struct {
@@ -101,4 +102,3 @@ func loadByKey(object interface{}, key interface{}) (interface{}, error) {
     }
 
 }
-
