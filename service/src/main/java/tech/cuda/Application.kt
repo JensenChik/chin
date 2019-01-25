@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import tech.cuda.models.rebuildTables
 import java.util.*
 import java.util.regex.Pattern
 import javax.servlet.*
@@ -77,6 +78,7 @@ open class Application : WebMvcConfigurerAdapter(), Filter {
 }
 
 fun main(args: Array<String>) {
-    SpringApplication.run(Application::class.java, *args)
+    rebuildTables()
+//    SpringApplication.run(Application::class.java, *args)
 }
 

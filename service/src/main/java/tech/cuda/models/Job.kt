@@ -9,8 +9,11 @@ import org.jetbrains.exposed.dao.IntIdTable
  * Created by Jensen on 18-6-18.
  */
 object Jobs : IntIdTable() {
-    val task = reference(name = "task", foreign = Tasks)
-    val removed = bool(name = "removed").index()
+    override val tableName: String
+        get() = "jobs"
+
+    val task = reference(name = "task_id", foreign = Tasks)
+    val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
 }

@@ -54,7 +54,7 @@ class Bash : Operator {
         this.executor.watchdog = killer
     }
 
-    constructor(task: Task) : this(Task.command.toString())
+    constructor(task: Task) : this(task.command)
 
 
     fun run() {

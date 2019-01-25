@@ -9,8 +9,11 @@ import org.jetbrains.exposed.dao.IntIdTable
  * Created by Jensen on 18-6-18.
  */
 object Groups : IntIdTable() {
+    override val tableName: String
+        get() = "groups"
+
     val name = varchar(name = "name", length = 256).index()
-    val removed = bool(name = "removed").index()
+    val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
 }
@@ -22,4 +25,8 @@ class Group(id: EntityID<Int>) : IntEntity(id) {
     var removed by Groups.removed
     var createTime by Groups.createTime
     var updateTime by Groups.updateTime
+
+    val inclusiveUsers: List<User>
+        get() = User.find { Users.group eq this@Group.id }.toList()
+
 }
