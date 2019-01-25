@@ -9,7 +9,7 @@ import org.jetbrains.exposed.dao.IntIdTable
  * Created by Jensen on 18-6-18.
  */
 object Jobs : IntIdTable() {
-    val taskId = integer(name = "task_id").index()
+    val task = reference(name = "task", foreign = Tasks)
     val removed = bool(name = "removed").index()
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
@@ -18,6 +18,11 @@ object Jobs : IntIdTable() {
 
 class Job(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Job>(Jobs)
+
+    var task by Task referencedOn Jobs.task
+    var removed by Jobs.removed
+    var createTime by Jobs.createTime
+    var updateTime by Jobs.updateTime
 
     val shouldRunNow: Boolean
         get() {

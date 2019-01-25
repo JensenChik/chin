@@ -4,13 +4,12 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
-import org.jetbrains.exposed.sql.Table
 
 /**
  * Created by Jensen on 18-6-15.
  */
 object Instances : IntIdTable() {
-    val jobId = integer(name = "job_id").index()
+    val job = reference(name = "job", foreign = Jobs)
     val output = blob("output")
     val removed = bool(name = "removed").index()
     val createTime = datetime(name = "create_time")
@@ -20,6 +19,13 @@ object Instances : IntIdTable() {
 
 class Instance(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Instance>(Instances)
+
+    var job by Job referencedOn Instances.job
+    var output by Instances.output
+    var removed by Instances.removed
+    var createTime by Instances.createTime
+    var updateTime by Instances.updateTime
+
 
     val finished: Boolean
         get() {

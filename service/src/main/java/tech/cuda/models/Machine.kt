@@ -1,12 +1,11 @@
 package tech.cuda.models
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.IntIdTable
 
 /**
  * Created by Jensen on 18-6-18.
  */
-object Machine : Table() {
-    val id = integer(name = "id").autoIncrement().primaryKey()
+object Machines : IntIdTable() {
     val name = varchar(name = "name", length = 256)
 
     val ip = varchar(name = "ip", length = 256)

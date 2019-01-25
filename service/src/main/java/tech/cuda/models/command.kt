@@ -2,8 +2,8 @@ package tech.cuda.models
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.SchemaUtils.drop
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
 
 /**
  * Created by Jensen on 18-6-19.
@@ -23,14 +23,22 @@ fun getDatabase(): Database {
 fun createTables() {
     val db = getDatabase()
     transaction(db) {
-        tables.forEach { create(it) }
+        tables.forEach {
+            if (it is Table) {
+                SchemaUtils.create(it)
+            }
+        }
     }
 }
 
 fun dropTables() {
     val db = getDatabase()
     transaction(db) {
-        tables.forEach { drop(it) }
+        tables.forEach {
+            if (it is Table) {
+                SchemaUtils.drop(it)
+            }
+        }
     }
 }
 
