@@ -6,7 +6,7 @@ package tech.cuda.enums
 
 
 enum class ScheduleType {
-    Day, Week, Month, Once;
+    Day, Week, Month, Year, Once;
 
 }
 

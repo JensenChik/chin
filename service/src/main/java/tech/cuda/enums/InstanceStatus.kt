@@ -5,5 +5,5 @@ package tech.cuda.enums
  */
 
 enum class InstanceStatus {
-    Success, Failed, Running
+    Waiting, Running, Success, Failed
 }

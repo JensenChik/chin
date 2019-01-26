@@ -41,12 +41,12 @@ class Instance(id: EntityID<Int>) : IntEntity(id) {
 
     val finished: Boolean
         get() {
-            return false
+            return this.status == InstanceStatus.Success || this.status == InstanceStatus.Failed
         }
 
     val success: Boolean
         get() {
-            return false
+            return this.status == InstanceStatus.Success
         }
 
     fun start() {
