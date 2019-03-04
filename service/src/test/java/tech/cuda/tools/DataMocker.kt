@@ -26,4 +26,24 @@ object DataMocker {
         }
     }
 
+    fun load(tables: List<String>) {
+        val dataPath = "${File("").absolutePath}/src/test/resources/data"
+        transaction {
+            val mysql = TransactionManager.current()
+            for (table in tables) {
+                mysql.exec("""
+                    load data local infile '$dataPath/$table.csv'
+                    into table $table
+                    fields terminated by ','
+                    lines terminated by '\n'
+                    ignore 1 lines
+                """)
+            }
+        }
+    }
+
+    fun load(table: String) {
+        load(listOf(table))
+    }
+
 }

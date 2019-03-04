@@ -1,5 +1,8 @@
 package tech.cuda.models.services
 
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import tech.cuda.models.mappers.Action
 import tech.cuda.models.mappers.Actions
 
@@ -8,12 +11,10 @@ import tech.cuda.models.mappers.Actions
  */
 object ActionService {
     fun getActionsByUserId(id: Int, page: Int = 0, pageSize: Int = 10): List<Action> {
-        return Action.find {
-            Actions.user eq id
-        }.sortedBy { it.id }.subList(page * pageSize, (page + 1) * pageSize)
+        val query = Actions.select {
+            Actions.user eq id and Actions.removed.neq(true)
+        }.orderBy(Actions.id to true).limit(pageSize, offset = page * pageSize)
+        return Action.wrapRows(query).toList()
     }
 
-    fun getActionByPage(page: Int, pageSize: Int) {
-
-    }
 }
