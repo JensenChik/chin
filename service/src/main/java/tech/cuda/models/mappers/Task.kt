@@ -1,4 +1,4 @@
-package tech.cuda.models
+package tech.cuda.models.mappers
 
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity

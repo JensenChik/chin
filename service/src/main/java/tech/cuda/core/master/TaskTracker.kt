@@ -1,10 +1,9 @@
 package tech.cuda.core.master
 
-import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
 import org.joda.time.Days
-import tech.cuda.models.Task
-import tech.cuda.models.Tasks
+import tech.cuda.models.mappers.Task
+import tech.cuda.models.mappers.Tasks
 
 /**
  * Created by Jensen on 18-10-25.

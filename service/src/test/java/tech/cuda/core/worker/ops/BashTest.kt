@@ -3,7 +3,6 @@ package tech.cuda.core.worker.ops
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.Assert.*
 import org.junit.Test
-import tech.cuda.models.Task
 
 /**
  * Created by Jensen on 18-6-19.

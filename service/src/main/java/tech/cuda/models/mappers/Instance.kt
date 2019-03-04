@@ -1,4 +1,4 @@
-package tech.cuda.models
+package tech.cuda.models.mappers
 
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
@@ -6,7 +6,6 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
 import tech.cuda.enums.InstanceStatus
 import tech.cuda.enums.SQL
-import tech.cuda.enums.ScheduleType
 
 /**
  * Created by Jensen on 18-6-15.

@@ -5,6 +5,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import tech.cuda.models.mappers.User
 import tech.cuda.tools.DataMocker
 
 /**

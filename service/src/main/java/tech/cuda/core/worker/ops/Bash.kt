@@ -3,7 +3,7 @@ package tech.cuda.core.worker.ops
 import org.apache.commons.exec.*
 import org.apache.commons.exec.environment.EnvironmentUtils
 import org.apache.commons.io.IOUtils
-import tech.cuda.models.Task
+import tech.cuda.models.mappers.Task
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
