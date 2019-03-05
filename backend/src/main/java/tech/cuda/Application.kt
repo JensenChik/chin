@@ -78,7 +78,7 @@ open class Application : WebMvcConfigurerAdapter(), Filter {
 }
 
 fun main(args: Array<String>) {
-    rebuildTables()
-//    SpringApplication.run(Application::class.java, *args)
+//    rebuildTables()
+    SpringApplication.run(Application::class.java, *args)
 }
 
