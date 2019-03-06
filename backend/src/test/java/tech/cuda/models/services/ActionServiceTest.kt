@@ -14,7 +14,7 @@ import tech.cuda.tools.DataMocker
 class ActionServiceTest {
 
     @Before
-    fun init() {
+    fun setUp() {
         rebuildTables()
         DataMocker.load(listOf("groups", "users", "actions"))
     }

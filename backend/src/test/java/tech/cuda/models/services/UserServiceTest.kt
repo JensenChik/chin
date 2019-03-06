@@ -1,4 +1,4 @@
-package tech.cuda.models
+package tech.cuda.models.services
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
@@ -6,23 +6,26 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import tech.cuda.models.mappers.User
+import tech.cuda.models.rebuildTables
 import tech.cuda.tools.DataMocker
 
 /**
- * Created by Jensen on 19-1-26.
+ * Created by Jensen on 19-3-6.
  */
-class GroupTest {
-
+class UserServiceTest {
 
     @Before
-    fun init() {
+    fun setUp() {
         rebuildTables()
-        DataMocker.loadMockedData()
+        DataMocker.load(listOf("groups", "users"))
     }
 
+    @Test
+    fun getUsers() {
+    }
 
     @Test
-    fun getInclusiveUsers() {
+    fun getUsersByGroupId() {
         transaction {
             for (i in 1..10) {
                 val users = User.findById(i)!!.group.inclusiveUsers
@@ -36,7 +39,5 @@ class GroupTest {
             }
 
         }
-
     }
-
 }
