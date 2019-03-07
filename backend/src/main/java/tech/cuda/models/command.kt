@@ -3,7 +3,6 @@ package tech.cuda.models
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils
-import tech.cuda.models.mappers.*
 
 /**
  * Created by Jensen on 18-6-19.

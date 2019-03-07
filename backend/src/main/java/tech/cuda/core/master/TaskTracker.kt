@@ -2,8 +2,8 @@ package tech.cuda.core.master
 
 import org.joda.time.DateTime
 import org.joda.time.Days
-import tech.cuda.models.mappers.Task
-import tech.cuda.models.mappers.Tasks
+import tech.cuda.models.Task
+import tech.cuda.models.Tasks
 
 /**
  * Created by Jensen on 18-10-25.
@@ -15,7 +15,7 @@ object TaskTracker {
     fun newJobForRoutineTask() {
         Task.find { Tasks.removed eq false }.forEach {
             if (it.shouldScheduledToday) {
-                it.createJob()
+//                it.createJob()
             }
         }
     }

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="tech.cuda.mappers.UserMapper">
-    <select id="findUserById" parameterType="int" resultType="tech.cuda.models.mappers.User">
+    <select id="findUserById" parameterType="int" resultType="tech.cuda.models.User">
         select * from user where id = #{id}
     </select>
-    <select id="findAllUser" resultType="tech.cuda.models.mappers.User">
+    <select id="findAllUser" resultType="tech.cuda.models.User">
         select * from user
     </select>
 </mapper>
