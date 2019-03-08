@@ -9,7 +9,7 @@ import java.io.File
  */
 
 object DataMocker {
-    fun load(tables: List<String>) {
+    fun load(vararg tables: String) {
         val dataPath = "${File("").absolutePath}/src/test/resources/data"
         transaction {
             val mysql = TransactionManager.current()
@@ -23,10 +23,6 @@ object DataMocker {
                 """)
             }
         }
-    }
-
-    fun load(table: String) {
-        load(listOf(table))
     }
 
 }

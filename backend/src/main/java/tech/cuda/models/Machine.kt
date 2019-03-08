@@ -8,7 +8,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 /**
  * Created by Jensen on 18-6-18.
  */
-object Machines : IntIdTable() {
+object MachineTable : IntIdTable() {
     override val tableName: String
         get() = "machines"
 
@@ -25,17 +25,17 @@ object Machines : IntIdTable() {
 
 
 class Machine(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Machine>(Machines)
+    companion object : IntEntityClass<Machine>(MachineTable)
 
-    var name by Machines.name
-    val ip by Machines.ip
-    val mac by Machines.mac
-    val cpuLoad by Machines.cpuLoad
-    val memLoad by Machines.memLoad
-    val diskLoad by Machines.diskLoad
-    val removed by Machines.removed
-    val createTime by Machines.createTime
-    val updateTime by Machines.updateTime
+    var name by MachineTable.name
+    var ip by MachineTable.ip
+    var mac by MachineTable.mac
+    var cpuLoad by MachineTable.cpuLoad
+    var memLoad by MachineTable.memLoad
+    var diskLoad by MachineTable.diskLoad
+    var removed by MachineTable.removed
+    var createTime by MachineTable.createTime
+    var updateTime by MachineTable.updateTime
 
     val alive: Boolean
         get() {

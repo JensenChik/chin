@@ -1,4 +1,4 @@
-id,user_id,type,removed,create_time,update_time
+id,user_id,detail,removed,create_time,update_time
 1,1,add,0,2019-01-26 23:34:01,2019-01-26 23:34:01
 2,1,add,0,2019-01-26 23:34:02,2019-01-26 23:34:02
 3,1,add,1,2019-01-26 23:34:03,2019-01-26 23:34:03

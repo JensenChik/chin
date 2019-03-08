@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
  * Created by Jensen on 18-6-19.
  */
 
-val tables = listOf(Groups, Instances, Jobs, Machines, Actions, Tasks, Users)
+val tables = listOf(GroupTable, InstanceTable, JobTable, MachineTable, ActionTable, TaskTable, UserTable)
 
 fun getDatabase(): Database {
     return Database.connect(
@@ -22,14 +22,14 @@ fun getDatabase(): Database {
 fun createTables() {
     val db = getDatabase()
     transaction(db) {
-        SchemaUtils.create(Groups, Instances, Jobs, Machines, Actions, Tasks, Users)
+        SchemaUtils.create(GroupTable, InstanceTable, JobTable, MachineTable, ActionTable, TaskTable, UserTable)
     }
 }
 
 fun dropTables() {
     val db = getDatabase()
     transaction(db) {
-        SchemaUtils.drop(Groups, Instances, Jobs, Machines, Actions, Tasks, Users)
+        SchemaUtils.drop(GroupTable, InstanceTable, JobTable, MachineTable, ActionTable, TaskTable, UserTable)
     }
 }
 

@@ -8,7 +8,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 /**
  * Created by Jensen on 18-6-18.
  */
-object Groups : IntIdTable() {
+object GroupTable : IntIdTable() {
     override val tableName: String
         get() = "groups"
 
@@ -19,10 +19,10 @@ object Groups : IntIdTable() {
 }
 
 class Group(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Group>(Groups)
+    companion object : IntEntityClass<Group>(GroupTable)
 
-    var name by Groups.name
-    var removed by Groups.removed
-    var createTime by Groups.createTime
-    var updateTime by Groups.updateTime
+    var name by GroupTable.name
+    var removed by GroupTable.removed
+    var createTime by GroupTable.createTime
+    var updateTime by GroupTable.updateTime
 }

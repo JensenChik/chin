@@ -17,7 +17,7 @@ class UserServiceTest {
     @Before
     fun setUp() {
         rebuildTables()
-        DataMocker.load(listOf("groups", "users"))
+        DataMocker.load("groups", "users")
     }
 
     @Test

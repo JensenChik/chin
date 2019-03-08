@@ -10,11 +10,11 @@ import tech.cuda.enums.SQL
 /**
  * Created by Jensen on 18-6-15.
  */
-object Instances : IntIdTable() {
+object InstanceTable : IntIdTable() {
     override val tableName: String
         get() = "instances"
 
-    val job = reference(name = "job_id", foreign = Jobs)
+    val job = reference(name = "job_id", foreign = JobTable)
     val output = blob("output")
     val status = customEnumeration(
             name = "status", sql = SQL<InstanceStatus>(),
@@ -28,14 +28,14 @@ object Instances : IntIdTable() {
 
 
 class Instance(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Instance>(Instances)
+    companion object : IntEntityClass<Instance>(InstanceTable)
 
-    var status by Instances.status
-    var job by Job referencedOn Instances.job
-    var output by Instances.output
-    var removed by Instances.removed
-    var createTime by Instances.createTime
-    var updateTime by Instances.updateTime
+    var status by InstanceTable.status
+    var job by Job referencedOn InstanceTable.job
+    var output by InstanceTable.output
+    var removed by InstanceTable.removed
+    var createTime by InstanceTable.createTime
+    var updateTime by InstanceTable.updateTime
 
 
     val finished: Boolean

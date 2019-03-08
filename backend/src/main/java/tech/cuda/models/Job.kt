@@ -10,11 +10,11 @@ import tech.cuda.exceptions.IllegalScheduleFormatException
 /**
  * Created by Jensen on 18-6-18.
  */
-object Jobs : IntIdTable() {
+object JobTable : IntIdTable() {
     override val tableName: String
         get() = "jobs"
 
-    val task = reference(name = "task_id", foreign = Tasks)
+    val task = reference(name = "task_id", foreign = TaskTable)
     val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
@@ -22,12 +22,12 @@ object Jobs : IntIdTable() {
 
 
 class Job(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Job>(Jobs)
+    companion object : IntEntityClass<Job>(JobTable)
 
-    var task by Task referencedOn Jobs.task
-    var removed by Jobs.removed
-    var createTime by Jobs.createTime
-    var updateTime by Jobs.updateTime
+    var task by Task referencedOn JobTable.task
+    var removed by JobTable.removed
+    var createTime by JobTable.createTime
+    var updateTime by JobTable.updateTime
 
     val shouldRunNow: Boolean
         get() {

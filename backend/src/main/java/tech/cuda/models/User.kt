@@ -8,11 +8,11 @@ import org.jetbrains.exposed.dao.IntIdTable
 /**
  * Created by Jensen on 18-6-18.
  */
-object Users : IntIdTable() {
+object UserTable : IntIdTable() {
     override val tableName: String
         get() = "users"
 
-    val group = reference(name = "group_id", foreign = Groups)
+    val group = reference(name = "group_id", foreign = GroupTable)
     val name = varchar(name = "name", length = 256).index()
     val password = varchar(name = "password", length = 256)
     val email = varchar(name = "email", length = 256)
@@ -23,12 +23,12 @@ object Users : IntIdTable() {
 
 
 class User(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<User>(Users)
-    var group by Group referencedOn Users.group
-    var name by Users.name
-    var password by Users.password
-    var email by Users.email
-    var removed by Users.removed
-    var createTime by Users.createTime
-    var updateTime by Users.updateTime
+    companion object : IntEntityClass<User>(UserTable)
+    var group by Group referencedOn UserTable.group
+    var name by UserTable.name
+    var password by UserTable.password
+    var email by UserTable.email
+    var removed by UserTable.removed
+    var createTime by UserTable.createTime
+    var updateTime by UserTable.updateTime
 }

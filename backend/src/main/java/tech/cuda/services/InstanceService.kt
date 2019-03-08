@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import tech.cuda.enums.InstanceStatus
 import tech.cuda.models.Instance
-import tech.cuda.models.Instances
+import tech.cuda.models.InstanceTable
 import tech.cuda.models.Job
 
 /**
@@ -18,23 +18,23 @@ object InstanceService {
     }
 
     fun getMany(page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Instance> {
-        val query = Instances.select {
-            Instances.removed.neq(true)
-        }.orderBy(Instances.id to true).limit(pageSize, offset = page * pageSize)
+        val query = InstanceTable.select {
+            InstanceTable.removed.neq(true)
+        }.orderBy(InstanceTable.id to false).limit(pageSize, offset = page * pageSize)
         return Instance.wrapRows(query).toList()
     }
 
     fun getManyByJobId(jobId: Int, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Instance> {
-        val query = Instances.select {
-            Instances.removed.neq(true) and Instances.job.eq(jobId)
-        }.orderBy(Instances.id to true).limit(pageSize, offset = page * pageSize)
+        val query = InstanceTable.select {
+            InstanceTable.removed.neq(true) and InstanceTable.job.eq(jobId)
+        }.orderBy(InstanceTable.id to false).limit(pageSize, offset = page * pageSize)
         return Instance.wrapRows(query).toList()
     }
 
     fun getManyByStatus(status: InstanceStatus, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Instance> {
-        val query = Instances.select {
-            Instances.removed.neq(true) and Instances.status.eq(status)
-        }.orderBy(Instances.id to true).limit(pageSize, offset = page * pageSize)
+        val query = InstanceTable.select {
+            InstanceTable.removed.neq(true) and InstanceTable.status.eq(status)
+        }.orderBy(InstanceTable.id to false).limit(pageSize, offset = page * pageSize)
         return Instance.wrapRows(query).toList()
     }
 

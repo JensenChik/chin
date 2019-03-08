@@ -14,11 +14,11 @@ import tech.cuda.exceptions.IllegalScheduleFormatException
 /**
  * Created by Jensen on 18-6-18.
  */
-object Tasks : IntIdTable() {
+object TaskTable : IntIdTable() {
     override val tableName: String
         get() = "tasks"
 
-    val user = reference(name = "user_id", foreign = Users)
+    val user = reference(name = "user_id", foreign = UserTable)
     val name = varchar(name = "name", length = 256)
     val scheduleType = customEnumeration(
             name = "schedule_type", sql = SQL<ScheduleType>(),
@@ -35,18 +35,18 @@ object Tasks : IntIdTable() {
 
 
 class Task(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Task>(Tasks)
+    companion object : IntEntityClass<Task>(TaskTable)
 
-    var user by User referencedOn Tasks.user
+    var user by User referencedOn TaskTable.user
 
-    var scheduleType by Tasks.scheduleType
-    var scheduleFormat by Tasks.scheduleFormat
-    var name by Tasks.name
-    var command by Tasks.command
-    var latestJobId by Tasks.latestJobId
-    var removed by Tasks.removed
-    var createTime by Tasks.createTime
-    var updateTime by Tasks.updateTime
+    var scheduleType by TaskTable.scheduleType
+    var scheduleFormat by TaskTable.scheduleFormat
+    var name by TaskTable.name
+    var command by TaskTable.command
+    var latestJobId by TaskTable.latestJobId
+    var removed by TaskTable.removed
+    var createTime by TaskTable.createTime
+    var updateTime by TaskTable.updateTime
 
     val shouldScheduledToday: Boolean
         get() {

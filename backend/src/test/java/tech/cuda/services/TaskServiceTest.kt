@@ -16,7 +16,7 @@ class TaskServiceTest {
     @Before
     fun setUp() {
         rebuildTables()
-        DataMocker.load(listOf("groups", "users", "tasks"))
+        DataMocker.load("groups", "users", "tasks")
     }
 
     @Test

@@ -3,7 +3,7 @@ package tech.cuda.core.master
 import org.joda.time.DateTime
 import org.joda.time.Days
 import tech.cuda.models.Task
-import tech.cuda.models.Tasks
+import tech.cuda.models.TaskTable
 
 /**
  * Created by Jensen on 18-10-25.
@@ -13,7 +13,7 @@ object TaskTracker {
     var lastDateTime: DateTime = DateTime()
 
     fun newJobForRoutineTask() {
-        Task.find { Tasks.removed eq false }.forEach {
+        Task.find { TaskTable.removed eq false }.forEach {
             if (it.shouldScheduledToday) {
 //                it.createJob()
             }
