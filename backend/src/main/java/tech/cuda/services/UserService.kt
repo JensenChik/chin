@@ -2,6 +2,9 @@ package tech.cuda.services
 
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
+import org.joda.time.DateTime
+import tech.cuda.exceptions.StringOutOfLengthException
+import tech.cuda.models.Group
 import tech.cuda.models.User
 import tech.cuda.models.UserTable
 
@@ -28,7 +31,26 @@ object UserService {
         return User.wrapRows(query).toList()
     }
 
-    fun createOne() {
+    fun createOne(group: Group, name: String, password: String, email: String): User {
+        val now = DateTime.now()
+        return when {
+            name.length > UserTable.NAME_MAX_LEN ->
+                throw StringOutOfLengthException("length of column `name` must less than ${UserTable.NAME_MAX_LEN}")
+            password.length > UserTable.PASSWORD_MAX_LEN ->
+                throw StringOutOfLengthException("length of column `password` must less than ${UserTable.PASSWORD_MAX_LEN}")
+            email.length > UserTable.EMAIL_MAX_LEN ->
+                throw StringOutOfLengthException("length of column `email` must less than ${UserTable.EMAIL_MAX_LEN}")
+            else -> User.new {
+                this.group = group
+                this.name = name
+                this.password = password
+                this.email = email
+                removed = false
+                createTime = now
+                updateTime = now
+            }
+        }
+
 
     }
 }

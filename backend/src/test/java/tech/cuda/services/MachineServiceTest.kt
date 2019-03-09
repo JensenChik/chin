@@ -20,7 +20,7 @@ class MachineServiceTest {
     }
 
     @Test
-    fun getMachines() {
+    fun `query multi machines`() {
         transaction {
             assertEquals("机器总数不等", 6, MachineService.getMany().size)
         }

@@ -13,8 +13,8 @@ object ActionTable : IntIdTable() {
         get() = "actions"
 
     val user = reference(name = "user_id", foreign = UserTable)
-    const val detailLength = 256
-    val detail = varchar(name = "detail", length = detailLength)
+    const val DETAIL_MAX_LEN = 256
+    val detail = varchar(name = "detail", length = DETAIL_MAX_LEN)
     val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")

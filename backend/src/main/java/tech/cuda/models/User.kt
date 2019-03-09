@@ -13,9 +13,12 @@ object UserTable : IntIdTable() {
         get() = "users"
 
     val group = reference(name = "group_id", foreign = GroupTable)
-    val name = varchar(name = "name", length = 256).index()
-    val password = varchar(name = "password", length = 256)
-    val email = varchar(name = "email", length = 256)
+    const val NAME_MAX_LEN = 256
+    val name = varchar(name = "name", length = NAME_MAX_LEN).index()
+    const val PASSWORD_MAX_LEN = 256
+    val password = varchar(name = "password", length = NAME_MAX_LEN)
+    const val EMAIL_MAX_LEN = 256
+    val email = varchar(name = "email", length = EMAIL_MAX_LEN)
     val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
@@ -24,6 +27,7 @@ object UserTable : IntIdTable() {
 
 class User(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<User>(UserTable)
+
     var group by Group referencedOn UserTable.group
     var name by UserTable.name
     var password by UserTable.password

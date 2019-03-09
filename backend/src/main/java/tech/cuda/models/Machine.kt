@@ -11,10 +11,12 @@ import org.jetbrains.exposed.dao.IntIdTable
 object MachineTable : IntIdTable() {
     override val tableName: String
         get() = "machines"
-
-    val name = varchar(name = "name", length = 256)
-    val ip = varchar(name = "ip", length = 256)
-    val mac = varchar(name = "mac", length = 256)
+    const val NAME_MAX_LEN = 256
+    val name = varchar(name = "name", length = NAME_MAX_LEN)
+    const val IP_MAX_LEN = 256
+    val ip = varchar(name = "ip", length = IP_MAX_LEN)
+    const val MAC_MAX_LEN = 256
+    val mac = varchar(name = "mac", length = MAC_MAX_LEN)
     val cpuLoad = integer(name = "cpu_load")
     val memLoad = integer(name = "mem_load")
     val diskLoad = integer(name = "disk_load")

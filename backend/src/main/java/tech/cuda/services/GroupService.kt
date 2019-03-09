@@ -2,6 +2,7 @@ package tech.cuda.services
 
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
+import tech.cuda.exceptions.StringOutOfLengthException
 import tech.cuda.models.Group
 import tech.cuda.models.GroupTable
 
@@ -23,7 +24,9 @@ object GroupService {
 
     fun createOne(name: String): Group {
         val now = DateTime.now()
-        return Group.new {
+        return if (name.length > GroupTable.NAME_MAX_LEN)
+            throw StringOutOfLengthException("length of column `name` must less than ${GroupTable.NAME_MAX_LEN}")
+        else Group.new {
             this.name = name
             this.removed = false
             this.createTime = now

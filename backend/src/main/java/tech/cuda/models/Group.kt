@@ -12,7 +12,8 @@ object GroupTable : IntIdTable() {
     override val tableName: String
         get() = "groups"
 
-    val name = varchar(name = "name", length = 256).index()
+    const val NAME_MAX_LEN = 256
+    val name = varchar(name = "name", length = NAME_MAX_LEN).index()
     val removed = bool(name = "removed").index().default(false)
     val createTime = datetime(name = "create_time")
     val updateTime = datetime(name = "update_time")
