@@ -25,14 +25,14 @@ object MachineService {
 
     fun createOne(name: String, ip: String, mac: String): Machine {
         val now = DateTime.now()
-        when {
+        return when {
             name.length > MachineTable.NAME_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `name` must less than ${MachineTable.NAME_MAX_LEN}")
+                throw StringOutOfLengthException("name", MachineTable.NAME_MAX_LEN)
             ip.length > MachineTable.IP_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `ip` must less than ${MachineTable.IP_MAX_LEN}")
+                throw StringOutOfLengthException("ip", MachineTable.IP_MAX_LEN)
             mac.length > MachineTable.MAC_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `mac` must less than ${MachineTable.MAC_MAX_LEN}")
-            else -> return Machine.new {
+                throw StringOutOfLengthException("mac", MachineTable.MAC_MAX_LEN)
+            else -> Machine.new {
                 this.name = name
                 this.ip = ip
                 this.mac = mac
@@ -45,5 +45,4 @@ object MachineService {
             }
         }
     }
-}
 }

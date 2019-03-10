@@ -25,7 +25,7 @@ object GroupService {
     fun createOne(name: String): Group {
         val now = DateTime.now()
         return if (name.length > GroupTable.NAME_MAX_LEN)
-            throw StringOutOfLengthException("length of column `name` must less than ${GroupTable.NAME_MAX_LEN}")
+            throw StringOutOfLengthException("name", GroupTable.NAME_MAX_LEN)
         else Group.new {
             this.name = name
             this.removed = false

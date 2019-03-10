@@ -35,11 +35,11 @@ object UserService {
         val now = DateTime.now()
         return when {
             name.length > UserTable.NAME_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `name` must less than ${UserTable.NAME_MAX_LEN}")
+                throw StringOutOfLengthException("name", UserTable.NAME_MAX_LEN)
             password.length > UserTable.PASSWORD_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `password` must less than ${UserTable.PASSWORD_MAX_LEN}")
+                throw StringOutOfLengthException("password", UserTable.NAME_MAX_LEN)
             email.length > UserTable.EMAIL_MAX_LEN ->
-                throw StringOutOfLengthException("length of column `email` must less than ${UserTable.EMAIL_MAX_LEN}")
+                throw StringOutOfLengthException("email", UserTable.EMAIL_MAX_LEN)
             else -> User.new {
                 this.group = group
                 this.name = name

@@ -35,7 +35,7 @@ object ActionService {
     fun createOne(user: User, detail: String): Action {
         val now = DateTime.now()
         return if (detail.length > ActionTable.DETAIL_MAX_LEN)
-            throw StringOutOfLengthException("length of column `detail` must less than $ActionTable.DETAIL_MAX_LEN")
+            throw StringOutOfLengthException("detail", ActionTable.DETAIL_MAX_LEN)
         else Action.new {
             this.user = user
             this.detail = detail
