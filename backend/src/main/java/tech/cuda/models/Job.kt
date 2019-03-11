@@ -31,16 +31,10 @@ class Job(id: EntityID<Int>) : IntEntity(id) {
 
     val shouldRunNow: Boolean
         get() {
-            val regex = """(.+) (.+)-(.+)-(.+) (.+):(.+):(.+)""".toRegex()
-            val matchResult = regex.matchEntire(this.task.scheduleFormat)
-            if (matchResult != null) {
-                val (_, _, _, _, hour, minute, second) = matchResult.destructured
+
                 val now = DateTime.now()
-                return now.hourOfDay > hour.toInt()
-                        && now.minuteOfHour > minute.toInt()
-                        && now.secondOfMinute > second.toInt()
-            } else {
-                throw IllegalScheduleFormatException("schedule format should be `weekday yyyy-mm-dd HH:MM:SS`")
-            }
+                return now.hourOfDay > this.task.scheduleFormat.hour
+                        && now.minuteOfHour > this.task.scheduleFormat.minute
+                        && now.secondOfMinute > this.task.scheduleFormat.second
         }
 }

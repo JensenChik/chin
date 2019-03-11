@@ -4,12 +4,15 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
-import tech.cuda.enums.InstanceStatus
-import tech.cuda.enums.SQL
 
 /**
  * Created by Jensen on 18-6-15.
  */
+
+enum class InstanceStatus {
+    Waiting, Running, Success, Failed
+}
+
 object InstanceTable : IntIdTable() {
     override val tableName: String
         get() = "instances"
@@ -17,7 +20,8 @@ object InstanceTable : IntIdTable() {
     val job = reference(name = "job_id", foreign = JobTable)
     val output = blob("output")
     val status = customEnumeration(
-            name = "status", sql = SQL<InstanceStatus>(),
+            name = "status",
+            sql = InstanceStatus.values().joinToString(",", "ENUM(", ")") { "'${it.name}'" },
             fromDb = { value -> InstanceStatus.valueOf(value as String) },
             toDb = { it.name }
     )

@@ -5,5 +5,4 @@ package tech.cuda.exceptions
  */
 
 class StringOutOfLengthException(column: String, maxLen: Int) :
-        Exception("length of column `$column` must less than $maxLen") {
-}
+        Exception("length of column `$column` must less than $maxLen")

@@ -3,10 +3,8 @@ package tech.cuda.services
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
-import tech.cuda.enums.ScheduleType
-import tech.cuda.models.Task
-import tech.cuda.models.TaskTable
-import tech.cuda.models.User
+import tech.cuda.exceptions.StringOutOfLengthException
+import tech.cuda.models.*
 
 /**
  * Created by Jensen on 19-3-5.
@@ -43,23 +41,26 @@ object TaskService {
             user: User,
             name: String,
             scheduleType: ScheduleType,
-            scheduleFormat: String,
-            command: String) {
+            scheduleFormat: ScheduleFormat,
+            command: String
+    ): Task {
         val now = DateTime.now()
-        when {
+        return when {
             name.length > TaskTable.NAME_MAX_LEN ->
+                throw StringOutOfLengthException("name", TaskTable.NAME_MAX_LEN)
+            else -> Task.new {
+                this.user = user
+                this.name = name
+                this.scheduleType = scheduleType
+                this.scheduleFormat = scheduleFormat
+                this.command = command
+                latestJobId = null
+                removed = false
+                createTime = now
+                updateTime = now
+            }
         }
-        Task.new {
-            this.user = user
-            this.name = name
-            this.scheduleType = scheduleType
-            this.scheduleFormat = scheduleFormat
-            this.command = command
-            latestJobId = null
-            removed = false
-            createTime = now
-            updateTime = now
-        }
+
 
     }
 

@@ -2,8 +2,8 @@ package tech.cuda.services
 
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
-import tech.cuda.enums.InstanceStatus
 import tech.cuda.models.Instance
+import tech.cuda.models.InstanceStatus
 import tech.cuda.models.InstanceTable
 import tech.cuda.models.Job
 
