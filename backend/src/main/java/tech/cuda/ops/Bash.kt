@@ -3,7 +3,6 @@ package tech.cuda.ops
 import org.apache.commons.exec.*
 import org.apache.commons.exec.environment.EnvironmentUtils
 import org.apache.commons.io.IOUtils
-import tech.cuda.models.Task
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -13,12 +12,24 @@ import java.io.IOException
  */
 const val EXIT_VALUE = 0
 
-class Bash : Operator {
+class Bash(command: String) : Operator {
     private val commandLine: CommandLine = CommandLine("bash")
     private val std: ByteArrayOutputStream
     private val handle: DefaultExecuteResultHandler
     private val killer: ExecuteWatchdog
     private val executor: DefaultExecutor
+
+    init {
+        commandLine.addArgument("-c")
+        commandLine.addArgument(command, false)
+        this.std = ByteArrayOutputStream()
+        this.handle = DefaultExecuteResultHandler()
+        this.killer = ExecuteWatchdog(Long.MAX_VALUE)
+        this.executor = DefaultExecutor()
+        this.executor.setExitValue(EXIT_VALUE)
+        this.executor.streamHandler = PumpStreamHandler(std, std)
+        this.executor.watchdog = killer
+    }
 
     val output: String
         get() {
@@ -38,23 +49,6 @@ class Bash : Operator {
                 false
             }
         }
-
-
-    constructor(command: String) {
-        commandLine.addArgument("-c")
-        commandLine.addArgument(command, false)
-
-        this.std = ByteArrayOutputStream()
-        this.handle = DefaultExecuteResultHandler()
-        this.killer = ExecuteWatchdog(Long.MAX_VALUE)
-
-        this.executor = DefaultExecutor()
-        this.executor.setExitValue(EXIT_VALUE)
-        this.executor.streamHandler = PumpStreamHandler(std, std)
-        this.executor.watchdog = killer
-    }
-
-    constructor(task: Task) : this(task.command)
 
 
     fun run() {
@@ -105,6 +99,5 @@ class Bash : Operator {
         }
 
     }
-
 
 }

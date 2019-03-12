@@ -2,8 +2,8 @@ package tech.cuda.core.master
 
 import org.joda.time.DateTime
 import org.joda.time.Days
-import tech.cuda.models.Task
-import tech.cuda.models.TaskTable
+import tech.cuda.services.JobService
+import tech.cuda.services.TaskService
 
 /**
  * Created by Jensen on 18-10-25.
@@ -11,25 +11,17 @@ import tech.cuda.models.TaskTable
  */
 object TaskTracker {
     var lastDateTime: DateTime = DateTime()
-
-    fun newJobForRoutineTask() {
-        Task.find { TaskTable.removed eq false }.forEach {
-            if (it.shouldScheduledToday) {
-//                it.createJob()
-            }
-        }
-    }
-
-    val newDayComing: Boolean
-        get() {
-            return Days.daysBetween(lastDateTime, DateTime()).days > 0
-        }
+    private val newDayComing = Days.daysBetween(lastDateTime, DateTime()).days > 0
 
     fun serve() {
         while (true) {
             if (newDayComing) {
                 lastDateTime = DateTime()
-                newJobForRoutineTask()
+                TaskService.getMany().filter {
+                    it.shouldScheduledToday
+                }.forEach {
+                    JobService.createOneForTask(it)
+                }
             } else {
                 Thread.sleep(1000)
             }

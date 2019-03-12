@@ -2,10 +2,12 @@ package tech.cuda.services
 
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
+import org.joda.time.DateTime
 import tech.cuda.models.Instance
 import tech.cuda.models.InstanceStatus
 import tech.cuda.models.InstanceTable
 import tech.cuda.models.Job
+import tech.cuda.ops.Bash
 
 /**
  * Created by Jensen on 19-3-5.
@@ -38,11 +40,25 @@ object InstanceService {
         return Instance.wrapRows(query).toList()
     }
 
-    fun createOneForJob(job: Job) {
-
+    fun createOneForJob(job: Job): Instance {
+        val now = DateTime.now()
+        return Instance.new {
+            this.job = job
+            status = InstanceStatus.Waiting
+            removed = false
+            createTime = now
+            updateTime = now
+        }
     }
 
-    fun start(instance: Instance) {
+    fun start(instance: Instance): Bash {
+        instance.status = InstanceStatus.Running
+        val bash = Bash(instance.job.task.command)
+        bash.run()
+        return bash
+    }
+
+    fun kill(instance: Instance) {
 
     }
 }

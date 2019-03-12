@@ -30,6 +30,15 @@ object TaskService {
         return Task.wrapRows(query).toList()
     }
 
+    fun getManyByGroupId(groupId: Int, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Task> {
+        val users = UserService.getManyByGroupId(groupId)
+        val query = TaskTable.select {
+            TaskTable.removed.neq(true) and TaskTable.user.inList(users.map { it.id })
+        }.orderBy(TaskTable.id to false).limit(pageSize, offset = page * pageSize)
+        return Task.wrapRows(query).toList()
+
+    }
+
     fun getManyBySchduleType(scheduleType: ScheduleType, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Task> {
         val query = TaskTable.select {
             TaskTable.removed.neq(true) and TaskTable.scheduleType.eq(scheduleType)

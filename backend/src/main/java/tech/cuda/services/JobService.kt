@@ -1,6 +1,7 @@
 package tech.cuda.services
 
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.date
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
@@ -30,6 +31,14 @@ object JobService {
             JobTable.removed.neq(true) and JobTable.task.eq(taskId)
         }.orderBy(JobTable.id to false).limit(pageSize, offset = page * pageSize)
         return Job.wrapRows(query).toList()
+    }
+
+    fun getManyByDate(date: DateTime, page: Int, pageSize: Int) {
+        val query = JobTable.select {
+            JobTable.removed.neq(true) and
+                    JobTable.createTime.date().
+        }
+
     }
 
     fun createOneForTask(task: Task): Job {
