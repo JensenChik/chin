@@ -8,6 +8,7 @@ import org.joda.time.DateTime
 import tech.cuda.models.Job
 import tech.cuda.models.JobTable
 import tech.cuda.models.Task
+import java.util.*
 
 /**
  * Created by Jensen on 19-3-5.
@@ -26,18 +27,19 @@ object JobService {
         return Job.wrapRows(query).toList()
     }
 
-    fun getManyByTaskId(taskId: Int, page: Int, pageSize: Int): List<Job> {
+    fun getManyByTaskId(taskId: Int, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Job> {
         val query = JobTable.select {
             JobTable.removed.neq(true) and JobTable.task.eq(taskId)
         }.orderBy(JobTable.id to false).limit(pageSize, offset = page * pageSize)
         return Job.wrapRows(query).toList()
     }
 
-    fun getManyByDate(date: DateTime, page: Int, pageSize: Int) {
+    fun getManyByDate(date: Date, page: Int = 0, pageSize: Int = Int.MAX_VALUE): List<Job> {
         val query = JobTable.select {
-            JobTable.removed.neq(true) and
-                    JobTable.createTime.date().
+            JobTable.removed.neq(true)
+//          todo  and JobTable.createTime.eq(DateTime.now())
         }
+        return Job.wrapRows(query).toList()
 
     }
 

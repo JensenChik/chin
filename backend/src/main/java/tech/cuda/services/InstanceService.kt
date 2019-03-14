@@ -1,5 +1,6 @@
 package tech.cuda.services
 
+import com.mysql.jdbc.Blob
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
@@ -8,6 +9,7 @@ import tech.cuda.models.InstanceStatus
 import tech.cuda.models.InstanceTable
 import tech.cuda.models.Job
 import tech.cuda.ops.Bash
+import javax.sql.rowset.serial.SerialBlob
 
 /**
  * Created by Jensen on 19-3-5.
@@ -49,6 +51,29 @@ object InstanceService {
             createTime = now
             updateTime = now
         }
+    }
+
+    fun updateById(id: Int, status: InstanceStatus? = null, output: String? = null): Instance {
+        val instance = this.getOneById(id)!!
+        val now = DateTime.now()
+        if (status != null) {
+            instance.status = status
+            instance.updateTime = now
+        }
+        if (output != null) {
+            instance.output = SerialBlob(output.toByteArray())
+            instance.updateTime = now
+        }
+        return instance
+    }
+    
+
+    fun removeById(id: Int): Instance {
+        val instance = this.getOneById(id)!!
+        instance.removed = true
+        instance.updateTime = DateTime.now()
+        return instance
+
     }
 
     fun start(instance: Instance): Bash {

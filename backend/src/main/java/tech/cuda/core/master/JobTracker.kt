@@ -11,16 +11,14 @@ import tech.cuda.services.JobService
  */
 object JobTracker {
 
-
-    fun newInstanceForReadyJob() {
-        //todo
-    }
-
     fun serve() {
         while (true) {
-            JobService.getMany()
-            newInstanceForReadyJob()
-
+            val today = DateTime.now().toDate()
+            JobService.getManyByDate(today).filter {
+                it.shouldRunNow
+            }.forEach {
+                InstanceService.createOneForJob(it)
+            }
             Thread.sleep(1000)
         }
     }
