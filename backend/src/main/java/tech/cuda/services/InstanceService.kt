@@ -1,15 +1,10 @@
 package tech.cuda.services
 
-import com.mysql.jdbc.Blob
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
-import tech.cuda.models.Instance
-import tech.cuda.models.InstanceStatus
-import tech.cuda.models.InstanceTable
-import tech.cuda.models.Job
+import tech.cuda.models.*
 import tech.cuda.ops.Bash
-import javax.sql.rowset.serial.SerialBlob
 
 /**
  * Created by Jensen on 19-3-5.
@@ -44,12 +39,26 @@ object InstanceService {
 
     fun createOneForJob(job: Job): Instance {
         val now = DateTime.now()
-        return Instance.new {
-            this.job = job
-            status = InstanceStatus.Waiting
-            removed = false
-            createTime = now
-            updateTime = now
+        //todo: 弹性分配 machine
+        val machine = MachineService.getOneById(1)
+        return if (machine == null) {
+            Instance.new {
+                this.job = job
+                status = InstanceStatus.Failed
+                output = "机器分配失败".toBlob()
+                removed = false
+                createTime = now
+                updateTime = now
+            }
+        } else {
+            Instance.new {
+                this.job = job
+                this.machine = machine
+                status = InstanceStatus.Waiting
+                removed = false
+                createTime = now
+                updateTime = now
+            }
         }
     }
 
@@ -61,12 +70,12 @@ object InstanceService {
             instance.updateTime = now
         }
         if (output != null) {
-            instance.output = SerialBlob(output.toByteArray())
+            instance.output = output.toBlob()
             instance.updateTime = now
         }
         return instance
     }
-    
+
 
     fun removeById(id: Int): Instance {
         val instance = this.getOneById(id)!!
@@ -80,10 +89,12 @@ object InstanceService {
         instance.status = InstanceStatus.Running
         val bash = Bash(instance.job.task.command)
         bash.run()
+        instance.updateTime = DateTime.now()
         return bash
     }
 
     fun kill(instance: Instance) {
-
+        instance.status = InstanceStatus.Killing
+        instance.updateTime = DateTime.now()
     }
 }

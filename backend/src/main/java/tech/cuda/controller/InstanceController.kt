@@ -19,9 +19,9 @@ class InstanceController {
         return "instance"
     }
 
-    @RequestMapping("add")
+    @RequestMapping("create")
     @ResponseBody
-    fun add(): String {
+    fun create(): String {
         return "增加"
     }
 

@@ -28,9 +28,9 @@ class ScheduleFormat {
     val second: Int
 
     constructor(
-            weekday: Int?,
-            year: Int?, month: Int?, day: Int?,
-            hour: Int, minute: Int, second: Int
+            weekday: Int? = null,
+            year: Int? = null, month: Int? = null, day: Int? = null,
+            hour: Int, minute: Int, second: Int = 0
     ) {
         when {
             weekday != null && weekday !in 0..6 -> throw InvalidParameterException("weekday must in 0..6")

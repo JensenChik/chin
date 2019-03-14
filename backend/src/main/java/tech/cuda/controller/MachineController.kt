@@ -18,9 +18,9 @@ class MachineController {
     fun listing(): String {
         return "machine"
     }
-    @RequestMapping("add")
+    @RequestMapping("create")
     @ResponseBody
-    fun add(): String {
+    fun create(): String {
         return "增加"
     }
 

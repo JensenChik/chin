@@ -4,37 +4,26 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-import tech.cuda.models.ScheduleFormat
-import tech.cuda.models.ScheduleType
-import tech.cuda.services.TaskService
-import tech.cuda.services.UserService
 
 /**
  * Created by Jensen on 18-6-15.
+ * 用户操作controller
  */
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/api/task")
-class TaskController {
+@RequestMapping("/api/group")
+class GroupController {
 
     @RequestMapping("listing")
     @ResponseBody
     fun listing(): String {
-        return "task"
+        return "group"
     }
+
 
     @RequestMapping("create")
     @ResponseBody
     fun create(): String {
-        val user = UserService.getOneById(1)!!
-        val name = "创建任务"
-        val task = TaskService.createOne(
-                user = user,
-                name = name,
-                scheduleType = ScheduleType.Day,
-                scheduleFormat = ScheduleFormat(hour = 0, minute = 10),
-                command = "echo hello world"
-        )
         return "增加"
     }
 

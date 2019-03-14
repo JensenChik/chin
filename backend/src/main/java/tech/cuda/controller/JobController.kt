@@ -19,9 +19,9 @@ class JobController {
     fun listing(): String {
         return "job"
     }
-    @RequestMapping("add")
+    @RequestMapping("create")
     @ResponseBody
-    fun add(): String {
+    fun create(): String {
         return "增加"
     }
 
