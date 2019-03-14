@@ -78,6 +78,7 @@ open class Application : WebMvcConfigurerAdapter(), Filter {
 }
 
 fun main(args: Array<String>) {
+    // todo: 添加命令行参数
 //    rebuildTables()
     SpringApplication.run(Application::class.java, *args)
 }
