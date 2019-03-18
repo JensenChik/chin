@@ -96,7 +96,7 @@
                         key: 'scheduleFormat'
                     },
                     {
-                        title: '最近三天状态',
+                        title: '最近三天作业',
                         align: 'center',
                         width: 200,
                         render: (h, param) => {
