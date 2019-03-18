@@ -5,8 +5,13 @@
             <BreadcrumbItem>任务管理</BreadcrumbItem>
             <BreadcrumbItem>任务详情</BreadcrumbItem>
         </Breadcrumb>
-        <Card style="height: 600px">
-            <Table :columns="columns" :data="tasks"></Table>
+        <Card>
+            <Button style="margin-bottom: 10px">新建</Button>
+            <Table style="margin-bottom: 10px" :columns="columns" :data="tasks"></Table>
+            <div align="right">
+                <Page :total="100" show-elevator show-total show-sizer/>
+            </div>
+
         </Card>
     </div>
 
@@ -32,13 +37,49 @@
                         }
                     },
                     {
-                        title: '任务ID',
+                        renderHeader: (h, params) => {
+                            return h('div', [
+                                '任务ID',
+                                h('Icon', {
+                                    props: {
+                                        type: 'md-search'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+
+                                    },
+                                    on: {
+                                        click: () => {
+                                            alert(1)
+                                        }
+                                    }
+                                })
+                            ])
+                        },
                         align: 'center',
-                        maxWidth: 80,
+                        maxWidth: 100,
                         key: 'id'
                     },
                     {
-                        title: '任务名',
+                        renderHeader: (h, params) => {
+                            return h('div', [
+                                '任务名',
+                                h('Icon', {
+                                    props: {
+                                        type: 'md-search'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+
+                                    },
+                                    on: {
+                                        click: () => {
+                                            alert(1)
+                                        }
+                                    }
+                                })
+                            ])
+                        },
                         align: 'center',
                         key: 'name'
                     },
@@ -55,12 +96,22 @@
                         key: 'scheduleFormat'
                     },
                     {
-                        title: '最近状态',
+                        title: '最近三天状态',
                         align: 'center',
                         width: 200,
                         render: (h, param) => {
                             return h('div', [
-                                param.row.status.map(s => h('Tag', s))
+                                param.row.status.map(s => h('Button', {
+                                    props: {
+                                        type: 'success',
+                                        shape: 'circle',
+                                        size: 'small',
+                                        icon: 'md-checkmark'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+                                    }
+                                }))
                             ])
 
                         }
@@ -71,8 +122,47 @@
                         width: 200,
                         render: (h, param) => {
                             return h('div', [
-                                h('Button', '编辑'),
-                                h('Button', '删除'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        shape: 'circle',
+                                        size: 'small',
+                                        icon: 'md-create'
+                                    }
+                                }),
+                                h('Button', {
+                                    props: {
+                                        type: 'info',
+                                        shape: 'circle',
+                                        size: 'small',
+                                        icon: 'md-git-branch'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+                                    }
+                                }),
+                                h('Button', {
+                                    props: {
+                                        type: 'warning',
+                                        shape: 'circle',
+                                        size: 'small',
+                                        icon: 'md-play'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+                                    }
+                                }),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        shape: 'circle',
+                                        size: 'small',
+                                        icon: 'md-trash'
+                                    },
+                                    style: {
+                                        marginLeft: '5px'
+                                    }
+                                })
                             ])
 
                         }

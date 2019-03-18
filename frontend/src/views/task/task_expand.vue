@@ -16,7 +16,7 @@
                 <span class="expand-value">{{ row.user_name }}</span>
             </Col>
             <Col span="8">
-                <span class="expand-key">创建时间:</span>
+                <span class="expand-key">创建时间：</span>
                 <span class="expand-value">{{ row.create_time }}</span>
             </Col>
             <Col span="8">
@@ -26,7 +26,9 @@
         </Row>
         <Row class="expand-row">
             <span class="expand-key">父任务：</span>
-            <span class="expand-value">{{ row.father_tasks }}</span>
+            <span v-for="task in row.father_tasks">
+                <Button type="success" size="small" style="margin-right: 5px">{{ task.id }}</Button>
+            </span>
         </Row>
         <Row>
             <span class="expand-key">调度命令：</span>
