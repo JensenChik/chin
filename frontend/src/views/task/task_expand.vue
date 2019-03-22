@@ -21,7 +21,7 @@
             </Col>
             <Col span="8">
                 <span class="expand-key">优先级：</span>
-                <span class="expand-value">{{ row.update_time }}</span>
+                <Rate disabled :value="3"/>
             </Col>
         </Row>
 

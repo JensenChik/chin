@@ -6,7 +6,7 @@
             <BreadcrumbItem>任务详情</BreadcrumbItem>
         </Breadcrumb>
         <Card>
-            <Button style="margin-bottom: 10px">新建</Button>
+            <Button style="margin-bottom: 10px" type="primary">新建</Button>
             <Table style="margin-bottom: 10px" :columns="columns" :data="tasks"></Table>
             <div align="right">
                 <Page :total="100" show-elevator show-total show-sizer/>
