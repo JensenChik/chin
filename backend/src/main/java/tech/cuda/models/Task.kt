@@ -142,5 +142,17 @@ class Task(id: EntityID<Int>) : IntEntity(id) {
                 false
             }
         }
+
+    val todayStatus: InstanceStatus
+        get() {
+            // todo
+            return InstanceStatus.Success
+        }
+
+    val lastThreeDayStatus: List<InstanceStatus>
+        get() {
+            // todo
+            return listOf(InstanceStatus.Success, InstanceStatus.Success, InstanceStatus.Success)
+        }
 }
 
