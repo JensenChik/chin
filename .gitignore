@@ -98,5 +98,6 @@ logs/*
 backend/target
 backend/src/main/resources/static
 
+frontend/index.html
 frontend/dist
 frontend/node_modules
