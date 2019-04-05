@@ -129,7 +129,7 @@
                         },
                         maxWidth: 100,
                         align: 'center',
-                        key: 'id'
+                        key: '作业id'
                     },
                     {
                         title: '任务ID',

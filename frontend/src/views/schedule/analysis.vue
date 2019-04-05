@@ -5,6 +5,9 @@
             <BreadcrumbItem>调度管理</BreadcrumbItem>
             <BreadcrumbItem>调度分析</BreadcrumbItem>
         </Breadcrumb>
+        <Card>
+            <div style="height: 600px">Content</div>
+        </Card>
     </div>
 
 </template>
