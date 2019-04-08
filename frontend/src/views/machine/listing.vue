@@ -27,8 +27,8 @@
                     mac: '04:7d:7b:e0:3e:6b',
                     load: {
                         cpu: 10,
-                        memory: 10,
-                        disk: 20
+                        memory: 50,
+                        disk: 67
                     }
                 }
             ]
@@ -68,7 +68,10 @@
                                 ['cpu', 'memory', 'disk'].map(type => h(Circle, {
                                     props: {
                                         size: 20,
-                                        percent: loads[type]
+                                        percent: loads[type],
+                                        strokeColor: loads[type] > 66? '#ff5500': (
+                                            loads[type] < 33? '#5cb85c': '#2db7f5'
+                                        )
                                     },
                                     style: {
                                         marginRight: '5px'
